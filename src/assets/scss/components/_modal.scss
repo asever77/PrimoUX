@@ -1,0 +1,82 @@
+.area-modal {
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+
+.ui-modal {
+	display: none;
+	position: fixed;
+	top: 0;
+	left: 0;
+	z-index: 100;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+
+	// ready -> open
+	&.ready {
+		display: flex;
+		overflow-y: hidden;
+		&[data-scroll="outer"] {
+			overflow-y: auto;
+			background: rgba(0, 0, 0, 0.5);
+			.ui-modal-dim {
+				opacity: 0 !important;
+				display: none !important;
+			}
+		}
+		.ui-modal--dim {
+			content: "";
+			display: block;
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			opacity: 0;
+			background: rgba(0, 0, 0, 0.5);
+			transition: opacity 0.4s ease-in-out;
+		}
+	}
+	&.open {
+		&.current .ui-modal--dim {opacity:1;}
+		.ui-modal--item {opacity:1;}
+	} 
+	
+	// position
+	&.ps-center {
+		justify-content: center;
+		align-items: center;
+	}
+	&.ps-top {
+		justify-content: center;
+		align-items: flex-start;
+		overflow: hidden;
+		.ui-modal--item {margin-top: 0.8rem;}
+		.ui-modal--drag {
+			top: auto;
+			bottom: 0;
+		}
+	}
+	&.ps-bottom {
+		justify-content: center;
+		align-items: flex-end;
+		overflow: hidden;
+		.ui-modal--item {
+			width: 100%;
+			margin: 0;
+			border-bottom-left-radius: 0;
+			border-bottom-right-radius: 0;
+		}
+		.ui-modal--header {min-height: 5.4rem;}
+		.ui-modal--body {max-height: 32rem;}
+		.ui-modal--footer {padding: 1.2rem 1.2rem calc(1.2rem + env(safe-area-inset-bottom));}
+		
+		&[data-drag="true"] .ui-modal--item {
+			max-height: 32rem !important;
+			height: 100%;
+			.ui-modal--body {max-height: none}
+		}
+	}
+}
