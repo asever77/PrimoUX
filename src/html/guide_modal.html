@@ -20,42 +20,19 @@
 	</div>
 
 	<!-- modal -->
-	<div class="area-modal">
-
-		<section class="ui-modal" data-ui--id="modal-1">
-			<div class="ui-modal--item">
-				<div class="ui-modal--header">
-					<h1>Title</h1>
-					<button type="button" class="ui-modal--close" aria-label="{Title} 창닫기"></button>
-				</div>
-				<div class="ui-modal--body">
-					.........
-				</div>
-				<div class="ui-modal--footer">
-						<button type="button" class="btn-base">
-							<span>확인</span>
-						</button>
-				</div>
-			</div>
-		</div>
-	
-	</div>
-
+	<div class="area-modal"></div>
 	<!-- select combo box -->
 	<div class="area-select"></div>
-
-	<!-- dialog : alert -->
-	<div class="area-dialog"></div>
-
 	<!-- toast -->
 	<div class="area-toast"></div>
 
 	<script>
 		document.addEventListener("DOMContentLoaded", () => {
-       const modal = new Modal({
-				id: 'modal-1',
-			 })
-    });
+			const modal = new Modal({
+				id: 'modal-2',
+				src: './modal/modal.html',
+			})
+		});
 	</script>
 </body>
 
