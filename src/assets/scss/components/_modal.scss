@@ -3,10 +3,10 @@
 	top: 0;
 	left: 0;
 }
-
+button:focus{outline: 1px solid red;}
 
 .project-modal {
-	display: flex;
+	display: none;
 	position: fixed;
 	top: 0;
 	left: 0;
@@ -17,6 +17,9 @@
 	justify-content: center;
 	align-items: center;
 
+	&:focus .project-modal--item{
+		box-shadow: 0 0 1rem rgba(0, 0, 0, 0.5);
+	}
 	//dim
 	&::after {
 		content:"";
@@ -27,7 +30,51 @@
 		background-color: rgba(0, 0, 0, 0.5);
 		z-index: 0;
 	}
+
+	.btn-hidden {
+		display: block;
+		position: absolute;
+		bottom: -100dvh;
+		width: 4rem;
+		height: 4rem;
+		border-radius: 50%;
+		background-color: #000;
+		pointer-events: none;
+
+		&:focus {
+			pointer-events:visible;
+			bottom: 0;
+		}
+	}
 	// ready -> open
+	&[aria-hidden="true"] {
+		&[data-state ="hide"] {
+			animation-name:modalHide;
+			animation-duration:0.2s;
+			animation-iteration-count:1;
+			animation-timing-function:linear;
+			animation-fill-mode:forwards;
+		}
+
+		.project-modal--item {
+			animation-name:slideDownOut;
+			animation-duration:0.2s;
+			animation-iteration-count:1;
+			animation-timing-function:linear;
+			animation-fill-mode:forwards;
+		}
+	}
+	&[aria-hidden="false"] {
+		display: flex;
+		.project-modal--item {
+			animation-name:slideDownIn;
+			animation-duration:0.2s;
+			animation-iteration-count:1;
+			animation-timing-function:linear;
+			animation-fill-mode:forwards;
+		}
+	}
+
 	&.ready {
 		display: flex;
 		overflow-y: hidden;
