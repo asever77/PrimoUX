@@ -15,13 +15,9 @@
 		<div class="base-body">
 			<aside class="base-side"></aside>
 			<main class="base-content">
-				<a href="#">빈링크</a>
-				<button type="button" data-test-id="modal1">기본 모달</button>
-				<button type="button" data-test-id="modal2">전체 모달</button>
-				<button type="button" data-test-id="modal3">하단 모달</button>
-				<button type="button" data-test-id="modal4">상단 모달</button>
-				<button type="button" data-test-id="modal5">좌측 모달</button>
-				<button type="button" data-test-id="modal6">우측 모달</button>
+				<box>
+					<button type="button" data-test-id="modal1" onclick="PrimoUX.modal.modal1.show();">기본 모달</button>
+				</box>
 			</main>
 		</div>
 		<footer class="base-footer"></footer>
@@ -38,6 +34,7 @@
 		document.addEventListener("DOMContentLoaded", () => {
 			PrimoUX.modal.modal1 = new Modal({
 				id: 'modal-2',
+				ps: 'center',
 				src: './modal/modal.html',
 				loadCallback: () => {
 					PrimoUX.modal.modal1.show();
@@ -45,16 +42,10 @@
 					setTimeout(() => {
 						console.log('go')
 						PrimoUX.modal.modal1.hide({ focus_target: document.querySelector('[data-test-id="modal4"]') });
-					},500)
+					},1000)
 				}
 			});
-
-			const test1 = document.querySelector('[data-test-id="modal1"]');
-			test1.addEventListener('click', () => {
-				PrimoUX.modal.modal1.show();
-			});
 			
-		
 		});
 	</script>
 </body>

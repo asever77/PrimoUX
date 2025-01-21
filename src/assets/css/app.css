@@ -40,7 +40,7 @@
   --gray_100: #fff;
 }
 
-@keyframes modalHide {
+@keyframes modal-hide {
   0% {
     display: flex;
   }
@@ -65,30 +65,158 @@
     visibility: hidden;
   }
 }
-@keyframes scaleIn {
+@keyframes scale-In {
   0% {
+    display: flex;
     opacity: 0;
-    transform: scale(0.9);
+  }
+  1% {
+    opacity: 0;
+    transform: scale(0.8);
   }
   100% {
     opacity: 1;
     transform: scale(1);
   }
 }
-@keyframes scaleOut {
+@keyframes scale-Out {
   0% {
     opacity: 1;
     transform: scale(1);
   }
-  100% {
+  99% {
     opacity: 0;
-    transform: scale(0.9);
+    transform: scale(0.8);
+    visibility: hidden;
+  }
+  100% {
+    display: none;
+    opacity: 0;
+  }
+}
+@keyframes bottom-In {
+  0% {
+    display: flex;
+    opacity: 0;
+    z-index: 0;
+  }
+  1% {
+    transform: translateY(10rem);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+@keyframes bottom-Out {
+  0% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  99% {
+    transform: translateY(10rem);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(10rem);
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+@keyframes top-In {
+  0% {
+    display: flex;
+    opacity: 0;
+    z-index: 0;
+  }
+  1% {
+    transform: translateY(-10rem);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+@keyframes top-Out {
+  0% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  99% {
+    transform: translateY(-10rem);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(-10rem);
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+@keyframes left-In {
+  0% {
+    display: flex;
+    opacity: 0;
+    z-index: 0;
+  }
+  1% {
+    transform: translateX(-10rem);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+@keyframes left-Out {
+  0% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  99% {
+    transform: translateX(-10rem);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(-10rem);
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+@keyframes right-In {
+  0% {
+    display: flex;
+    opacity: 0;
+    z-index: 0;
+  }
+  1% {
+    transform: translateX(10rem);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+@keyframes right-Out {
+  0% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  99% {
+    transform: translateX(10rem);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(10rem);
+    opacity: 0;
     visibility: hidden;
   }
 }
 @keyframes slideDownIn {
   0% {
-    display: block;
+    display: flex;
     opacity: 0;
   }
   1% {
@@ -114,42 +242,9 @@
     opacity: 0;
   }
 }
-@keyframes slideUpIn {
-  0% {
-    display: block;
-    opacity: 0;
-    z-index: 0;
-    top: auto;
-  }
-  1% {
-    bottom: -10rem;
-    opacity: 0;
-    top: auto;
-  }
-  100% {
-    bottom: 0;
-    opacity: 1;
-    top: auto;
-  }
-}
-@keyframes slideUpOut {
-  0% {
-    bottom: 0;
-    opacity: 1;
-  }
-  99% {
-    bottom: -1rem;
-    opacity: 0;
-  }
-  100% {
-    opacity: 0;
-    bottom: -1rem;
-    visibility: hidden;
-  }
-}
 @keyframes slideLeftIn {
   0% {
-    display: block;
+    display: flex;
   }
   1% {
     left: -100dvw;
@@ -177,7 +272,7 @@
 }
 @keyframes slideRightIn {
   0% {
-    display: block;
+    display: flex;
   }
   1% {
     right: -100dvw;
@@ -430,6 +525,14 @@ td {
   box-shadow: none !important;
 }
 
+box {
+  display: flex;
+  gap: 0.8rem;
+  padding: 1.6rem;
+  border-radius: 1.2rem;
+  border: 0.1rem dashed #ccc;
+}
+
 .area-modal {
   position: absolute;
   top: 0;
@@ -462,7 +565,9 @@ button:focus {
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
+  opacity: 0;
   z-index: 0;
+  transition: opacity 0.2s ease;
 }
 .project-modal .btn-hidden {
   display: block;
@@ -478,102 +583,117 @@ button:focus {
   pointer-events: visible;
   bottom: 0;
 }
-.project-modal[aria-hidden=true][data-state=hide] {
-  animation-name: modalHide;
+.project-modal[data-state=hide] {
+  animation-name: modal-hide;
   animation-duration: 0.2s;
   animation-iteration-count: 1;
   animation-timing-function: linear;
   animation-fill-mode: forwards;
 }
-.project-modal[aria-hidden=true] .project-modal--item {
-  animation-name: slideDownOut;
-  animation-duration: 0.2s;
-  animation-iteration-count: 1;
-  animation-timing-function: linear;
-  animation-fill-mode: forwards;
+.project-modal[data-state=hide]::after {
+  opacity: 0;
 }
 .project-modal[aria-hidden=false] {
   display: flex;
 }
-.project-modal[aria-hidden=false] .project-modal--item {
-  animation-name: slideDownIn;
+.project-modal[aria-hidden=false][data-state=show]::after {
+  opacity: 1;
+}
+.project-modal[data-ps=center] {
+  justify-content: center;
+  align-items: center;
+}
+.project-modal[data-ps=center][aria-hidden=true] .project-modal--item {
+  animation-name: scale-Out;
   animation-duration: 0.2s;
   animation-iteration-count: 1;
   animation-timing-function: linear;
   animation-fill-mode: forwards;
 }
-.project-modal.ready {
-  display: flex;
-  overflow-y: hidden;
+.project-modal[data-ps=center][aria-hidden=false] .project-modal--item {
+  animation-name: scale-In;
+  animation-duration: 0.2s;
+  animation-iteration-count: 1;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
 }
-.project-modal.ready[data-scroll=outer] {
-  overflow-y: auto;
-  background: rgba(0, 0, 0, 0.5);
-}
-.project-modal.ready[data-scroll=outer] .ui-modal-dim {
-  opacity: 0 !important;
-  display: none !important;
-}
-.project-modal.ready .ui-modal--dim {
-  content: "";
-  display: block;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  opacity: 0;
-  background: rgba(0, 0, 0, 0.5);
-  transition: opacity 0.4s ease-in-out;
-}
-.project-modal.open.current .ui-modal--dim {
-  opacity: 1;
-}
-.project-modal.open .ui-modal--item {
-  opacity: 1;
-}
-.project-modal.ps-center {
-  justify-content: center;
-  align-items: center;
-}
-.project-modal.ps-top {
-  justify-content: center;
-  align-items: flex-start;
-  overflow: hidden;
-}
-.project-modal.ps-top .ui-modal--item {
-  margin-top: 0.8rem;
-}
-.project-modal.ps-top .ui-modal--drag {
-  top: auto;
-  bottom: 0;
-}
-.project-modal.ps-bottom {
+.project-modal[data-ps=bottom] {
   justify-content: center;
   align-items: flex-end;
-  overflow: hidden;
 }
-.project-modal.ps-bottom .ui-modal--item {
-  width: 100%;
-  margin: 0;
-  border-bottom-left-radius: 0;
-  border-bottom-right-radius: 0;
+.project-modal[data-ps=bottom][aria-hidden=true] .project-modal--item {
+  animation-name: bottom-Out;
+  animation-duration: 0.2s;
+  animation-iteration-count: 1;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
 }
-.project-modal.ps-bottom .ui-modal--header {
-  min-height: 5.4rem;
+.project-modal[data-ps=bottom][aria-hidden=false] .project-modal--item {
+  animation-name: bottom-In;
+  animation-duration: 0.2s;
+  animation-iteration-count: 1;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
 }
-.project-modal.ps-bottom .ui-modal--body {
-  max-height: 32rem;
+.project-modal[data-ps=top] {
+  justify-content: center;
+  align-items: flex-start;
 }
-.project-modal.ps-bottom .ui-modal--footer {
-  padding: 1.2rem 1.2rem calc(1.2rem + env(safe-area-inset-bottom));
+.project-modal[data-ps=top][aria-hidden=true] .project-modal--item {
+  animation-name: top-Out;
+  animation-duration: 0.2s;
+  animation-iteration-count: 1;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
 }
-.project-modal.ps-bottom[data-drag=true] .ui-modal--item {
-  max-height: 32rem !important;
+.project-modal[data-ps=top][aria-hidden=false] .project-modal--item {
+  animation-name: top-In;
+  animation-duration: 0.2s;
+  animation-iteration-count: 1;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+}
+.project-modal[data-ps=left] {
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+.project-modal[data-ps=left][aria-hidden=true] .project-modal--item {
+  animation-name: left-Out;
+  animation-duration: 0.2s;
+  animation-iteration-count: 1;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+}
+.project-modal[data-ps=left][aria-hidden=false] .project-modal--item {
+  animation-name: left-In;
+  animation-duration: 0.2s;
+  animation-iteration-count: 1;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+}
+.project-modal[data-ps=left] .project-modal--item {
   height: 100%;
 }
-.project-modal.ps-bottom[data-drag=true] .ui-modal--item .ui-modal--body {
-  max-height: none;
+.project-modal[data-ps=right] {
+  justify-content: flex-end;
+  align-items: flex-start;
+}
+.project-modal[data-ps=right][aria-hidden=true] .project-modal--item {
+  animation-name: right-Out;
+  animation-duration: 0.2s;
+  animation-iteration-count: 1;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+}
+.project-modal[data-ps=right][aria-hidden=false] .project-modal--item {
+  animation-name: right-In;
+  animation-duration: 0.2s;
+  animation-iteration-count: 1;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+}
+.project-modal[data-ps=right] .project-modal--item {
+  height: 100%;
 }
 .project-modal--item {
   position: relative;
@@ -585,8 +705,14 @@ button:focus {
 .project-modal--header {
   display: flex;
   justify-content: space-between;
+  flex-shrink: 0;
 }
 .project-modal--footer {
   display: flex;
   justify-content: center;
+  flex-shrink: 0;
+}
+.project-modal--body {
+  display: flex;
+  flex: 1;
 }/*# sourceMappingURL=app.css.map */

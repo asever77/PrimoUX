@@ -202,3 +202,11 @@ td {
 	opacity: 0.2 !important;
 	box-shadow: none !important;
 }
+
+box {
+	display: flex;
+	gap:.8rem;
+	padding: 1.6rem;
+	border-radius: 1.2rem;
+	border: .1rem dashed #ccc;
+}

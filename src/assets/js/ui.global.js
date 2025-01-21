@@ -71,6 +71,7 @@ class Modal {
 					this.modal = document.querySelector(`[data-modal="${this.option.id}"]`);
 					this.modal_item = this.modal.querySelector('[data-modal-item]');
 					this.modal.setAttribute('tabindex', '0');
+					this.modal.dataset.ps = this.option.ps;
 					this.modal_item.insertAdjacentHTML('beforeend', '<button type="button" class="btn-hidden" data-modal-last data-modal-hide aria-label="마지막 지점입니다. 창닫기"></button>')
 					this.btn_hide = this.modal.querySelectorAll('[data-modal-hide]');
 					this.btn_last = this.modal.querySelector('[data-modal-last]');
@@ -106,9 +107,20 @@ class Modal {
 		this.modal.dataset.state = "show";
 	
 		this.btn_first.addEventListener('keydown', this.keyStart);	
-		this.btn_last.addEventListener('keydown', this.keyEnd);	
+		this.btn_last.addEventListener('keydown', this.keyEnd);
 	}
+	hide = (opt) => {
+		this.btn_first.removeEventListener('keydown', this.keyStart);	
+		this.btn_last.removeEventListener('keydown', this.keyEnd);	
+
+		if (opt.focus_target) this.option.focus_back = opt.focus_target;
+		this.modal.dataset.state = "hide";
+		this.option.focus_back.focus();
+		this.modal.setAttribute('aria-hidden', 'true');
+	}
+
 	keyStart = (e) => {
+		console.log(e.key)
 		if (e.shiftKey && e.key === 'Tab') {
 			e.preventDefault();
 			this.btn_last.focus();
@@ -120,13 +132,5 @@ class Modal {
 			this.btn_first.focus();
 		}
 	}
-	hide = (opt) => {
-		this.btn_first.removeEventListener('keydown', this.keyStart);	
-		this.btn_last.removeEventListener('keydown', this.keyEnd);	
-
-		if (opt.focus_target) this.option.focus_back = opt.focus_target;
-		this.modal.dataset.state = "hide";
-		this.option.focus_back.focus();
-		this.modal.setAttribute('aria-hidden', 'true');
-	}
+	
 }
