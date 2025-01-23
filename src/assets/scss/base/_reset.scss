@@ -203,6 +203,17 @@ td {
 	box-shadow: none !important;
 }
 
+// guide tag
+wrap {
+	display: flex;
+	flex-direction: column;
+	gap:0.8rem;
+	padding:2.4rem;
+}
+tit {
+	font-size:2rem;
+	font-weight: 700;
+}
 box {
 	display: flex;
 	gap:.8rem;

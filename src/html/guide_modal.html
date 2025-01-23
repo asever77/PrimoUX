@@ -6,7 +6,6 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Modal | Guide </title>
 	<link rel="stylesheet" href="../assets/css/app.css">
-	<script src="../assets/js/ui.global.js"></script>
 </head>
 
 <body>
@@ -15,38 +14,100 @@
 		<div class="base-body">
 			<aside class="base-side"></aside>
 			<main class="base-content">
-				<box>
-					<button type="button" data-test-id="modal1" onclick="PrimoUX.modal.modal1.show();">기본 모달</button>
-				</box>
+
+				<wrap>
+					<tit>Modal</tit>
+					<box>
+						<button type="button" data-test-id="modal1" onclick="PrimoUX.modal.modal1.show();">center</button>|
+						<button type="button" data-test-id="modal2" onclick="PrimoUX.modal.modal2.show();">bottom</button>|
+						<button type="button" data-test-id="modal3" onclick="PrimoUX.modal.modal3.show();">top</button>|
+						<button type="button" data-test-id="modal4" onclick="PrimoUX.modal.modal4.show();">left</button>|
+						<button type="button" data-test-id="modal5" onclick="PrimoUX.modal.modal5.show();">right</button>
+					</box>
+				</wrap>
+				
 			</main>
 		</div>
 		<footer class="base-footer"></footer>
 	</div>
 
 	<!-- modal -->
-	<div class="area-modal"></div>
+	<div class="area-modal">
+		<section class="project-modal" data-modal="modal-2" aria-hidden="true" role="dialog">
+			<!-- modal item -->
+			<div class="project-modal--item" data-modal-item>
+				<!-- modal header -->
+				<div class="project-modal--header">
+					<h1>Title</h1>
+					<button type="button" aria-label="창닫기" data-modal-hide>닫기</button>
+				</div>
+				<!-- modal body -->
+				<div class="project-modal--body" data-modal-scroll>
+					빌드인.....<br>
+					.........<br>
+					.........
+				</div>
+				<!-- modal footer -->
+				<div class="project-modal--footer">
+					<button type="button" data-modal-hide>취소</button><button type="button">확인</button>
+				</div>
+			</div>
+		</section>
+	</div>
 	<!-- select combo box -->
 	<div class="area-select"></div>
 	<!-- toast -->
 	<div class="area-toast"></div>
 
-	<script>
-		document.addEventListener("DOMContentLoaded", () => {
-			PrimoUX.modal.modal1 = new Modal({
-				id: 'modal-2',
-				ps: 'center',
-				src: './modal/modal.html',
-				loadCallback: () => {
-					PrimoUX.modal.modal1.show();
+	<!-- script -->
+	<script type="module" src="../assets/js/ui.global.js"></script>
+	<script type="module">
+		import Modal from '../assets/js/component/modal.js';
+		PrimoUX.modal.modal1 = new Modal({
+			id: 'modal-1',
+			ps: 'center',
+			src: './modal/modal.html',
+			loadCallback: () => {
+				PrimoUX.modal.modal1.show();
+				// setTimeout(() => {
+				// 	PrimoUX.modal.modal1.hide({ focus_target: document.querySelector('[data-test-id="modal2"]') });
+				// }, 1000);
+			}
+		});			
 
-					setTimeout(() => {
-						console.log('go')
-						PrimoUX.modal.modal1.hide({ focus_target: document.querySelector('[data-test-id="modal4"]') });
-					},1000)
-				}
-			});
-			
+		PrimoUX.modal.modal2 = new Modal({
+			id: 'modal-2',
+			ps: 'bottom',
 		});
+		PrimoUX.modal.modal2.show();
+
+		PrimoUX.modal.modal3 = new Modal({
+			id: 'modal-3',
+			ps: 'top',
+			src: './modal/modal3.html',
+			loadCallback: () => { 
+				PrimoUX.modal.modal3.show();
+			}
+		});
+
+		PrimoUX.modal.modal4 = new Modal({
+			id: 'modal-4',
+			ps: 'left',
+			src: './modal/modal4.html',
+			loadCallback: () => { 
+				PrimoUX.modal.modal4.show();
+			}
+		});
+
+		PrimoUX.modal.modal5 = new Modal({
+			id: 'modal-5',
+			ps: 'right',
+			src: './modal/modal5.html',
+			loadCallback: () => { 
+				PrimoUX.modal.modal5.show();
+			}
+		});
+			
 	</script>
 </body>
 

@@ -525,6 +525,18 @@ td {
   box-shadow: none !important;
 }
 
+wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  padding: 2.4rem;
+}
+
+tit {
+  font-size: 2rem;
+  font-weight: 700;
+}
+
 box {
   display: flex;
   gap: 0.8rem;
@@ -558,8 +570,37 @@ button:focus {
 .project-modal:focus .project-modal--item {
   box-shadow: 0 0 1rem rgba(0, 0, 0, 0.5);
 }
-.project-modal::after {
-  content: "";
+.project-modal[data-zindex="1"] {
+  z-index: 1;
+}
+.project-modal[data-zindex="2"] {
+  z-index: 2;
+}
+.project-modal[data-zindex="3"] {
+  z-index: 3;
+}
+.project-modal[data-zindex="4"] {
+  z-index: 4;
+}
+.project-modal[data-zindex="5"] {
+  z-index: 5;
+}
+.project-modal[data-zindex="6"] {
+  z-index: 6;
+}
+.project-modal[data-zindex="7"] {
+  z-index: 7;
+}
+.project-modal[data-zindex="8"] {
+  z-index: 8;
+}
+.project-modal[data-zindex="9"] {
+  z-index: 9;
+}
+.project-modal[data-zindex="10"] {
+  z-index: 10;
+}
+.project-modal .dim {
   display: block;
   position: absolute;
   width: 100%;
@@ -590,13 +631,13 @@ button:focus {
   animation-timing-function: linear;
   animation-fill-mode: forwards;
 }
-.project-modal[data-state=hide]::after {
+.project-modal[data-state=hide] .dim {
   opacity: 0;
 }
 .project-modal[aria-hidden=false] {
   display: flex;
 }
-.project-modal[aria-hidden=false][data-state=show]::after {
+.project-modal[aria-hidden=false][data-state=show][data-current=true] .dim {
   opacity: 1;
 }
 .project-modal[data-ps=center] {
@@ -655,7 +696,7 @@ button:focus {
 }
 .project-modal[data-ps=left] {
   justify-content: flex-start;
-  align-items: flex-start;
+  align-items: center;
 }
 .project-modal[data-ps=left][aria-hidden=true] .project-modal--item {
   animation-name: left-Out;
@@ -671,12 +712,9 @@ button:focus {
   animation-timing-function: linear;
   animation-fill-mode: forwards;
 }
-.project-modal[data-ps=left] .project-modal--item {
-  height: 100%;
-}
 .project-modal[data-ps=right] {
   justify-content: flex-end;
-  align-items: flex-start;
+  align-items: center;
 }
 .project-modal[data-ps=right][aria-hidden=true] .project-modal--item {
   animation-name: right-Out;
@@ -692,15 +730,13 @@ button:focus {
   animation-timing-function: linear;
   animation-fill-mode: forwards;
 }
-.project-modal[data-ps=right] .project-modal--item {
-  height: 100%;
-}
 .project-modal--item {
   position: relative;
   z-index: 1;
   background-color: #fff;
   display: flex;
   flex-direction: column;
+  border: 0.1rem solid #ccc;
 }
 .project-modal--header {
   display: flex;
