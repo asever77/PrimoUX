@@ -25,6 +25,9 @@
 						<button type="button" data-test-id="modal4" onclick="PrimoUX.modal.modal4.show();">left</button>|
 						<button type="button" data-test-id="modal5" onclick="PrimoUX.modal.modal5.show();">right</button>
 					</box>
+					<box>
+						<button type="button" data-test-id="alert1" onclick="PrimoUX.modal.alert1.show();">alert</button>|
+					</box>
 					<codebox>
 						<code><pre>
 &lt;section class="project-modal" data-modal="modal-1" aria-hidden="true" role="dialog"&gt;
@@ -43,7 +46,7 @@
 	&lt;/div&gt;
 &lt;/section&gt;
 
-&lt;section class="project-modal" data-modal="modal-1" aria-hidden="true" role="dialog" tabindex="0" data-ps="centen" data-state="show" data-zindex="1" data-current="   &gt;
+&lt;section class="project-modal" data-modal="modal-1" aria-hidden="true" role="dialog" tabindex="0" data-ps="centen" data-state="show" data-zindex="1" data-current="true"&gt;
 	&lt;div class="project-modal--item" data-modal-item&gt;
 		&lt;div class="project-modal--header"&gt;
 			&lt;h1&gt;Title&lt;/h1&gt;
@@ -61,10 +64,10 @@
 
 
 &lt;script type="module"&gt;
-	//모달 불러오기
+	//Modal component 불러오기
 	import Modal from '../assets/js/component/modal.js';
 	
-	//모달생성
+	//Modal 생성
 	PrimoUX.modal.modal1 = new Modal({
 		id: 'modal-1',
 		ps: 'center',
@@ -74,15 +77,15 @@
 		}
 	});	
 
-	//모달 Show
+	//Modal Show
 	PrimoUX.modal.modal1.show();
 
-	//모달 Hide
+	//Modal Hide
 	PrimoUX.modal.modal1.hide({ 
 		focus_target: document.querySelector('[data-test-id="modal2"]'),
 	});
 
-	//모달 최상위로 올리기
+	//Modal 최상위로 올리기
 	PrimoUX.modal.modal1.zIndexUp();
 &lt;/script&gt;
 						</pre></code>
@@ -117,6 +120,8 @@
 			</div>
 		</section>
 	</div>
+	<!-- system box -->
+	<div class="area-system"></div>
 	<!-- select combo box -->
 	<div class="area-select"></div>
 	<!-- toast -->
@@ -170,6 +175,25 @@
 			loadCallback: () => { 
 				PrimoUX.modal.modal5.show();
 			}
+		});
+
+
+
+
+		PrimoUX.modal.alert1 = new Modal({
+			id: 'alert1',
+			type: 'system',
+			message: `<strong>공지</strong>입니다.`,
+			confirmText: '확인',
+			confirmCallback: () => {
+				//확인 콜백
+				console.log('확인 콜백');
+			},
+			cancelText: '닫기',
+			cancelCallback: ()=> {
+				//닫기 콜백
+				console.log('닫기 콜백');
+			},
 		});
 			
 	</script>

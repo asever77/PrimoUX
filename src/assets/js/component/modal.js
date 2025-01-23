@@ -1,12 +1,18 @@
 export default class Modal {
   constructor(opt) {
 		const defaults = {
-			type: 'modal', 
+			type: 'modal', //'modal', 'system'
 			classname: '',
 			ps: 'center', // 'center', 'top', 'bottom', 'left', 'right'
 			area: document.querySelector('.area-modal'),
 			dim: true,
 			focus_back: null,
+      
+      message: null,
+      confirmText: null,
+      cancelText: null,
+      confirmCallback: null,
+      cancelCallback: null,
 		};
 
 		this.option = { ...defaults, ...opt };
@@ -16,10 +22,33 @@ export default class Modal {
 		this.btn_last = null;
 		this.btn_first = null;
 		this.area = this.option.area;
-		this.init();
-	}
 
-	init() {
+    switch(this.option.type) {
+      case 'modal' : this.initModal();
+      break;
+      case 'system' : 
+        this.area = document.querySelector('.area-system');
+        this.initSystem();
+      break;
+    }
+	}
+  initSystem() {
+    console.log(this.area)
+    let htmlSystem = `<div class="project-modal" data-modal="${this.option.id}" role="alertdialog" aria-modal="true" aria-live="polite">
+      <div class="project-modal--item">
+        <div class="project-modal--body">
+          ${this.option.message}
+        </div>
+        <div class="project-modal--footer">
+          ${this.option.cancelText ? '<button type="button" data-modal--cancel>'+ this.option.cancelText +'</button>' : ''}
+          ${this.option.confirmText ? '<button type="button" data-modal--confirm>'+ this.option.confirmText +'</button>' : ''}
+        </div>
+      </div>
+    </div>`;
+    this.area.insertAdjacentHTML('beforeend', htmlSystem);
+    htmlSystem = '';
+  }
+	initModal() {
 		if (this.option.src && !this.modal) {
 			PrimoUX.utils.loadContent({
 				area: this.area,
@@ -80,7 +109,8 @@ export default class Modal {
     }
     this.modal.dataset.zindex = zIndex;
     this.modal.dataset.current = 'true';
-    console.log(zIndex, thisZindex)
+    this.modal.focus();
+    console.log(zIndex, thisZindex, this.modal)
   }
 	show() {
 		this.option.focus_back = document.activeElement;

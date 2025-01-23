@@ -230,10 +230,11 @@ codebox {
 	border: .1rem dashed #ccc;
 	background-color: #f2f2f2;
 }
-code {
+codebox code {
 	width: 100%;
 	overflow: auto;
 	font-size: 1.0rem;
 	line-height: 2;
 	font-family: "Source Code Pro", serif;
+	tab-size: 2;
 }
