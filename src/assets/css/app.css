@@ -1,4 +1,5 @@
 @charset "UTF-8";
+@import url("https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap");
 :root {
   --opacity_1: 1;
   --opacity_0: 0;
@@ -543,6 +544,23 @@ box {
   padding: 1.6rem;
   border-radius: 1.2rem;
   border: 0.1rem dashed #ccc;
+}
+
+codebox {
+  display: flex;
+  gap: 0.8rem;
+  padding: 1.6rem;
+  border-radius: 1.2rem;
+  border: 0.1rem dashed #ccc;
+  background-color: #f2f2f2;
+}
+
+code {
+  width: 100%;
+  overflow: auto;
+  font-size: 1rem;
+  line-height: 2;
+  font-family: "Source Code Pro", serif;
 }
 
 .area-modal {
