@@ -177,7 +177,9 @@
 			}
 		});
 
-
+		setTimeout(() => {
+			PrimoUX.modal.modal1.zIndexUp();
+		}, 2000)
 
 
 		PrimoUX.modal.alert1 = new Modal({
@@ -189,10 +191,10 @@
 				//확인 콜백
 				console.log('확인 콜백');
 			},
-			cancelText: '닫기',
+			cancelText: '취소',
 			cancelCallback: ()=> {
-				//닫기 콜백
-				console.log('닫기 콜백');
+				//취소 콜백
+				console.log('취소 콜백');
 			},
 		});
 			

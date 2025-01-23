@@ -8,9 +8,9 @@ export default class Modal {
 			dim: true,
 			focus_back: null,
       
-      message: null,
-      confirmText: null,
-      cancelText: null,
+      message: '',
+      confirmText: '',
+      cancelText: '',
       confirmCallback: null,
       cancelCallback: null,
 		};
@@ -21,15 +21,12 @@ export default class Modal {
 		this.btn_hide = null;
 		this.btn_last = null;
 		this.btn_first = null;
+    this.system_btn = null;
 		this.area = this.option.area;
 
     switch(this.option.type) {
-      case 'modal' : this.initModal();
-      break;
-      case 'system' : 
-        this.area = document.querySelector('.area-system');
-        this.initSystem();
-      break;
+      case 'modal': this.initModal(); break;
+      case 'system': this.initSystem(); break;
     }
 	}
   initSystem() {
@@ -40,13 +37,15 @@ export default class Modal {
           ${this.option.message}
         </div>
         <div class="project-modal--footer">
-          ${this.option.cancelText ? '<button type="button" data-modal--cancel>'+ this.option.cancelText +'</button>' : ''}
-          ${this.option.confirmText ? '<button type="button" data-modal--confirm>'+ this.option.confirmText +'</button>' : ''}
+          ${this.option.cancelText ? '<button type="button" data-modal-btn="cancel">'+ this.option.cancelText +'</button>' : ''}
+          ${this.option.confirmText ? '<button type="button" data-modal-btn="confirm">'+ this.option.confirmText +'</button>' : ''}
         </div>
       </div>
     </div>`;
     this.area.insertAdjacentHTML('beforeend', htmlSystem);
     htmlSystem = '';
+
+    this.buildModal();
   }
 	initModal() {
 		if (this.option.src && !this.modal) {
@@ -69,27 +68,29 @@ export default class Modal {
     this.modal.setAttribute('tabindex', '0');
     this.modal.dataset.ps = this.option.ps;
     this.modal_item = this.modal.querySelector('[data-modal-item]');
-    this.modal_item.insertAdjacentHTML('beforeend', '<button type="button" class="btn-hidden" data-modal-last data-modal-hide aria-label="마지막 지점입니다. 창닫기"></button>');
-    this.btn_hide = this.modal.querySelectorAll('[data-modal-hide]');
-    this.btn_last = this.modal.querySelector('[data-modal-last]');
 
     //dim
     this.option.dim ? this.modal.insertAdjacentHTML('beforeend', '<div class="dim"></div>') : '';
 
-    //first tag
-    const tags = this.modal.querySelectorAll('*');
-    const tagLen = tags.length;
-    for (let i = 0; i < tagLen; i++) {
-      const _tag = tags[i];
-      const tag_name = _tag.tagName;
-      if (tag_name === 'BUTTON' || tag_name === 'A' || tag_name === 'INPUT' || tag_name === 'TEXTAREA') {
-        this.btn_first = _tag;
-        break;
-      }
+    if (this.option.type === 'modal') {
+      this.modal_item.insertAdjacentHTML('beforeend', '<button type="button" class="btn-hidden" data-modal-last data-modal-hide aria-label="마지막 지점입니다. 창닫기"></button>');
+      this.btn_last = this.modal.querySelector('[data-modal-last]');
+    } else {
+      this.system_btn = this.modal
     }
     
-    //load callback & hide event
+
+    //first tag
+    const focusableSelectors = 'button, a, input, textarea, [tabindex]:not([tabindex="-1"])';
+    const focusableElements = this.modal.querySelectorAll(focusableSelectors);
+    this.btn_first = focusableElements[0];
+    this.btn_last = focusableElements[focusableElements.length - 1];
+
+    //load callback
     this.option.loadCallback && this.option.loadCallback();
+    
+    //hide event
+    this.btn_hide = this.modal.querySelectorAll('[data-modal-hide]');
     this.btn_hide.forEach(item => {
       item.addEventListener('click', this.hide);
     });
@@ -126,6 +127,7 @@ export default class Modal {
     this.modal.dataset.current = 'true';
     
     //loop focus
+    console.log(this.btn_first);
 		this.btn_first.addEventListener('keydown', this.keyStart);	
 		this.btn_last.addEventListener('keydown', this.keyEnd);
 	}
@@ -155,17 +157,21 @@ export default class Modal {
     }
 
     const currentModal = document.querySelector(`[data-modal][aria-hidden="false"][data-zindex="${zIndex}"]`);
-    if(currentModal) currentModal.dataset.current = 'true';
+    if(currentModal) { 
+      currentModal.dataset.current = 'true';
+      currentModal.focus();     
+    }
 	}
 
 	keyStart = (e) => {
-		console.log(e.key)
+    console.log('keystart');
 		if (e.shiftKey && e.key === 'Tab') {
 			e.preventDefault();
 			this.btn_last.focus();
 		}
 	}
 	keyEnd = (e) => {
+    console.log('keyEnd');
 		if (!e.shiftKey && e.key === 'Tab') {
 			e.preventDefault();
 			this.btn_first.focus();
