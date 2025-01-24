@@ -7,31 +7,32 @@ export default class Modal {
 			area: document.querySelector('.area-modal'),
 			dim: true,
 			focus_back: null,
-      
       message: '',
       confirmText: '',
       cancelText: '',
       confirmCallback: null,
-      cancelCallback: null,
+      cancelCallback: null, 
 		};
 
 		this.option = { ...defaults, ...opt };
 		this.modal = null;
-		this.modal_item = null;
-		this.btn_hide = null;
-		this.btn_last = null;
-		this.btn_first = null;
-    this.system_btn = null;
 		this.area = this.option.area;
 
     switch(this.option.type) {
-      case 'modal': this.initModal(); break;
-      case 'system': this.initSystem(); break;
+      case 'modal': 
+        this.initModal(); 
+        break;
+      case 'system': 
+        this.initSystem(); 
+        break;
+      default:
+        console.warn('Unknown modal type:', this.option.type);
     }
 	}
+
   initSystem() {
-    console.log(this.area)
-    let htmlSystem = `<div class="project-modal" data-modal="${this.option.id}" role="alertdialog" aria-modal="true" aria-live="polite">
+    let htmlSystem = `
+    <div class="project-modal" data-modal="${this.option.id}" role="alertdialog" aria-modal="true" aria-live="polite" tabindex="0">
       <div class="project-modal--item">
         <div class="project-modal--body">
           ${this.option.message}
@@ -42,20 +43,18 @@ export default class Modal {
         </div>
       </div>
     </div>`;
-    this.area.insertAdjacentHTML('beforeend', htmlSystem);
-    htmlSystem = '';
 
+    this.area.insertAdjacentHTML('beforeend', htmlSystem);
     this.buildModal();
   }
+
 	initModal() {
 		if (this.option.src && !this.modal) {
 			PrimoUX.utils.loadContent({
 				area: this.area,
 				src: this.option.src,
 				insert: true,
-				callback: () => {
-					this.buildModal();
-				}
+				callback: () => this.buildModal(),
 			})
 			.then(() => console.log('Content loaded'))
 			.catch(err => console.error('Error loading modal content:', err));
@@ -63,37 +62,56 @@ export default class Modal {
       this.buildModal();
     }
 	}
+
   buildModal() {
     this.modal = document.querySelector(`[data-modal="${this.option.id}"]`);
     this.modal.setAttribute('tabindex', '0');
     this.modal.dataset.ps = this.option.ps;
-    this.modal_item = this.modal.querySelector('[data-modal-item]');
 
     //dim
-    this.option.dim ? this.modal.insertAdjacentHTML('beforeend', '<div class="dim"></div>') : '';
-
-    if (this.option.type === 'modal') {
-      this.modal_item.insertAdjacentHTML('beforeend', '<button type="button" class="btn-hidden" data-modal-last data-modal-hide aria-label="마지막 지점입니다. 창닫기"></button>');
-      this.btn_last = this.modal.querySelector('[data-modal-last]');
-    } else {
-      this.system_btn = this.modal
+    if (this.option.dim) {
+      this.modal.insertAdjacentHTML('beforeend', '<div class="dim"></div>');
     }
-    
 
-    //first tag
+    this.setFocusableElements();
+    this.addEventListeners();
+
+    //load callback
+    this.option.loadCallback && this.option.loadCallback();
+  }
+
+  setFocusableElements() {
+    //first last tag
     const focusableSelectors = 'button, a, input, textarea, [tabindex]:not([tabindex="-1"])';
     const focusableElements = this.modal.querySelectorAll(focusableSelectors);
     this.btn_first = focusableElements[0];
     this.btn_last = focusableElements[focusableElements.length - 1];
+  }
 
-    //load callback
-    this.option.loadCallback && this.option.loadCallback();
-    
-    //hide event
-    this.btn_hide = this.modal.querySelectorAll('[data-modal-hide]');
-    this.btn_hide.forEach(item => {
-      item.addEventListener('click', this.hide);
-    });
+  addEventListeners() {
+    //event 
+    this.modal_btns = this.modal.querySelectorAll('[data-modal-btn]');
+    if (this.modal_btns) {
+      this.modal_btns.forEach(btn => {
+        btn.addEventListener('click', this.handleModalButtonClick);
+      });
+    }
+  }
+
+  handleModalButtonClick = (e) => {
+    const action = e.target.dataset.modalBtn;
+
+    switch(action) {
+      case 'hide': 
+        this.hide(); 
+        break;
+      case 'confirm': 
+        this.option.confirmCallback && this.option.confirmCallback(); 
+        break;
+      case 'cancel': 
+        this.option.cancelCallback && this.option.cancelCallback();
+        break;
+    }
   }
 
   zIndexUp() {
@@ -103,16 +121,16 @@ export default class Modal {
     const thisZindex = Number(this.modal.dataset.zindex);
 
     for (let i = thisZindex; i < zIndex; i++) {
-      console.log(i + 1);
       const item = document.querySelector(`[data-modal][aria-hidden="false"][data-zindex="${i + 1}"]`);
       item.dataset.zindex = i;
       item.dataset.current = 'false';
     }
+
     this.modal.dataset.zindex = zIndex;
     this.modal.dataset.current = 'true';
     this.modal.focus();
-    console.log(zIndex, thisZindex, this.modal)
   }
+
 	show() {
 		this.option.focus_back = document.activeElement;
 		this.modal.setAttribute('aria-hidden', 'false');
@@ -127,35 +145,32 @@ export default class Modal {
     this.modal.dataset.current = 'true';
     
     //loop focus
-    console.log(this.btn_first);
 		this.btn_first.addEventListener('keydown', this.keyStart);	
 		this.btn_last.addEventListener('keydown', this.keyEnd);
 	}
 	hide = (opt) => {
     //loop focus 중복방지 이벤트 취소
-    const n = Number(this.modal.dataset.zindex);
-    const isCurrent = this.modal.dataset.current;
-
 		this.btn_first.removeEventListener('keydown', this.keyStart);	
 		this.btn_last.removeEventListener('keydown', this.keyEnd);	
 
-		if (opt.focus_target) this.option.focus_back = opt.focus_target;
+    const n = Number(this.modal.dataset.zindex);
+    //닫히는 현재 모달 초기화
+		if (opt && opt.focus_target) this.option.focus_back = opt.focus_target;
 		this.modal.dataset.state = "hide";
     this.modal.dataset.current = "false";
     this.modal.dataset.zindex = "";
 		this.option.focus_back.focus();
 		this.modal.setAttribute('aria-hidden', 'true');
 
+    //열린 모달 재설정
     const openModals = document.querySelectorAll('[data-modal][aria-hidden="false"]');
     const zIndex = openModals.length;
-
     for (let i = n; i <= zIndex; i++) {
-      console.log(i,zIndex);
       const item = document.querySelector(`[data-modal][aria-hidden="false"][data-zindex="${i + 1}"]`);
       item.dataset.zindex = i;
       item.dataset.current = 'false';
     }
-
+    //다음선택 모달 설정
     const currentModal = document.querySelector(`[data-modal][aria-hidden="false"][data-zindex="${zIndex}"]`);
     if(currentModal) { 
       currentModal.dataset.current = 'true';

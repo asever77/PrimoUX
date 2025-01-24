@@ -23,40 +23,42 @@
 						<button type="button" data-test-id="modal2" onclick="PrimoUX.modal.modal2.show();">bottom</button>|
 						<button type="button" data-test-id="modal3" onclick="PrimoUX.modal.modal3.show();">top</button>|
 						<button type="button" data-test-id="modal4" onclick="PrimoUX.modal.modal4.show();">left</button>|
-						<button type="button" data-test-id="modal5" onclick="PrimoUX.modal.modal5.show();">right</button>
+						<button type="button" data-test-id="modal5" onclick="PrimoUX.modal.modal5.show();">right</button>|
+						<button type="button" data-test-id="alert1" onclick="PrimoUX.modal.alert1.show();">alert</button>
 					</box>
-					<box>
-						<button type="button" data-test-id="alert1" onclick="PrimoUX.modal.alert1.show();">alert</button>|
-					</box>
+
+					<stit>코드</stit>
 					<codebox>
 						<code><pre>
+//스크립트 반영 전
 &lt;section class="project-modal" data-modal="modal-1" aria-hidden="true" role="dialog"&gt;
 	&lt;div class="project-modal--item" data-modal-item&gt;
 		&lt;div class="project-modal--header"&gt;
 			&lt;h1&gt;Title&lt;/h1&gt;
-			&lt;button type="button" aria-label="창닫기" data-modal-hide&gt;닫기&lt;/button&gt;
+			&lt;button type="button" aria-label="창닫기" data-modal-btn="hide"&gt;닫기&lt;/button&gt;
 		&lt;/div&gt;
 		&lt;div class="project-modal--body" data-modal-scroll&gt;
 
 		&lt;/div&gt;
 		&lt;div class="project-modal--footer"&gt;
-			&lt;button type="button" data-modal-hide&gt;취소&lt;/button&gt;
+			&lt;button type="button" data-modal-btn="hide"&gt;취소&lt;/button&gt;
 			&lt;button type="button"&gt;확인&lt;/button&gt;
 		&lt;/div&gt;
 	&lt;/div&gt;
 &lt;/section&gt;
 
+//스크립트 반영 후
 &lt;section class="project-modal" data-modal="modal-1" aria-hidden="true" role="dialog" tabindex="0" data-ps="centen" data-state="show" data-zindex="1" data-current="true"&gt;
 	&lt;div class="project-modal--item" data-modal-item&gt;
 		&lt;div class="project-modal--header"&gt;
 			&lt;h1&gt;Title&lt;/h1&gt;
-			&lt;button type="button" aria-label="창닫기" data-modal-hide&gt;닫기&lt;/button&gt;
+			&lt;button type="button" aria-label="창닫기" data-modal-btn="hide"&gt;닫기&lt;/button&gt;
 		&lt;/div&gt;
 		&lt;div class="project-modal--body" data-modal-scroll&gt;
 
 		&lt;/div&gt;
 		&lt;div class="project-modal--footer"&gt;
-			&lt;button type="button" data-modal-hide&gt;취소&lt;/button&gt;
+			&lt;button type="button" data-modal-btn="hide"&gt;취소&lt;/button&gt;
 			&lt;button type="button"&gt;확인&lt;/button&gt;
 		&lt;/div&gt;
 	&lt;/div&gt;
@@ -105,7 +107,7 @@
 				<!-- modal header -->
 				<div class="project-modal--header">
 					<h1>Title</h1>
-					<button type="button" aria-label="창닫기" data-modal-hide>닫기</button>
+					<button type="button" aria-label="창닫기" data-modal-btn="hide">닫기</button>
 				</div>
 				<!-- modal body -->
 				<div class="project-modal--body" data-modal-scroll>
@@ -115,7 +117,7 @@
 				</div>
 				<!-- modal footer -->
 				<div class="project-modal--footer">
-					<button type="button" data-modal-hide>취소</button><button type="button">확인</button>
+					<button type="button" data-modal-btn="hide">취소</button><button type="button">확인</button>
 				</div>
 			</div>
 		</section>
@@ -177,11 +179,6 @@
 			}
 		});
 
-		setTimeout(() => {
-			PrimoUX.modal.modal1.zIndexUp();
-		}, 2000)
-
-
 		PrimoUX.modal.alert1 = new Modal({
 			id: 'alert1',
 			type: 'system',
@@ -190,13 +187,22 @@
 			confirmCallback: () => {
 				//확인 콜백
 				console.log('확인 콜백');
+				// PrimoUX.modal.modal5.zIndexUp();
+				// PrimoUX.modal.alert1.hide({
+				// 	focus_target: document.querySelector('[data-test-id="modal1-5"]')
+				// })
 			},
 			cancelText: '취소',
 			cancelCallback: ()=> {
 				//취소 콜백
 				console.log('취소 콜백');
+				PrimoUX.modal.alert1.hide()
 			},
 		});
+		setTimeout(() => {
+			PrimoUX.modal.alert1.show();
+		}, 2000)
+
 			
 	</script>
 </body>
