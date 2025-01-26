@@ -322,7 +322,7 @@
   }
 }
 html {
-  font-size: 10px;
+  font-size: 0.9766vw;
 }
 
 html,
@@ -571,210 +571,65 @@ codebox code {
        tab-size: 2;
 }
 
-.area-modal {
-  position: absolute;
-  top: 0;
-  left: 0;
-}
-
-button:focus {
-  outline: 1px solid red;
-}
-
-.project-modal {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 100;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  justify-content: center;
-  align-items: center;
-}
-.project-modal:focus .project-modal--item {
-  box-shadow: 0 0 1rem rgba(0, 0, 0, 0.5);
-}
-.project-modal[data-zindex="1"] {
-  z-index: 1;
-}
-.project-modal[data-zindex="2"] {
-  z-index: 2;
-}
-.project-modal[data-zindex="3"] {
-  z-index: 3;
-}
-.project-modal[data-zindex="4"] {
-  z-index: 4;
-}
-.project-modal[data-zindex="5"] {
-  z-index: 5;
-}
-.project-modal[data-zindex="6"] {
-  z-index: 6;
-}
-.project-modal[data-zindex="7"] {
-  z-index: 7;
-}
-.project-modal[data-zindex="8"] {
-  z-index: 8;
-}
-.project-modal[data-zindex="9"] {
-  z-index: 9;
-}
-.project-modal[data-zindex="10"] {
-  z-index: 10;
-}
-.project-modal .dim {
-  display: block;
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  opacity: 0;
-  z-index: 0;
-  transition: opacity 0.2s ease;
-}
-.project-modal .btn-hidden {
-  display: block;
-  position: absolute;
-  bottom: -100dvh;
-  width: 4rem;
-  height: 4rem;
-  border-radius: 50%;
-  background-color: #000;
-  pointer-events: none;
-}
-.project-modal .btn-hidden:focus {
-  pointer-events: visible;
-  bottom: 0;
-}
-.project-modal[data-state=hide] {
-  animation-name: modal-hide;
-  animation-duration: 0.2s;
-  animation-iteration-count: 1;
-  animation-timing-function: linear;
-  animation-fill-mode: forwards;
-}
-.project-modal[data-state=hide] .dim {
-  opacity: 0;
-}
-.project-modal[aria-hidden=false] {
-  display: flex;
-}
-.project-modal[aria-hidden=false][data-state=show][data-current=true] .dim {
-  opacity: 1;
-}
-.project-modal[data-ps=center] {
-  justify-content: center;
-  align-items: center;
-}
-.project-modal[data-ps=center][aria-hidden=true] .project-modal--item {
-  animation-name: scale-Out;
-  animation-duration: 0.2s;
-  animation-iteration-count: 1;
-  animation-timing-function: linear;
-  animation-fill-mode: forwards;
-}
-.project-modal[data-ps=center][aria-hidden=false] .project-modal--item {
-  animation-name: scale-In;
-  animation-duration: 0.2s;
-  animation-iteration-count: 1;
-  animation-timing-function: linear;
-  animation-fill-mode: forwards;
-}
-.project-modal[data-ps=bottom] {
-  justify-content: center;
-  align-items: flex-end;
-}
-.project-modal[data-ps=bottom][aria-hidden=true] .project-modal--item {
-  animation-name: bottom-Out;
-  animation-duration: 0.2s;
-  animation-iteration-count: 1;
-  animation-timing-function: linear;
-  animation-fill-mode: forwards;
-}
-.project-modal[data-ps=bottom][aria-hidden=false] .project-modal--item {
-  animation-name: bottom-In;
-  animation-duration: 0.2s;
-  animation-iteration-count: 1;
-  animation-timing-function: linear;
-  animation-fill-mode: forwards;
-}
-.project-modal[data-ps=top] {
-  justify-content: center;
-  align-items: flex-start;
-}
-.project-modal[data-ps=top][aria-hidden=true] .project-modal--item {
-  animation-name: top-Out;
-  animation-duration: 0.2s;
-  animation-iteration-count: 1;
-  animation-timing-function: linear;
-  animation-fill-mode: forwards;
-}
-.project-modal[data-ps=top][aria-hidden=false] .project-modal--item {
-  animation-name: top-In;
-  animation-duration: 0.2s;
-  animation-iteration-count: 1;
-  animation-timing-function: linear;
-  animation-fill-mode: forwards;
-}
-.project-modal[data-ps=left] {
-  justify-content: flex-start;
-  align-items: center;
-}
-.project-modal[data-ps=left][aria-hidden=true] .project-modal--item {
-  animation-name: left-Out;
-  animation-duration: 0.2s;
-  animation-iteration-count: 1;
-  animation-timing-function: linear;
-  animation-fill-mode: forwards;
-}
-.project-modal[data-ps=left][aria-hidden=false] .project-modal--item {
-  animation-name: left-In;
-  animation-duration: 0.2s;
-  animation-iteration-count: 1;
-  animation-timing-function: linear;
-  animation-fill-mode: forwards;
-}
-.project-modal[data-ps=right] {
-  justify-content: flex-end;
-  align-items: center;
-}
-.project-modal[data-ps=right][aria-hidden=true] .project-modal--item {
-  animation-name: right-Out;
-  animation-duration: 0.2s;
-  animation-iteration-count: 1;
-  animation-timing-function: linear;
-  animation-fill-mode: forwards;
-}
-.project-modal[data-ps=right][aria-hidden=false] .project-modal--item {
-  animation-name: right-In;
-  animation-duration: 0.2s;
-  animation-iteration-count: 1;
-  animation-timing-function: linear;
-  animation-fill-mode: forwards;
-}
-.project-modal--item {
+.quiz-game {
   position: relative;
-  z-index: 1;
-  background-color: #fff;
   display: flex;
+  width: 100dvw;
+  height: 100dvh;
+  overflow: hidden;
+}
+.quiz-game[data-page="0"] [data-quiz-page="0"], .quiz-game[data-page="1"] [data-quiz-page="1"], .quiz-game[data-page="2"] [data-quiz-page="2"], .quiz-game[data-page="3"] [data-quiz-page="3"], .quiz-game[data-page="4"] [data-quiz-page="4"], .quiz-game[data-page="5"] [data-quiz-page="5"], .quiz-game[data-page="6"] [data-quiz-page="6"], .quiz-game[data-page="7"] [data-quiz-page="7"], .quiz-game[data-page="8"] [data-quiz-page="8"], .quiz-game[data-page="9"] [data-quiz-page="9"], .quiz-game[data-page="10"] [data-quiz-page="10"] {
+  display: flex;
+}
+.quiz-game--item {
+  position: absolute;
+  display: none;
+  width: 100%;
+  height: 100%;
+  background-color: #ccc;
   flex-direction: column;
-  border: 0.1rem solid #ccc;
 }
-.project-modal--header {
+.quiz-game--item[data-view=true] {
   display: flex;
-  justify-content: space-between;
+}
+.quiz-game--item-header {
+  display: flex;
   flex-shrink: 0;
 }
-.project-modal--footer {
-  display: flex;
-  justify-content: center;
-  flex-shrink: 0;
-}
-.project-modal--body {
+.quiz-game--item-body {
   display: flex;
   flex: 1;
+}
+.quiz-game--item-header {
+  display: flex;
+  flex-shrink: 0;
+}
+
+[data-quiz-btn] {
+  padding: 0.8rem 2.4rem;
+  font-size: 2rem;
+  background-color: #222;
+  color: #fff;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.intro {
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+}
+.intro--item {
+  flex: 1;
+  width: 100%;
+  height: 100%;
+}
+.intro--btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
 }/*# sourceMappingURL=app.css.map */

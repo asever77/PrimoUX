@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="../assets/css/app.css">
+  <title>Document</title>
+</head>
+<body>
+  <main class="quiz-game" data-page="0">
+
+    <!-- Intro -->
+    <div class="mission-intro" data-quiz-page="0" data-view="true">
+      <div class="mission-intro--item">
+        <h1 class="mission-intro--item-tit">게임으로 연습하는 <b>1</b></h1>
+        <h2 class="mission-intro--item-stit">유리수와 순환소수</h2>
+      </div>
+      <div class="mission-intro--control">
+        <button type="button" data-quiz-btn="next" data-page="1">다음</button>
+      </div>
+    </div>
+
+    <!-- Mission -->
+    <div class="quiz-game--item" data-quiz-page="1">
+      <!-- 시작 -->
+      <div class="start">
+        <h2 class="start--tit">Mission 1</h2>
+        <div class="start--footer">
+          <button type="button" data-quiz-btn="start">시작</button>
+        </div>
+      </div>
+
+      <!-- 퀴즈 
+        ready: 3,2,1 진입
+        play: 게임시작 타이머 진행중
+        stop: 정오답체크
+      -->
+      <div class="mission-quiz" data-state="ready">
+        <div class="mission--timer" role="timer" aria-live="assertive" aria-atomic="true">
+          <b class="mission--timer-bar a11y-hidden" style="height: 10%;">남은 시간: 10초</b>
+        </div>
+
+        <!-- 문제 내용 -->
+        <div class="mission--quiz">
+          <h2 class="mission--quiz-tit">순환소수와 그 순환마디를 짝 지으세요.</h2>
+        </div>
+
+        <!-- mating, ox, select -->
+        <div class="mission--game" data-type="mating">
+
+        </div>
+
+        <div class="mission--control">
+          <button type="button" data-quiz-btn="complete" data-page="1">완료</button>
+          <button type="button" data-quiz-btn="again">다시하기</button>
+          <button type="button" data-quiz-btn="go-out">나가기</button>
+        </div>
+      </div>
+
+    </div>
+
+     
+    <!-- Clear -->
+    <div class="mission-clear" data-quiz-page="5">
+      <div class="mission-clear--header">
+        <h2>Mission Clear!</h2>
+      </div>
+      <div class="quiz-game--item-body">
+
+      </div>
+      <div class="quiz-game--item-footer">
+        <button type="button" data-quiz-btn="restart" data-page="0">다시하기</button>
+        <button type="button" data-quiz-btn="out" data-page="out">나가기</button>
+      </div>
+    </div>
+  </main>
+
+  <script type="module" src="../assets/js/ui.global.js"></script>
+  <script type="module">
+    // import Page from '../assets/js/quiz/modal.js'; 
+
+    QuizGame.page.init();
+
+
+
+  </script>
+</body>
+</html>

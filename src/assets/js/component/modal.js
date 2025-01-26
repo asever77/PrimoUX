@@ -7,6 +7,7 @@ export default class Modal {
 			area: document.querySelector('.area-modal'),
 			dim: true,
 			focus_back: null,
+      drag: false,
       message: '',
       confirmText: '',
       cancelText: '',
@@ -18,6 +19,10 @@ export default class Modal {
 		this.modal = null;
 		this.area = this.option.area;
 
+    this.initialize();
+	}
+
+  initialize() {
     switch(this.option.type) {
       case 'modal': 
         this.initModal(); 
@@ -28,7 +33,7 @@ export default class Modal {
       default:
         console.warn('Unknown modal type:', this.option.type);
     }
-	}
+  }
 
   initSystem() {
     let htmlSystem = `
@@ -54,9 +59,9 @@ export default class Modal {
 				area: this.area,
 				src: this.option.src,
 				insert: true,
-				callback: () => this.buildModal(),
+				callback: () => {},
 			})
-			.then(() => console.log('Content loaded'))
+			.then(() => this.buildModal())
 			.catch(err => console.error('Error loading modal content:', err));
 		} else {
       this.buildModal();
@@ -65,16 +70,22 @@ export default class Modal {
 
   buildModal() {
     this.modal = document.querySelector(`[data-modal="${this.option.id}"]`);
+    if (!this.modal) {
+      console.error('Modal element not found');
+      return;
+    }
+    
     this.modal.setAttribute('tabindex', '0');
     this.modal.dataset.ps = this.option.ps;
+    this.modal.dataset.drag = this.option.drag;
+    this.modalItem = this.modal.querySelector('[data-modal-item]');
 
     //dim
-    if (this.option.dim) {
-      this.modal.insertAdjacentHTML('beforeend', '<div class="dim"></div>');
-    }
+    (this.option.dim) && this.modal.insertAdjacentHTML('beforeend', '<div class="dim"></div>');
 
     this.setFocusableElements();
     this.addEventListeners();
+    (this.option.drag) && this.dragEvent();
 
     //load callback
     this.option.loadCallback && this.option.loadCallback();
@@ -86,6 +97,149 @@ export default class Modal {
     const focusableElements = this.modal.querySelectorAll(focusableSelectors);
     this.btn_first = focusableElements[0];
     this.btn_last = focusableElements[focusableElements.length - 1];
+  }
+
+  dragEvent() {
+    let isDragState = false;
+    const dragStart = (e) => {
+      const el_this = e.currentTarget;
+      const y = isTouch ? e.targetTouches[0].clientY : e.clientY;
+      const x = isTouch ? e.targetTouches[0].clientX : e.clientX;
+      const rect = this.modalItem.getBoundingClientRect();
+      const h = rect.height;
+      let isMove = false;
+      let y_m;
+      let x_m;
+      const dragMove = (e) => {
+          y_m = isTouch ? e.targetTouches[0].clientY : e.clientY;
+          x_m = isTouch ? e.targetTouches[0].clientX : e.clientX;
+        if (isDragState) {
+          if (Math.abs(y - y_m) > 10 && Math.abs(x - x_m) < Math.abs(y - y_m) && (y - y_m) < 0) {
+            this.modalItem.setAttribute(
+              'style',
+              `max-height: ${(h + (y - y_m)) / 10}rem !important; height: ${(h + (y - y_m)) / 10}rem !important;`
+            );
+            isMove = true;
+          } else {
+            isMove = false;
+          }
+        } else {
+          if (Math.abs(y - y_m) > 10 && Math.abs(x - x_m) < Math.abs(y - y_m) && (y - y_m) > 0) {
+            this.modalItem.setAttribute(
+              'style',
+              `max-height: ${(h + (y - y_m)) / 10}rem !important; height: ${(h + (y - y_m)) / 10}rem !important;`
+            );
+            isMove = true;
+          } else {
+            this.modalItem.setAttribute(
+              'style',
+              `max-height: ${(h + (y - y_m)) / 10}rem !important; height: ${(h + (y - y_m)) / 10}rem !important;`
+            );
+            isMove = false;
+          }
+        }
+      }
+      const dragEnd = () => {
+        document.removeEventListener('touchmove', dragMove);
+        document.removeEventListener('touchend', dragEnd);
+        //확장에서 축소를 위한 드래그체크
+        const reDrag = (e) => {
+          const _y = isTouch ? e.targetTouches[0].clientY : e.clientY;
+          const _x = isTouch ? e.targetTouches[0].clientX : e.clientX;
+          const _t = elModalBody.scrollTop;
+          let _y_m;
+          let _x_m;
+          const reDragMove = (e) => {
+            _y_m = isTouch ? e.targetTouches[0].clientY : e.clientY;
+            _x_m = isTouch ? e.targetTouches[0].clientX : e.clientX;
+          }
+          const reDragEnd = () => {
+            document.removeEventListener('touchmove', reDragMove);
+            document.removeEventListener('touchend', reDragEnd);
+
+            if (_t < 1 && (_y - _y_m) < 0 && Math.abs(_x - _x_m) < Math.abs(_y - _y_m)) {
+              this.modalItem.removeEventListener('touchstart', reDrag);
+              this.modalItem.addEventListener('touchstart', dragStart);
+            } else {
+              this.modalItem.addEventListener('touchstart', reDrag);
+            }
+          }
+          document.addEventListener('touchmove', reDragMove, { passive: false });
+          document.addEventListener('touchend', reDragEnd);
+        }
+        const restoration = () => {
+          elModal.dataset.state = '';
+          this.modalItem.setAttribute(
+            'style',
+            `max-height: 32rem !important; overflow-y: hidden !important;`
+          );
+          this.modalItem.addEventListener('touchstart', dragStart);
+          isDragState = false;
+        }
+        const reDragClose = (e) => {
+          restoration();
+          this.modalItem.removeEventListener('touchstart', reDrag);
+        }
+        //성공 확장
+        if (y - 30 > y_m && isMove) {
+          elModal.dataset.state = 'drag-full';
+          this.modalItem.classList.add('motion');
+          const dragCloseBtn = elModal.querySelector('[data-modal-drag="close"]');
+          isDragState = true;
+          dragCloseBtn && dragCloseBtn.addEventListener('click', reDragClose);
+          this.modalItem.setAttribute(
+            'style', 'max-height:100dvh !important; overflow-y: hidden !important; height: 100dvh !important;'
+          );
+          this.modalItem.addEventListener('transitionend', () => {
+            this.modalItem.classList.remove('motion');
+            let _list = elModalBody.querySelector('.search-result-list');
+            !_list ? _list = elModal.querySelector('[data-modal-scroll]') : '';
+
+            const hasScroll = _list.scrollHeight > _list.clientHeight;
+
+            if (hasScroll) {
+              this.modalItem.removeEventListener('touchstart', dragStart);
+              this.modalItem.addEventListener('touchstart', reDrag);
+            }
+          });
+        } 
+        //성공 원복
+        else if(y_m - y > 30) {
+          if (elModal.dataset.state === 'drag-full') {
+            if (y_m - y < (h / 3) * 2) {
+              restoration();
+            } else {
+              this.modalItem.removeEventListener('touchstart', dragStart);
+              Global.modal.hide({
+                id: id,
+                callbackClose: callbackClose
+              });
+            }
+          } else {
+            this.modalItem.removeEventListener('touchstart', dragStart);
+            Global.modal.hide({
+              id: id,
+              callbackClose: callbackClose
+            });
+          }
+        } 
+        //취소 풀원복
+        else if (isDragState) {
+          this.modalItem.setAttribute(
+            'style', 'max-height:100dvh !important; overflow-y: hidden !important; height: 100dvh !important;'
+          );
+        } 
+        //취소 원복
+        else {
+          restoration();
+        }
+      }
+      document.addEventListener('touchmove', dragMove, { passive: false });
+      document.addEventListener('touchend', dragEnd);
+    }
+    
+    this.modalItem.removeEventListener('touchstart', dragStart);
+    this.modalItem.addEventListener('touchstart', dragStart);
   }
 
   addEventListeners() {
@@ -122,8 +276,10 @@ export default class Modal {
 
     for (let i = thisZindex; i < zIndex; i++) {
       const item = document.querySelector(`[data-modal][aria-hidden="false"][data-zindex="${i + 1}"]`);
-      item.dataset.zindex = i;
-      item.dataset.current = 'false';
+      if (item) {
+        item.dataset.zindex = i;
+        item.dataset.current = 'false';
+      }
     }
 
     this.modal.dataset.zindex = zIndex;
@@ -145,10 +301,10 @@ export default class Modal {
     this.modal.dataset.current = 'true';
     
     //loop focus
-		this.btn_first.addEventListener('keydown', this.keyStart);	
-		this.btn_last.addEventListener('keydown', this.keyEnd);
+		this.btn_first.addEventListener('keydown', this.keyStart.bind(this));	
+		this.btn_last.addEventListener('keydown', this.keyEnd.bind(this));
 	}
-	hide = (opt) => {
+	hide(opt) {
     //loop focus 중복방지 이벤트 취소
 		this.btn_first.removeEventListener('keydown', this.keyStart);	
 		this.btn_last.removeEventListener('keydown', this.keyEnd);	
@@ -167,8 +323,10 @@ export default class Modal {
     const zIndex = openModals.length;
     for (let i = n; i <= zIndex; i++) {
       const item = document.querySelector(`[data-modal][aria-hidden="false"][data-zindex="${i + 1}"]`);
-      item.dataset.zindex = i;
-      item.dataset.current = 'false';
+      if (item) {
+        item.dataset.zindex = i;
+        item.dataset.current = 'false';
+      }
     }
     //다음선택 모달 설정
     const currentModal = document.querySelector(`[data-modal][aria-hidden="false"][data-zindex="${zIndex}"]`);

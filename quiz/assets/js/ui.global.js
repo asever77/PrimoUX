@@ -1,7 +1,7 @@
 (() => {
 	'use strict';
 
-	const global = 'PrimoUX';
+	const global = 'QuizGame';
 	window[global] = {};
 	const Global = window[global];
 
@@ -55,6 +55,26 @@
 					});
 			});
 		},
+	}
+
+	Global.page = { 
+		init() {
+			const items = document.querySelectorAll('.quiz-game--item');
+			const pageNextBtns = document.querySelectorAll('[data-quiz-btn="next"]');
+
+			const act = (e) => {
+				const _this = e.currentTarget;
+				const quizSet = document.querySelector('.quiz-game');
+
+				console.log(_this.dataset.page);
+				quizSet.dataset.page = Number(_this.dataset.page) + 1;
+				
+			}
+			pageNextBtns.forEach(btn => {
+				btn.addEventListener('click', act);
+			})
+		}
+		
 	}
 
 })();
