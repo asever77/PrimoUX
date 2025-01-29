@@ -571,41 +571,195 @@ codebox code {
        tab-size: 2;
 }
 
-.quiz-game {
+.math-mission {
   position: relative;
   display: flex;
   width: 100dvw;
   height: 100dvh;
   overflow: hidden;
 }
-.quiz-game[data-page="0"] [data-quiz-page="0"], .quiz-game[data-page="1"] [data-quiz-page="1"], .quiz-game[data-page="2"] [data-quiz-page="2"], .quiz-game[data-page="3"] [data-quiz-page="3"], .quiz-game[data-page="4"] [data-quiz-page="4"], .quiz-game[data-page="5"] [data-quiz-page="5"], .quiz-game[data-page="6"] [data-quiz-page="6"], .quiz-game[data-page="7"] [data-quiz-page="7"], .quiz-game[data-page="8"] [data-quiz-page="8"], .quiz-game[data-page="9"] [data-quiz-page="9"], .quiz-game[data-page="10"] [data-quiz-page="10"] {
+.math-mission[data-page="0"] [data-mission-page="0"], .math-mission[data-page="1"] [data-mission-page="1"], .math-mission[data-page="2"] [data-mission-page="2"], .math-mission[data-page="3"] [data-mission-page="3"], .math-mission[data-page="4"] [data-mission-page="4"], .math-mission[data-page="5"] [data-mission-page="5"], .math-mission[data-page="6"] [data-mission-page="6"], .math-mission[data-page="7"] [data-mission-page="7"], .math-mission[data-page="8"] [data-mission-page="8"], .math-mission[data-page="9"] [data-mission-page="9"], .math-mission[data-page="10"] [data-mission-page="10"] {
+  position: relative;
   display: flex;
-}
-.quiz-game--item {
-  position: absolute;
-  display: none;
+  flex-direction: column;
   width: 100%;
   height: 100%;
-  background-color: #ccc;
-  flex-direction: column;
 }
-.quiz-game--item[data-view=true] {
+.math-mission [data-mission-page] {
+  display: none;
+}
+.math-mission .math-mission--game-item {
+  display: none;
+}
+.math-mission [data-step="0"] [data-step="0"] {
   display: flex;
 }
-.quiz-game--item-header {
+.math-mission [data-step="1"] [data-step="1"] {
+  display: flex;
+}
+.math-mission [data-step="2"] [data-step="2"] {
+  display: flex;
+}
+.math-mission [data-step="3"] [data-step="3"] {
+  display: flex;
+}
+.math-mission [data-step="4"] [data-step="4"] {
+  display: flex;
+}
+.math-mission [data-step="5"] [data-step="5"] {
+  display: flex;
+}
+.math-mission [data-step="6"] [data-step="6"] {
+  display: flex;
+}
+.math-mission [data-step="7"] [data-step="7"] {
+  display: flex;
+}
+.math-mission [data-step="8"] [data-step="8"] {
+  display: flex;
+}
+.math-mission [data-step="9"] [data-step="9"] {
+  display: flex;
+}
+.math-mission [data-step="10"] [data-step="10"] {
+  display: flex;
+}
+.math-mission--intro [data-mission-btn] {
+  position: absolute;
+  bottom: 2rem;
+  transform: translate(-50%, 0);
+  left: 50%;
+}
+.math-mission--item[data-state=start] .math-mission--count,
+.math-mission--item[data-state=start] .math-mission--timer,
+.math-mission--item[data-state=start] .math-mission--quiz,
+.math-mission--item[data-state=start] .math-mission--game,
+.math-mission--item[data-state=start] .math-mission--control {
+  display: none;
+}
+.math-mission--item[data-state=start] .math-mission--start {
+  display: flex;
+}
+.math-mission--item[data-state=ready] .math-mission--count,
+.math-mission--item[data-state=ready] .math-mission--quiz {
+  display: flex;
+}
+.math-mission--item[data-state=ready] .math-mission--timer,
+.math-mission--item[data-state=ready] .math-mission--game,
+.math-mission--item[data-state=ready] .math-mission--control,
+.math-mission--item[data-state=ready] .math-mission--start {
+  display: none;
+}
+.math-mission--item[data-state=check-O] .math-mission--timer,
+.math-mission--item[data-state=check-O] .math-mission--quiz,
+.math-mission--item[data-state=check-O] .math-mission--game,
+.math-mission--item[data-state=check-O] .math-mission--control, .math-mission--item[data-state=check-X] .math-mission--timer,
+.math-mission--item[data-state=check-X] .math-mission--quiz,
+.math-mission--item[data-state=check-X] .math-mission--game,
+.math-mission--item[data-state=check-X] .math-mission--control, .math-mission--item[data-state=check] .math-mission--timer,
+.math-mission--item[data-state=check] .math-mission--quiz,
+.math-mission--item[data-state=check] .math-mission--game,
+.math-mission--item[data-state=check] .math-mission--control, .math-mission--item[data-state=game-over] .math-mission--timer,
+.math-mission--item[data-state=game-over] .math-mission--quiz,
+.math-mission--item[data-state=game-over] .math-mission--game,
+.math-mission--item[data-state=game-over] .math-mission--control, .math-mission--item[data-state=play] .math-mission--timer,
+.math-mission--item[data-state=play] .math-mission--quiz,
+.math-mission--item[data-state=play] .math-mission--game,
+.math-mission--item[data-state=play] .math-mission--control {
+  display: flex;
+}
+.math-mission--item[data-state=check-O] .math-mission--count,
+.math-mission--item[data-state=check-O] .math-mission--start, .math-mission--item[data-state=check-X] .math-mission--count,
+.math-mission--item[data-state=check-X] .math-mission--start, .math-mission--item[data-state=check] .math-mission--count,
+.math-mission--item[data-state=check] .math-mission--start, .math-mission--item[data-state=game-over] .math-mission--count,
+.math-mission--item[data-state=game-over] .math-mission--start, .math-mission--item[data-state=play] .math-mission--count,
+.math-mission--item[data-state=play] .math-mission--start {
+  display: none;
+}
+.math-mission--item[data-state=play] [data-mission-btn=step],
+.math-mission--item[data-state=play] [data-mission-btn=next],
+.math-mission--item[data-state=play] [data-mission-btn=again],
+.math-mission--item[data-state=play] [data-mission-btn=out] {
+  display: none;
+}
+.math-mission--item[data-state=check] [data-mission-btn=step],
+.math-mission--item[data-state=check] [data-mission-btn=again],
+.math-mission--item[data-state=check] [data-mission-btn=out] {
+  display: none;
+}
+.math-mission--item[data-state=check-O] [data-mission-btn=next],
+.math-mission--item[data-state=check-O] [data-mission-btn=again],
+.math-mission--item[data-state=check-O] [data-mission-btn=out] {
+  display: none;
+}
+.math-mission--item[data-state=check-X] [data-mission-btn=next],
+.math-mission--item[data-state=check-X] [data-mission-btn=step], .math-mission--item[data-state=game-over] [data-mission-btn=next],
+.math-mission--item[data-state=game-over] [data-mission-btn=step] {
+  display: none;
+}
+.math-mission--quiz {
   display: flex;
   flex-shrink: 0;
 }
-.quiz-game--item-body {
+.math-mission--game {
+  position: relative;
   display: flex;
   flex: 1;
 }
-.quiz-game--item-header {
+.math-mission--game-item {
+  flex: 1;
   display: flex;
+  width: 100%;
+  flex-direction: column;
+  height: 100%;
+}
+.math-mission--control {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   flex-shrink: 0;
+  padding: 1.6rem;
+}
+.math-mission--start {
+  display: flex;
+}
+.math-mission--start [data-mission-btn] {
+  position: absolute;
+  bottom: 2rem;
+  transform: translate(-50%, 0);
+  left: 50%;
+}
+.math-mission--timer {
+  position: absolute;
+  right: 1.6rem;
+  top: 2.4rem;
+  width: 1rem;
+  height: calc(100dvh - 4.8rem);
+  border-radius: 0.5rem;
+  background-color: #f2f2f2;
+  display: flex;
+  z-index: 10;
+}
+.math-mission--timer[data-state=warning] .math-mission--timer-bar {
+  background-color: pink;
+}
+.math-mission--timer-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  display: block;
+  width: 100%;
+  border-radius: 0.5rem;
+  background-color: yellowgreen;
+}
+.math-mission--timer-bar.motion {
+  transition: height 1s linear;
 }
 
-[data-quiz-btn] {
+[data-mission-btn] {
   padding: 0.8rem 2.4rem;
   font-size: 2rem;
   background-color: #222;
@@ -615,21 +769,6 @@ codebox code {
   align-items: center;
 }
 
-.intro {
-  display: flex;
-  position: relative;
-  flex-direction: column;
-  height: 100%;
-  width: 100%;
-}
-.intro--item {
-  flex: 1;
-  width: 100%;
-  height: 100%;
-}
-.intro--btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
+[data-mission-btn=step] {
+  background-color: blue;
 }/*# sourceMappingURL=app.css.map */

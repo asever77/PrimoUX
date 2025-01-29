@@ -1,50 +1,183 @@
-.quiz-game {
+.math-mission {
   position: relative;
   display: flex;
   width: 100dvw;
   height: 100dvh;
   overflow: hidden;
 
-  &[data-page="0"] [data-quiz-page="0"],
-  &[data-page="1"] [data-quiz-page="1"],
-  &[data-page="2"] [data-quiz-page="2"],
-  &[data-page="3"] [data-quiz-page="3"],
-  &[data-page="4"] [data-quiz-page="4"],
-  &[data-page="5"] [data-quiz-page="5"],
-  &[data-page="6"] [data-quiz-page="6"],
-  &[data-page="7"] [data-quiz-page="7"],
-  &[data-page="8"] [data-quiz-page="8"],
-  &[data-page="9"] [data-quiz-page="9"],
-  &[data-page="10"] [data-quiz-page="10"] {display: flex;}
-
-  &--item{
-    position: absolute;
-    display: none;
+  &[data-page="0"] [data-mission-page="0"],
+  &[data-page="1"] [data-mission-page="1"],
+  &[data-page="2"] [data-mission-page="2"],
+  &[data-page="3"] [data-mission-page="3"],
+  &[data-page="4"] [data-mission-page="4"],
+  &[data-page="5"] [data-mission-page="5"],
+  &[data-page="6"] [data-mission-page="6"],
+  &[data-page="7"] [data-mission-page="7"],
+  &[data-page="8"] [data-mission-page="8"],
+  &[data-page="9"] [data-mission-page="9"],
+  &[data-page="10"] [data-mission-page="10"] {
+    position: relative;
+    display: flex;
+    flex-direction: column;
     width: 100%;
     height: 100%;
-    background-color: #ccc;
-    flex-direction: column;
+  }
 
-    &[data-view="true"] {
-      display: flex;
+  [data-mission-page] {display: none;}
+
+  .math-mission--game-item {display: none;}
+  [data-step="0"] [data-step="0"] {display: flex;}
+  [data-step="1"] [data-step="1"] {display: flex;}
+  [data-step="2"] [data-step="2"] {display: flex;}
+  [data-step="3"] [data-step="3"] {display: flex;}
+  [data-step="4"] [data-step="4"] {display: flex;}
+  [data-step="5"] [data-step="5"] {display: flex;}
+  [data-step="6"] [data-step="6"] {display: flex;}
+  [data-step="7"] [data-step="7"] {display: flex;}
+  [data-step="8"] [data-step="8"] {display: flex;}
+  [data-step="9"] [data-step="9"] {display: flex;}
+  [data-step="10"] [data-step="10"] {display: flex;}
+ 
+  &--intro {
+    [data-mission-btn] {
+      position: absolute;
+      bottom:2rem;
+      transform: translate(-50%, 0);
+      left:50%;
+    }
+  }
+  &--item {
+    &[data-state="start"] {
+      .math-mission--count,
+      .math-mission--timer,
+      .math-mission--quiz,
+      .math-mission--game,
+      .math-mission--control {
+        display: none;
+      }
+      .math-mission--start {
+        display: flex;
+      }
+    }
+    &[data-state="ready"] {
+      .math-mission--count,
+      .math-mission--quiz{
+        display: flex;
+      }
+      .math-mission--timer,
+      .math-mission--game,
+      .math-mission--control, 
+      .math-mission--start {
+        display: none;
+      }
     }
 
-    &-header {
-      display: flex;
-      flex-shrink: 0;
+    &[data-state="check-O"],
+    &[data-state="check-X"],
+    &[data-state="check"],
+    &[data-state="game-over"],
+    &[data-state="play"] {
+      .math-mission--timer,
+      .math-mission--quiz,
+      .math-mission--game,
+      .math-mission--control {
+        display: flex;
+      }
+      .math-mission--count,
+      .math-mission--start {
+        display: none;
+      }
     }
-    &-body {
-      display: flex;
+
+    &[data-state="play"] {
+      [data-mission-btn="step"],
+      [data-mission-btn="next"],
+      [data-mission-btn="again"],
+      [data-mission-btn="out"] {display: none;}
+    }
+    &[data-state="check"] {
+      [data-mission-btn="step"],
+      [data-mission-btn="again"],
+      [data-mission-btn="out"] {display: none;}
+    }
+    &[data-state="check-O"] {
+      [data-mission-btn="next"],
+      [data-mission-btn="again"],
+      [data-mission-btn="out"] {display: none;}
+    }
+    &[data-state="check-X"],
+    &[data-state="game-over"] {
+      [data-mission-btn="next"],
+      [data-mission-btn="step"] {display: none;}
+    }
+  }
+  &--quiz {
+    display: flex;
+    flex-shrink: 0;
+  }
+  &--game {
+    position: relative;
+    display: flex;
+    flex: 1;
+
+    &-item {
       flex: 1;
-    }
-    &-header {
       display: flex;
-      flex-shrink: 0;
+      width: 100%;
+      flex-direction: column;
+      height: 100%;
+    }
+  }
+  &--control {
+    position: absolute;
+    bottom:0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+    padding:1.6rem;
+  }
+
+  &--start {
+    display: flex;
+    [data-mission-btn] {
+      position: absolute;
+      bottom:2rem;
+      transform: translate(-50%, 0);
+      left:50%;
+    }
+  }
+  
+  &--timer {
+    position: absolute;
+    right: 1.6rem;
+    top:2.4rem;
+    width: 1rem;
+    height: calc(100dvh - (2.4rem * 2));
+    border-radius: .5rem;
+    background-color: #f2f2f2;
+    display: flex;
+    z-index: 10;
+
+    &[data-state="warning"] .math-mission--timer-bar{
+      background-color: pink;
+    }
+    &-bar {
+      position: absolute;
+      bottom: 0;
+      left:0;
+      display: block;
+      width: 100%;
+      border-radius: .5rem;
+      background-color: yellowgreen;
+      
+      &.motion{transition: height 1s linear;}
     }
   }
 }
 
-[data-quiz-btn] {
+[data-mission-btn] {
   padding: .8rem 2.4rem;
   font-size: 2rem;
   background-color: #222;
@@ -53,3 +186,7 @@
   justify-content: center;
   align-items: center;
 }
+[data-mission-btn="step"] {
+  background-color: blue;
+}
+

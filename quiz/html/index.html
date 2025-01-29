@@ -7,82 +7,180 @@
   <title>Document</title>
 </head>
 <body>
-  <main class="quiz-game" data-page="0">
+  <main class="math-mission" data-page="0">
 
     <!-- Intro -->
-    <div class="mission-intro" data-quiz-page="0" data-view="true">
-      <div class="mission-intro--item">
-        <h1 class="mission-intro--item-tit">게임으로 연습하는 <b>1</b></h1>
-        <h2 class="mission-intro--item-stit">유리수와 순환소수</h2>
-      </div>
-      <div class="mission-intro--control">
-        <button type="button" data-quiz-btn="next" data-page="1">다음</button>
-      </div>
+    <div class="math-mission--intro" data-mission-page>
+      <h1 class="math-mission--intro-tit">
+        게임으로 연습하는 <b>1</b>
+      </h1>
+      <h2 class="math-mission--intro-stit">유리수와 순환소수</h2>
+
+      <button type="button" data-mission-btn="next">다음</button>
+      
     </div>
 
     <!-- Mission -->
-    <div class="quiz-game--item" data-quiz-page="1">
+    <!-- 퀴즈 
+      start: 미션 진입
+      ready: 3,2,1 진입
+
+      play: 게임시작 타이머 진행중
+      game-over: 주어진 시간에 게임 미완료
+
+      check: 게임완료 정오답체크
+      check-O: 정답
+      check-X: 오답
+    -->
+    <!-- 
+      시작  
+      -- 퀴즈 반복
+      1 문제풀기 [비활성화 완료]  
+        1-1 시간내에 못하면 [다시하기, 나가기] 
+        1-2 시간내 문제 풀면 [활성화 완료]
+          답이 맞으면 [다음]
+          답이 틀리면 [다시하기, 나가기] 
+     -->
+    <div class="math-mission--item" data-mission-page="" data-state="start">
       <!-- 시작 -->
-      <div class="start">
-        <h2 class="start--tit">Mission 1</h2>
-        <div class="start--footer">
-          <button type="button" data-quiz-btn="start">시작</button>
+      <div class="math-mission--start">
+        <h2 class="math-mission--start-tit">Mission 1</h2>
+        <button type="button" data-mission-btn="start">시작</button>
+      </div>
+
+      <!-- 타이머 -->
+      <div class="math-mission--timer" role="timer" aria-live="assertive" aria-atomic="true">
+        <b class="math-mission--timer-bar" style="height: 0%;">
+          <span class="a11y-hidden">남은 시간: 10초</span>
+        </b>
+      </div>
+
+      <!-- 문제 내용 -->
+      <div class="math-mission--quiz">
+        <h2 class="math-mission--quiz-tit">순환소수와 그 순환마디를 짝 지으세요.</h2>
+      </div>
+
+      <!-- 시작카운터 -->
+      <div class="math-mission--count">
+        <strong class="math-mission--count-number">3</strong>
+      </div>
+
+      <!-- 퀴즈 mating, ox, select -->
+      <div class="math-mission--game" data-type="mating" data-step="0">
+        <div class="math-mission--game-item" data-step="0">
+          <div style="display: flex; align-items: center; justify-content: center; gap:2rem">
+            <button type="button" onclick="QuizGame.exe.quizPage.missionCheck(true);">1 정답체크</button> |
+            <button type="button" onclick="QuizGame.exe.quizPage.missionCheck(false);">1 오답체크</button>
+          </div>
+        </div>
+
+        <div class="math-mission--game-item" data-step="1">
+          <div style="display: flex; align-items: center; justify-content: center; gap:2rem">
+            <button type="button" onclick="QuizGame.exe.quizPage.missionCheck(true);">2 정답체크</button> |
+            <button type="button" onclick="QuizGame.exe.quizPage.missionCheck(false);">2 오답체크</button>
+          </div>
+        </div>
+
+        <div class="math-mission--game-item" data-step="2">
+          <div style="display: flex; align-items: center; justify-content: center; gap:2rem">
+            <button type="button" onclick="QuizGame.exe.quizPage.missionCheck(true);">3 정답체크</button> |
+            <button type="button" onclick="QuizGame.exe.quizPage.missionCheck(false);">3 오답체크</button>
+          </div>
         </div>
       </div>
 
-      <!-- 퀴즈 
-        ready: 3,2,1 진입
-        play: 게임시작 타이머 진행중
-        stop: 정오답체크
-      -->
-      <div class="mission-quiz" data-state="ready">
-        <div class="mission--timer" role="timer" aria-live="assertive" aria-atomic="true">
-          <b class="mission--timer-bar a11y-hidden" style="height: 10%;">남은 시간: 10초</b>
-        </div>
-
-        <!-- 문제 내용 -->
-        <div class="mission--quiz">
-          <h2 class="mission--quiz-tit">순환소수와 그 순환마디를 짝 지으세요.</h2>
-        </div>
-
-        <!-- mating, ox, select -->
-        <div class="mission--game" data-type="mating">
-
-        </div>
-
-        <div class="mission--control">
-          <button type="button" data-quiz-btn="complete" data-page="1">완료</button>
-          <button type="button" data-quiz-btn="again">다시하기</button>
-          <button type="button" data-quiz-btn="go-out">나가기</button>
-        </div>
+      <!-- 컨트롤 -->
+      <div class="math-mission--control">
+        <button type="button" data-mission-btn="step">다음</button>
+        <button type="button" data-mission-btn="next">다음</button>
+        <button type="button" data-mission-btn="again">다시하기</button>
+        <button type="button" data-mission-btn="out" data-page="out">나가기</button>
       </div>
-
     </div>
 
-     
-    <!-- Clear -->
-    <div class="mission-clear" data-quiz-page="5">
-      <div class="mission-clear--header">
-        <h2>Mission Clear!</h2>
-      </div>
-      <div class="quiz-game--item-body">
 
+
+
+    <div class="math-mission--item" data-mission-page="" data-state="ready">
+      <!-- 시작 -->
+      <div class="math-mission--start">
+        <h2 class="math-mission--start-tit">Mission 2</h2>
+        <button type="button" data-mission-btn="start">시작</button>
       </div>
-      <div class="quiz-game--item-footer">
-        <button type="button" data-quiz-btn="restart" data-page="0">다시하기</button>
-        <button type="button" data-quiz-btn="out" data-page="out">나가기</button>
+
+      <!-- 타이머 -->
+      <div class="math-mission--timer" role="timer" aria-live="assertive" aria-atomic="true">
+        <b class="math-mission--timer-bar" style="height: 0%;">
+          <span class="a11y-hidden">남은 시간: 10초</span>
+        </b>
+      </div>
+
+      <!-- 문제 내용 -->
+      <div class="math-mission--quiz">
+        <h2 class="math-mission--quiz-tit">2222순환소수와 그 순환마디를 짝 지으세요.</h2>
+      </div>
+
+      <!-- 시작카운터 -->
+      <div class="math-mission--count">
+        <strong class="math-mission--count-number">3</strong>
+      </div>
+
+      <!-- 퀴즈 mating, ox, select -->
+      <div class="math-mission--game" data-type="mating" data-step="0">
+        <div class="math-mission--game-item" data-step="0">
+          <div style="display: flex; align-items: center; justify-content: center; gap:2rem">
+            <button type="button" onclick="QuizGame.exe.quizPage.missionCheck(true);">1 정답체크</button> |
+            <button type="button" onclick="QuizGame.exe.quizPage.missionCheck(false);">1 오답체크</button>
+          </div>
+        </div>
+
+        <div class="math-mission--game-item" data-step="1">
+          <div style="display: flex; align-items: center; justify-content: center; gap:2rem">
+            <button type="button" onclick="QuizGame.exe.quizPage.missionCheck(true);">2 정답체크</button> |
+            <button type="button" onclick="QuizGame.exe.quizPage.missionCheck(false);">2 오답체크</button>
+          </div>
+        </div>
+
+        <div class="math-mission--game-item" data-step="2">
+          <div style="display: flex; align-items: center; justify-content: center; gap:2rem">
+            <button type="button" onclick="QuizGame.exe.quizPage.missionCheck(true);">3 정답체크</button> |
+            <button type="button" onclick="QuizGame.exe.quizPage.missionCheck(false);">3 오답체크</button>
+          </div>
+        </div>
+
+        <div class="math-mission--game-item" data-step="3">
+          <div style="display: flex; align-items: center; justify-content: center; gap:2rem">
+            <button type="button" onclick="QuizGame.exe.quizPage.missionCheck(true);">4 정답체크</button> |
+            <button type="button" onclick="QuizGame.exe.quizPage.missionCheck(false);">4 오답체크</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 컨트롤 -->
+      <div class="math-mission--control">
+        <button type="button" data-mission-btn="step">다음</button>
+        <button type="button" data-mission-btn="next">다음</button>
+        <button type="button" data-mission-btn="again">다시하기</button>
+        <button type="button" data-mission-btn="out" data-page="out">나가기</button>
+      </div>
+    </div>
+
+    <!-- Clear -->
+    <div class="math-mission--clear" data-mission-page>
+      <h2 class="math-mission--clear-tit">Mission Clear!</h2>
+      <div class="math-mission--control">
+        <button type="button" data-mission-btn="reset" data-page="0">다시하기</button>
+        <button type="button" data-mission-btn="out" data-page="out">나가기</button>
       </div>
     </div>
   </main>
 
-  <script type="module" src="../assets/js/ui.global.js"></script>
-  <script type="module">
-    // import Page from '../assets/js/quiz/modal.js'; 
-
-    QuizGame.page.init();
-
-
-
+  <script src="../assets/js/ui.global.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      QuizGame.exe.quizPage = new QuizPage();
+      QuizGame.exe.quizPage.init();
+    });
   </script>
 </body>
 </html>
