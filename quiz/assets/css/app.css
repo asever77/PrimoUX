@@ -682,6 +682,10 @@ codebox code {
 .math-mission--item[data-state=play] [data-mission-btn=out] {
   display: none;
 }
+.math-mission--item[data-state=play] .math-mission--game-btn {
+  z-index: 1;
+  opacity: 0.5;
+}
 .math-mission--item[data-state=check] [data-mission-btn=step],
 .math-mission--item[data-state=check] [data-mission-btn=again],
 .math-mission--item[data-state=check] [data-mission-btn=out] {
@@ -697,21 +701,18 @@ codebox code {
 .math-mission--item[data-state=game-over] [data-mission-btn=step] {
   display: none;
 }
+.math-mission--item[data-state=game-over] .math-mission--game-timeover {
+  display: flex;
+}
+.math-mission--item[data-state=check] .math-mission--game-O, .math-mission--item[data-state=check-O] .math-mission--game-O {
+  display: flex;
+}
+.math-mission--item[data-state=check-X] .math-mission--game-X {
+  display: flex;
+}
 .math-mission--quiz {
   display: flex;
   flex-shrink: 0;
-}
-.math-mission--game {
-  position: relative;
-  display: flex;
-  flex: 1;
-}
-.math-mission--game-item {
-  flex: 1;
-  display: flex;
-  width: 100%;
-  flex-direction: column;
-  height: 100%;
 }
 .math-mission--control {
   position: absolute;
@@ -722,6 +723,8 @@ codebox code {
   align-items: center;
   flex-shrink: 0;
   padding: 1.6rem;
+  gap: 2rem;
+  z-index: 10;
 }
 .math-mission--start {
   display: flex;
@@ -758,6 +761,88 @@ codebox code {
 .math-mission--timer-bar.motion {
   transition: height 1s linear;
 }
+.math-mission--game {
+  position: relative;
+  display: flex;
+  flex: 1;
+  height: 100%;
+  flex-direction: column;
+  padding: 2.4rem 4rem 0 2.4rem;
+}
+.math-mission--game-item {
+  position: relative;
+  flex: 1;
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  height: 100%;
+}
+.math-mission--game-footer {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.6rem;
+}
+.math-mission--game-btn {
+  padding: 0.8rem 2.4rem;
+  font-size: 2rem;
+  background-color: #222;
+  color: #fff;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+}
+.math-mission--game-timeover {
+  display: none;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: transparent;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  top: 0;
+  left: 0;
+  padding-bottom: 8rem;
+}
+.math-mission--game-timeover strong {
+  display: block;
+  font-size: 8rem;
+  font-weight: 700;
+}
+.math-mission--game-X, .math-mission--game-O {
+  display: none;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: transparent;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  top: 0;
+  left: 0;
+  padding-bottom: 8rem;
+  z-index: 5;
+}
+.math-mission--game-O::after {
+  content: "O";
+  display: block;
+  font-size: 32rem;
+  color: blue;
+  font-weight: 700;
+}
+.math-mission--game-X::after {
+  content: "X";
+  display: block;
+  font-size: 32rem;
+  color: red;
+  font-weight: 700;
+}
 
 [data-mission-btn] {
   padding: 0.8rem 2.4rem;
@@ -771,4 +856,38 @@ codebox code {
 
 [data-mission-btn=step] {
   background-color: blue;
+}
+
+.game-mating {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.game-mating--wrap {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+}
+.game-mating--item {
+  flex: 1;
+  padding: 4rem 2rem;
+  border-radius: 1.6rem;
+  border: 0.2rem solid black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2rem;
+  min-width: calc(33% - 0.8rem);
+}
+.game-mating--item[data-selected=true][data-n="1"], .game-mating--item[data-selected=true][data-n="2"] {
+  background-color: skyblue;
+}
+.game-mating--item[data-selected=true][data-n="3"], .game-mating--item[data-selected=true][data-n="4"] {
+  background-color: pink;
+}
+.game-mating--item[data-selected=true][data-n="5"], .game-mating--item[data-selected=true][data-n="6"] {
+  background-color: yellowgreen;
 }/*# sourceMappingURL=app.css.map */

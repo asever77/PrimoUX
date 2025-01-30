@@ -94,6 +94,11 @@
       [data-mission-btn="next"],
       [data-mission-btn="again"],
       [data-mission-btn="out"] {display: none;}
+
+      .math-mission--game-btn {
+        z-index: 1;
+        opacity: 0.5;
+      }
     }
     &[data-state="check"] {
       [data-mission-btn="step"],
@@ -110,24 +115,17 @@
       [data-mission-btn="next"],
       [data-mission-btn="step"] {display: none;}
     }
+
+    &[data-state="game-over"] .math-mission--game-timeover {display: flex;}
+    &[data-state="check"] .math-mission--game-O,
+    &[data-state="check-O"] .math-mission--game-O {display: flex;}
+    &[data-state="check-X"] .math-mission--game-X {display: flex;}
   }
   &--quiz {
     display: flex;
     flex-shrink: 0;
   }
-  &--game {
-    position: relative;
-    display: flex;
-    flex: 1;
-
-    &-item {
-      flex: 1;
-      display: flex;
-      width: 100%;
-      flex-direction: column;
-      height: 100%;
-    }
-  }
+  
   &--control {
     position: absolute;
     bottom:0;
@@ -137,6 +135,8 @@
     align-items: center;
     flex-shrink: 0;
     padding:1.6rem;
+    gap: 2rem;
+    z-index: 10;
   }
 
   &--start {
@@ -175,6 +175,95 @@
       &.motion{transition: height 1s linear;}
     }
   }
+
+  &--game {
+    position: relative;
+    display: flex;
+    flex: 1;
+    height: 100%;
+    flex-direction: column;
+    padding: 2.4rem 4rem 0 2.4rem;
+
+    &-item {
+      position: relative;
+      flex: 1;
+      display: flex;
+      width: 100%;
+      flex-direction: column;
+      height: 100%;
+    }
+    &-footer {
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding:1.6rem;
+    }
+    &-btn {
+      padding: .8rem 2.4rem;
+      font-size: 2rem;
+      background-color: #222;
+      color:#fff;
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      // opacity: 0;
+      // pointer-events: none;
+      // z-index: -1;
+    }
+    &-timeover {
+      display: none;
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background-color: transparent;
+      width: 100%;
+      height: 100%;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      top:0;
+      left:0;
+      padding-bottom: 8rem;
+
+      strong {
+        display: block;
+        font-size: 8rem;
+        font-weight: 700;
+      }
+    }
+    &-X,
+    &-O{
+      display: none;
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background-color: transparent;
+      width: 100%;
+      height: 100%;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      top:0;
+      left:0;
+      padding-bottom: 8rem;
+      z-index: 5;
+    }
+    &-O::after {
+      content:"O";
+      display: block;
+      font-size: 32rem;
+      color: blue;
+      font-weight: 700;
+    }
+    &-X::after {
+      content:"X";
+      display: block;
+      font-size: 32rem;
+      color: red;
+      font-weight: 700;
+    }
+  }
 }
 
 [data-mission-btn] {
@@ -190,3 +279,36 @@
   background-color: blue;
 }
 
+// 짝 짓기
+.game-mating {
+  display: flex;
+  flex:1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  &--wrap {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    gap:.8rem;
+  }
+  &--item {
+    flex:1;
+    padding:4rem 2rem;
+    border-radius: 1.6rem;
+    border:.2rem solid black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
+    min-width: calc(33% - .8rem);
+
+    &[data-selected="true"][data-n="1"],
+    &[data-selected="true"][data-n="2"] {background-color: skyblue;}
+    &[data-selected="true"][data-n="3"],
+    &[data-selected="true"][data-n="4"] {background-color: pink;}
+    &[data-selected="true"][data-n="5"],
+    &[data-selected="true"][data-n="6"] {background-color: yellowgreen;}
+  }
+}

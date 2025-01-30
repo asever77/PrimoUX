@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="stylesheet" href="../assets/css/app.css">
   <title>Document</title>
+
 </head>
 <body>
   <main class="math-mission" data-page="0">
@@ -15,9 +16,7 @@
         게임으로 연습하는 <b>1</b>
       </h1>
       <h2 class="math-mission--intro-stit">유리수와 순환소수</h2>
-
       <button type="button" data-mission-btn="next">다음</button>
-      
     </div>
 
     <!-- Mission -->
@@ -47,7 +46,6 @@
         <h2 class="math-mission--start-tit">Mission 1</h2>
         <button type="button" data-mission-btn="start">시작</button>
       </div>
-
       <!-- 타이머 -->
       <div class="math-mission--timer" role="timer" aria-live="assertive" aria-atomic="true">
         <b class="math-mission--timer-bar" style="height: 0%;">
@@ -59,100 +57,22 @@
       <div class="math-mission--quiz">
         <h2 class="math-mission--quiz-tit">순환소수와 그 순환마디를 짝 지으세요.</h2>
       </div>
-
       <!-- 시작카운터 -->
       <div class="math-mission--count">
         <strong class="math-mission--count-number">3</strong>
       </div>
 
       <!-- 퀴즈 mating, ox, select -->
-      <div class="math-mission--game" data-type="mating" data-step="0">
-        <div class="math-mission--game-item" data-step="0">
-          <div style="display: flex; align-items: center; justify-content: center; gap:2rem">
-            <button type="button" onclick="QuizGame.exe.quizPage.missionCheck(true);">1 정답체크</button> |
-            <button type="button" onclick="QuizGame.exe.quizPage.missionCheck(false);">1 오답체크</button>
-          </div>
+      <div class="math-mission--game" data-step="0">
+        <!-- game1 -->
+        <div class="math-mission--game-item" data-id="gameMating_1" data-step="0">
+          <div class="game-mating"></div>
         </div>
-
-        <div class="math-mission--game-item" data-step="1">
-          <div style="display: flex; align-items: center; justify-content: center; gap:2rem">
-            <button type="button" onclick="QuizGame.exe.quizPage.missionCheck(true);">2 정답체크</button> |
-            <button type="button" onclick="QuizGame.exe.quizPage.missionCheck(false);">2 오답체크</button>
-          </div>
+        <div class="math-mission--game-item" data-id="gameMating_2" data-step="1">
+          <div class="game-mating"></div>
         </div>
-
-        <div class="math-mission--game-item" data-step="2">
-          <div style="display: flex; align-items: center; justify-content: center; gap:2rem">
-            <button type="button" onclick="QuizGame.exe.quizPage.missionCheck(true);">3 정답체크</button> |
-            <button type="button" onclick="QuizGame.exe.quizPage.missionCheck(false);">3 오답체크</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- 컨트롤 -->
-      <div class="math-mission--control">
-        <button type="button" data-mission-btn="step">다음</button>
-        <button type="button" data-mission-btn="next">다음</button>
-        <button type="button" data-mission-btn="again">다시하기</button>
-        <button type="button" data-mission-btn="out" data-page="out">나가기</button>
-      </div>
-    </div>
-
-
-
-
-    <div class="math-mission--item" data-mission-page="" data-state="ready">
-      <!-- 시작 -->
-      <div class="math-mission--start">
-        <h2 class="math-mission--start-tit">Mission 2</h2>
-        <button type="button" data-mission-btn="start">시작</button>
-      </div>
-
-      <!-- 타이머 -->
-      <div class="math-mission--timer" role="timer" aria-live="assertive" aria-atomic="true">
-        <b class="math-mission--timer-bar" style="height: 0%;">
-          <span class="a11y-hidden">남은 시간: 10초</span>
-        </b>
-      </div>
-
-      <!-- 문제 내용 -->
-      <div class="math-mission--quiz">
-        <h2 class="math-mission--quiz-tit">2222순환소수와 그 순환마디를 짝 지으세요.</h2>
-      </div>
-
-      <!-- 시작카운터 -->
-      <div class="math-mission--count">
-        <strong class="math-mission--count-number">3</strong>
-      </div>
-
-      <!-- 퀴즈 mating, ox, select -->
-      <div class="math-mission--game" data-type="mating" data-step="0">
-        <div class="math-mission--game-item" data-step="0">
-          <div style="display: flex; align-items: center; justify-content: center; gap:2rem">
-            <button type="button" onclick="QuizGame.exe.quizPage.missionCheck(true);">1 정답체크</button> |
-            <button type="button" onclick="QuizGame.exe.quizPage.missionCheck(false);">1 오답체크</button>
-          </div>
-        </div>
-
-        <div class="math-mission--game-item" data-step="1">
-          <div style="display: flex; align-items: center; justify-content: center; gap:2rem">
-            <button type="button" onclick="QuizGame.exe.quizPage.missionCheck(true);">2 정답체크</button> |
-            <button type="button" onclick="QuizGame.exe.quizPage.missionCheck(false);">2 오답체크</button>
-          </div>
-        </div>
-
-        <div class="math-mission--game-item" data-step="2">
-          <div style="display: flex; align-items: center; justify-content: center; gap:2rem">
-            <button type="button" onclick="QuizGame.exe.quizPage.missionCheck(true);">3 정답체크</button> |
-            <button type="button" onclick="QuizGame.exe.quizPage.missionCheck(false);">3 오답체크</button>
-          </div>
-        </div>
-
-        <div class="math-mission--game-item" data-step="3">
-          <div style="display: flex; align-items: center; justify-content: center; gap:2rem">
-            <button type="button" onclick="QuizGame.exe.quizPage.missionCheck(true);">4 정답체크</button> |
-            <button type="button" onclick="QuizGame.exe.quizPage.missionCheck(false);">4 오답체크</button>
-          </div>
+        <div class="math-mission--game-item" data-id="gameMating_3" data-step="2">
+          <div class="game-mating"></div>
         </div>
       </div>
 
@@ -178,8 +98,53 @@
   <script src="../assets/js/ui.global.js"></script>
   <script>
     document.addEventListener("DOMContentLoaded", () => {
-      QuizGame.exe.quizPage = new QuizPage();
+      // quiz
+      QuizGame.exe.gameMating_1 = new QuizMating({
+        id: 'gameMating_1',
+        data: [
+          {answer: 1, content: '<math><mn>1.5702702702</mn><mo>…</mo></math>'},
+          {answer: 2, content: '<math><mn>2.5702702702</mn><mo>…</mo></math>'},
+          {answer: 3, content: '<math><mn>3.5702702702</mn><mo>…</mo></math>'},
+          {answer: 1, content: '<math><mn>11.5702702702</mn><mo>…</mo></math>'},
+          {answer: 2, content: '<math><mn>22.5702702702</mn><mo>…</mo></math>'},
+          {answer: 3, content: '<math><mn>33.5702702702</mn><mo>…</mo></math>'},
+        ]
+      });
+      QuizGame.exe.gameMating_2 = new QuizMating({
+        id: 'gameMating_2',
+        data: [
+          {answer: 1, content: '<math><mn>b 1.5702702702</mn><mo>…</mo></math>'},
+          {answer: 2, content: '<math><mn>b 2.5702702702</mn><mo>…</mo></math>'},
+          {answer: 3, content: '<math><mn>b 3.5702702702</mn><mo>…</mo></math>'},
+          {answer: 1, content: '<math><mn>b 11.5702702702</mn><mo>…</mo></math>'},
+          {answer: 2, content: '<math><mn>b 22.5702702702</mn><mo>…</mo></math>'},
+          {answer: 3, content: '<math><mn>b 33.5702702702</mn><mo>…</mo></math>'},
+        ]
+      });
+      QuizGame.exe.gameMating_3 = new QuizMating({
+        id: 'gameMating_3',
+        data: [
+          {answer: 1, content: '<math><mn>c 1.5702702702</mn><mo>…</mo></math>'},
+          {answer: 2, content: '<math><mn>c 2.5702702702</mn><mo>…</mo></math>'},
+          {answer: 3, content: '<math><mn>c 3.5702702702</mn><mo>…</mo></math>'},
+          {answer: 1, content: '<math><mn>c 11.5702702702</mn><mo>…</mo></math>'},
+          {answer: 2, content: '<math><mn>c 22.5702702702</mn><mo>…</mo></math>'},
+          {answer: 3, content: '<math><mn>c 33.5702702702</mn><mo>…</mo></math>'},
+        ]
+      });
+
+      // page
+      QuizGame.exe.quizPage = new QuizPage({
+        data: [
+          {mission: 1, id: 'gameMating_1', type:'mating'},
+          {mission: 1, id: 'gameMating_2', type:'mating'},
+          {mission: 1, id: 'gameMating_3', type:'mating'},
+        ],
+      });
       QuizGame.exe.quizPage.init();
+
+      
+
     });
   </script>
 </body>
