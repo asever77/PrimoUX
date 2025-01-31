@@ -3,7 +3,11 @@
 html {
 	font-size: 0.9766vw;
 }
-
+@media (max-width:500px) {
+	html {
+		font-size: 1.6667vw;
+	}
+}
 html,
 body {
 	padding: 0;
