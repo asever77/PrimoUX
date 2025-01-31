@@ -882,12 +882,12 @@ codebox code {
   font-size: 2rem;
   min-width: calc(33% - 0.8rem);
 }
-.game-mating--item[data-selected=true][data-n="1"], .game-mating--item[data-selected=true][data-n="2"] {
+.game-mating--item[data-selected=true][data-n="1"] {
   background-color: skyblue;
 }
-.game-mating--item[data-selected=true][data-n="3"], .game-mating--item[data-selected=true][data-n="4"] {
+.game-mating--item[data-selected=true][data-n="2"] {
   background-color: pink;
 }
-.game-mating--item[data-selected=true][data-n="5"], .game-mating--item[data-selected=true][data-n="6"] {
+.game-mating--item[data-selected=true][data-n="3"] {
   background-color: yellowgreen;
 }/*# sourceMappingURL=app.css.map */

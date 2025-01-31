@@ -304,11 +304,8 @@
     font-size: 2rem;
     min-width: calc(33% - .8rem);
 
-    &[data-selected="true"][data-n="1"],
-    &[data-selected="true"][data-n="2"] {background-color: skyblue;}
-    &[data-selected="true"][data-n="3"],
-    &[data-selected="true"][data-n="4"] {background-color: pink;}
-    &[data-selected="true"][data-n="5"],
-    &[data-selected="true"][data-n="6"] {background-color: yellowgreen;}
+    &[data-selected="true"][data-n="1"] {background-color: skyblue;}
+    &[data-selected="true"][data-n="2"] {background-color: pink;}
+    &[data-selected="true"][data-n="3"] {background-color: yellowgreen;}
   }
 }

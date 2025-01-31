@@ -68,20 +68,36 @@ class QuizPage {
 
 		this.data = opt.data;
 	}
+	actQuizGameInit(v) {
+		const missionItems = document.querySelectorAll(`.math-mission--item[data-mission-page="${v.dataset.page}"] .math-mission--game-item`);
+		if (missionItems) {
+			missionItems.forEach(item => {
+				const missionItem_id = item.dataset.id;
+				QuizGame.exe[missionItem_id].init();
+			});
+		}
+	}
 	actMove(v) {
 		this.mathMission.dataset.page = v.dataset.page;
 		this.items.forEach(item => {
 			item.dataset.state = "start";
 		});
 		
-		const missionItem = document.querySelector(`.math-mission--item[data-mission-page="${v.dataset.page}"] .math-mission--game-item`);
-		if (missionItem) {
-			const missionItem_id = missionItem.dataset.id;
-			QuizGame.exe[missionItem_id].init();
-		}
-
+		this.actQuizGameInit(v);
 		this.timer && this.timer.resetTimer();//타이머리셋
 	}
+	actStep() {
+		console.log('step'); 
+		const item = this.mathMission.querySelector(`[data-mission-page="${this.mathMission.dataset.page}"]`);
+		const game = item.querySelector('.math-mission--game');
+
+		game.dataset.step = Number(game.dataset.step) + 1;
+
+		this.timer.resetTimer();
+		item.dataset.state = "play";
+		this.timer.init();
+	}
+
 	actStart() {
 		const item = this.mathMission.querySelector(`[data-mission-page="${this.mathMission.dataset.page}"]`);
 		item.dataset.state = "play";
@@ -113,14 +129,17 @@ class QuizPage {
 	actEvent(e) {
 		const _this = e.currentTarget;
 		switch (_this.dataset.missionBtn) {
-			case 'next':
 			case 'again':
+				this.actMove(_this);
+				_this.closest('.math-mission--item').querySelector('.math-mission--game').dataset.step = 0;
+				break;
+			case 'next':
 			case 'reset':
 			case 'complete': 
 				this.actMove(_this);
 				break;
 			case 'step': 
-				this.actStep();
+				this.actStep(_this);
 				break;
 			case 'start':
 				this.actCount();
@@ -132,13 +151,12 @@ class QuizPage {
 		}
 	}
 	init() {
-		this.data.forEach((item, index) => {
-			console.log(item)
-			const gameItem = document.querySelector(`.math-mission--game-item[data-id="${item.id}"]`);
+		// this.data.forEach((item, index) => {
+		// 	console.log(item)
+		// 	const gameItem = document.querySelector(`.math-mission--game-item[data-id="${item.id}"]`);
 
-			QuizGame.exe[item.id].init();
-		});
-
+		// 	QuizGame.exe[item.id].init();
+		// });
 
 		//이벤트
 		this.pages.forEach((page, index) => {
@@ -151,27 +169,14 @@ class QuizPage {
 			}
 			if (page.querySelector('[data-mission-btn="again"]')) {
 				page.querySelector('[data-mission-btn="again"]').dataset.page = index;
+				page.querySelector('.math-mission--game').dataset.step = 0;
 			}
 		});
 		this.pageNextBtns.forEach((btn, index) => {
 			btn.addEventListener('click', this.actEvent.bind(this));
 		});
 	}
-	actStep() {
-		console.log('step'); 
-		const item = this.mathMission.querySelector(`[data-mission-page="${this.mathMission.dataset.page}"]`);
-		const game = item.querySelector('.math-mission--game');
-		const games = item.querySelectorAll('.math-mission--game-item');
-		const gameLen = games.length;
 
-		game.dataset.step = Number(game.dataset.step) + 1;
-
-		console.log(Number(game.dataset.step) + 1);
-
-		this.timer.resetTimer();
-		item.dataset.state = "play";
-		this.timer.init();
-	}
 
 	missionCheck(v) {
 		const isAnswer = v;
@@ -285,11 +290,12 @@ class QuizMating {
 		this.game = document.querySelector(`[data-id="${this.id}"] .game-mating`);
 		this.answer = [];
 
-		this.n = 0;
+		this.cancel = null;
+		this.n = 1;
 		this.comparison = null;
 	}
 	init() {
-		this.n = 0;
+		this.n = 1;
 		const quizData = this.shuffleArray(this.data);
 		let game_html = `<div class="game-mating--wrap">`;
 		quizData.forEach(item => {
@@ -317,33 +323,49 @@ class QuizMating {
 		this.game.innerHTML = game_html;
 
 		this.btnComplete = this.game.querySelector('.math-mission--game-btn');
-		const matingBtns = this.game.querySelectorAll('.game-mating--item');
+		this.btnComplete.addEventListener('click', this.complete.bind(this));
 
-		console.log(this.btnComplete);
-
-		this.btnComplete.addEventListener('click', this.complete.bind(this))
-		matingBtns.forEach(item => {
+		this.matingBtns = this.game.querySelectorAll('.game-mating--item');
+		this.matingBtns.forEach(item => {
 			item.addEventListener('click', this.act.bind(this))
 		});
 	}
 	act(e) {
 		const _this = e.currentTarget;
-
 		if (_this.dataset.selected !== 'true') {
-			this.n = this.n + 1;
-			_this.dataset.n = this.n;
+			const isMating_1 = this.game.querySelectorAll(`.game-mating--item[data-n="1"]`);
+			const isMating_2 = this.game.querySelectorAll(`.game-mating--item[data-n="2"]`);
+			const isMating_3 = this.game.querySelectorAll(`.game-mating--item[data-n="3"]`);
+
+			if (isMating_1.length !== 2) {
+				_this.dataset.n = 1;
+			} else if (isMating_1.length === 2) {
+				if (isMating_2.length !== 2) {
+					_this.dataset.n = 2;
+				} else if (isMating_2.length === 2) {
+					if (isMating_3.length !== 2) {
+						_this.dataset.n = 3;
+					}
+				}
+			}
 			_this.dataset.selected = true;
 		}
 		else {
-			this.n = this.n - 1;
-			_this.dataset.n = '';
-			_this.dataset.selected = false;
+			console.log('선택취소',_this.dataset.n)
+			const dd = this.game.querySelectorAll(`.game-mating--item[data-n="${_this.dataset.n}"]`);
+			dd.forEach(item => {
+				item.dataset.n = '';
+				item.dataset.selected = false;
+			});
 		}
 
-		if (this.data.length === this.n ) {
+		//완료버튼
+		const isSelected = this.game.querySelectorAll(`.game-mating--item[data-selected="true"]`);
+		if (isSelected.length === this.data.length) {
 			this.btnComplete.disabled = false;
+		} else {
+			this.btnComplete.disabled = true;
 		}
-		console.log(_this.dataset.answer);
 	}
 	complete() {
 		const selectedBtns = this.game.querySelectorAll('.game-mating--item[data-selected="true"]');
@@ -378,7 +400,6 @@ class QuizMating {
         const j = Math.floor(Math.random() * (i + 1)); // 0부터 i까지의 랜덤한 인덱스 선택
         [array[i], array[j]] = [array[j], array[i]]; // 요소 교환
     }
-		console.log(array);
     return array;
 	}
 
