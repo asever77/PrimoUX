@@ -79,13 +79,14 @@ export default class Modal {
     this.modal.dataset.ps = this.option.ps;
     this.modal.dataset.drag = this.option.drag;
     this.modalItem = this.modal.querySelector('[data-modal-item]');
+    this.modalBody = this.modal.querySelector('[data-modal-scroll]');
 
     //dim
     (this.option.dim) && this.modal.insertAdjacentHTML('beforeend', '<div class="dim"></div>');
 
     this.setFocusableElements();
     this.addEventListeners();
-    (this.option.drag) && this.dragEvent();
+    // (this.option.drag) && this.dragEvent();
 
     //load callback
     this.option.loadCallback && this.option.loadCallback();
@@ -100,6 +101,8 @@ export default class Modal {
   }
 
   dragEvent() {
+    console.log('drag')
+    const isTouch = true;
     let isDragState = false;
     const dragStart = (e) => {
       const el_this = e.currentTarget;
@@ -146,7 +149,7 @@ export default class Modal {
         const reDrag = (e) => {
           const _y = isTouch ? e.targetTouches[0].clientY : e.clientY;
           const _x = isTouch ? e.targetTouches[0].clientX : e.clientX;
-          const _t = elModalBody.scrollTop;
+          const _t = this.modalBody.scrollTop;
           let _y_m;
           let _x_m;
           const reDragMove = (e) => {
@@ -168,7 +171,7 @@ export default class Modal {
           document.addEventListener('touchend', reDragEnd);
         }
         const restoration = () => {
-          elModal.dataset.state = '';
+          this.modal.dataset.state = '';
           this.modalItem.setAttribute(
             'style',
             `max-height: 32rem !important; overflow-y: hidden !important;`
@@ -182,9 +185,9 @@ export default class Modal {
         }
         //성공 확장
         if (y - 30 > y_m && isMove) {
-          elModal.dataset.state = 'drag-full';
+          this.modal.dataset.state = 'drag-full';
           this.modalItem.classList.add('motion');
-          const dragCloseBtn = elModal.querySelector('[data-modal-drag="close"]');
+          const dragCloseBtn = this.modal.querySelector('[data-modal-drag="close"]');
           isDragState = true;
           dragCloseBtn && dragCloseBtn.addEventListener('click', reDragClose);
           this.modalItem.setAttribute(
@@ -192,8 +195,8 @@ export default class Modal {
           );
           this.modalItem.addEventListener('transitionend', () => {
             this.modalItem.classList.remove('motion');
-            let _list = elModalBody.querySelector('.search-result-list');
-            !_list ? _list = elModal.querySelector('[data-modal-scroll]') : '';
+            let _list = this.modalBody.querySelector('.search-result-list');
+            !_list ? _list = this.modal.querySelector('[data-modal-scroll]') : '';
 
             const hasScroll = _list.scrollHeight > _list.clientHeight;
 
@@ -205,22 +208,16 @@ export default class Modal {
         } 
         //성공 원복
         else if(y_m - y > 30) {
-          if (elModal.dataset.state === 'drag-full') {
+          if (this.modal.dataset.state === 'drag-full') {
             if (y_m - y < (h / 3) * 2) {
               restoration();
             } else {
               this.modalItem.removeEventListener('touchstart', dragStart);
-              Global.modal.hide({
-                id: id,
-                callbackClose: callbackClose
-              });
+              this.option.hide();
             }
           } else {
             this.modalItem.removeEventListener('touchstart', dragStart);
-            Global.modal.hide({
-              id: id,
-              callbackClose: callbackClose
-            });
+            this.option.hide();
           }
         } 
         //취소 풀원복
@@ -237,7 +234,7 @@ export default class Modal {
       document.addEventListener('touchmove', dragMove, { passive: false });
       document.addEventListener('touchend', dragEnd);
     }
-    
+    console.log('dragEvent?')
     this.modalItem.removeEventListener('touchstart', dragStart);
     this.modalItem.addEventListener('touchstart', dragStart);
   }
@@ -299,6 +296,8 @@ export default class Modal {
     if (currentModal) currentModal.dataset.current = "false";
     this.modal.dataset.zindex = zIndex;
     this.modal.dataset.current = 'true';
+
+    (this.option.drag) && this.dragEvent();
     
     //loop focus
 		this.btn_first.addEventListener('keydown', this.keyStart.bind(this));	

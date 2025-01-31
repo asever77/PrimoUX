@@ -134,74 +134,69 @@
 	<script type="module">
 		import Modal from '../assets/js/component/modal.js';
 		
-		PrimoUX.modal.modal1 = new Modal({
-			id: 'modal-1',
-			ps: 'center',
-			src: './modal/modal.html',
-			loadCallback: () => {
-				PrimoUX.modal.modal1.show();
-				// setTimeout(() => {
-				// 	PrimoUX.modal.modal1.hide({ focus_target: document.querySelector('[data-test-id="modal2"]') });
-				// }, 1000);
-			}
-		});			
+		// PrimoUX.modal.modal1 = new Modal({
+		// 	id: 'modal-1',
+		// 	ps: 'center',
+		// 	src: './modal/modal.html',
+		// 	loadCallback: () => {
+		// 		PrimoUX.modal.modal1.show();
+		// 	}
+		// });			
 
 		PrimoUX.modal.modal2 = new Modal({
 			id: 'modal-2',
 			ps: 'bottom',
+			drag: true,
+			hide: () => {
+				PrimoUX.modal.modal2.hide();
+			},
 		});
 		PrimoUX.modal.modal2.show();
 
-		PrimoUX.modal.modal3 = new Modal({
-			id: 'modal-3',
-			ps: 'top',
-			src: './modal/modal3.html',
-			loadCallback: () => { 
-				PrimoUX.modal.modal3.show();
-			}
-		});
+		// PrimoUX.modal.modal3 = new Modal({
+		// 	id: 'modal-3',
+		// 	ps: 'top',
+		// 	src: './modal/modal3.html',
+		// 	loadCallback: () => { 
+		// 		PrimoUX.modal.modal3.show();
+		// 	}
+		// });
 
-		PrimoUX.modal.modal4 = new Modal({
-			id: 'modal-4',
-			ps: 'left',
-			src: './modal/modal4.html',
-			loadCallback: () => { 
-				PrimoUX.modal.modal4.show();
-			}
-		});
+		// PrimoUX.modal.modal4 = new Modal({
+		// 	id: 'modal-4',
+		// 	ps: 'left',
+		// 	src: './modal/modal4.html',
+		// 	loadCallback: () => { 
+		// 		PrimoUX.modal.modal4.show();
+		// 	}
+		// });
 
-		PrimoUX.modal.modal5 = new Modal({
-			id: 'modal-5',
-			ps: 'right',
-			src: './modal/modal5.html',
-			loadCallback: () => { 
-				PrimoUX.modal.modal5.show();
-			}
-		});
+		// PrimoUX.modal.modal5 = new Modal({
+		// 	id: 'modal-5',
+		// 	ps: 'right',
+		// 	src: './modal/modal5.html',
+		// 	loadCallback: () => { 
+		// 		PrimoUX.modal.modal5.show();
+		// 	}
+		// });
 
-		PrimoUX.modal.alert1 = new Modal({
-			id: 'alert1',
-			type: 'system',
-			message: `<strong>공지</strong>입니다.`,
-			confirmText: '확인',
-			confirmCallback: () => {
-				//확인 콜백
-				console.log('확인 콜백');
-				// PrimoUX.modal.modal5.zIndexUp();
-				// PrimoUX.modal.alert1.hide({
-				// 	focus_target: document.querySelector('[data-test-id="modal1-5"]')
-				// })
-			},
-			cancelText: '취소',
-			cancelCallback: ()=> {
-				//취소 콜백
-				console.log('취소 콜백');
-				PrimoUX.modal.alert1.hide()
-			},
-		});
-		setTimeout(() => {
-			PrimoUX.modal.alert1.show();
-		}, 2000)
+		// PrimoUX.modal.alert1 = new Modal({
+		// 	id: 'alert1',
+		// 	type: 'system',
+		// 	message: `<strong>공지</strong>입니다.`,
+		// 	confirmText: '확인',
+		// 	confirmCallback: () => {
+		// 		console.log('확인 콜백');
+		// 	},
+		// 	cancelText: '취소',
+		// 	cancelCallback: ()=> {
+		// 		console.log('취소 콜백');
+		// 		PrimoUX.modal.alert1.hide()
+		// 	},
+		// });
+		// setTimeout(() => {
+		// 	PrimoUX.modal.alert1.show();
+		// }, 2000);
 
 			
 	</script>
