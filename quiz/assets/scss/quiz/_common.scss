@@ -5,17 +5,13 @@
   height: 100dvh;
   overflow: hidden;
 
-  &[data-page="0"] [data-mission-page="0"],
-  &[data-page="1"] [data-mission-page="1"],
-  &[data-page="2"] [data-mission-page="2"],
-  &[data-page="3"] [data-mission-page="3"],
-  &[data-page="4"] [data-mission-page="4"],
-  &[data-page="5"] [data-mission-page="5"],
-  &[data-page="6"] [data-mission-page="6"],
-  &[data-page="7"] [data-mission-page="7"],
-  &[data-page="8"] [data-mission-page="8"],
-  &[data-page="9"] [data-mission-page="9"],
-  &[data-page="10"] [data-mission-page="10"] {
+  .math-mission--clear,
+  .math-mission--content,
+  .math-mission--intro {display: none;}
+
+  &[data-page="0"] [data-page="0"],
+  &[data-page="1"] [data-page="1"],
+  &[data-page="2"] [data-page="2"] {
     position: relative;
     display: flex;
     flex-direction: column;
@@ -23,8 +19,17 @@
     height: 100%;
   }
 
-  [data-mission-page] {display: none;}
-
+  [data-mission-page] [data-mission-page] {display: none;}
+  [data-mission-page="0"] [data-mission-page="0"],
+  [data-mission-page="1"] [data-mission-page="1"],
+  [data-mission-page="2"] [data-mission-page="2"] {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+  }
+  
   .math-mission--game-item {display: none;}
   [data-step="0"] [data-step="0"] {display: flex;}
   [data-step="1"] [data-step="1"] {display: flex;}
@@ -104,6 +109,8 @@
       [data-mission-btn="step"],
       [data-mission-btn="again"],
       [data-mission-btn="out"] {display: none;}
+
+      [data-mission-btn="mission-next"] {display: flex;}
     }
     &[data-state="check-O"] {
       [data-mission-btn="next"],

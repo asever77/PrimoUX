@@ -583,15 +583,29 @@ codebox code {
   height: 100dvh;
   overflow: hidden;
 }
-.math-mission[data-page="0"] [data-mission-page="0"], .math-mission[data-page="1"] [data-mission-page="1"], .math-mission[data-page="2"] [data-mission-page="2"], .math-mission[data-page="3"] [data-mission-page="3"], .math-mission[data-page="4"] [data-mission-page="4"], .math-mission[data-page="5"] [data-mission-page="5"], .math-mission[data-page="6"] [data-mission-page="6"], .math-mission[data-page="7"] [data-mission-page="7"], .math-mission[data-page="8"] [data-mission-page="8"], .math-mission[data-page="9"] [data-mission-page="9"], .math-mission[data-page="10"] [data-mission-page="10"] {
+.math-mission .math-mission--clear,
+.math-mission .math-mission--content,
+.math-mission .math-mission--intro {
+  display: none;
+}
+.math-mission[data-page="0"] [data-page="0"], .math-mission[data-page="1"] [data-page="1"], .math-mission[data-page="2"] [data-page="2"] {
   position: relative;
   display: flex;
   flex-direction: column;
   width: 100%;
   height: 100%;
 }
-.math-mission [data-mission-page] {
+.math-mission [data-mission-page] [data-mission-page] {
   display: none;
+}
+.math-mission [data-mission-page="0"] [data-mission-page="0"],
+.math-mission [data-mission-page="1"] [data-mission-page="1"],
+.math-mission [data-mission-page="2"] [data-mission-page="2"] {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
 }
 .math-mission .math-mission--game-item {
   display: none;
@@ -695,6 +709,9 @@ codebox code {
 .math-mission--item[data-state=check] [data-mission-btn=again],
 .math-mission--item[data-state=check] [data-mission-btn=out] {
   display: none;
+}
+.math-mission--item[data-state=check] [data-mission-btn=mission-next] {
+  display: flex;
 }
 .math-mission--item[data-state=check-O] [data-mission-btn=next],
 .math-mission--item[data-state=check-O] [data-mission-btn=again],

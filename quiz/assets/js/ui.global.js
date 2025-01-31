@@ -64,12 +64,13 @@ class QuizPage {
 		this.pages = this.mathMission.querySelectorAll('[data-mission-page]');
 		this.items = this.mathMission.querySelectorAll('.math-mission--item');
 		this.pageNextBtns = document.querySelectorAll('[data-mission-btn]');
+		this.content = this.mathMission.querySelector('.math-mission--content');
 		this.timer;
 
 		this.data = opt.data;
 	}
 	actQuizGameInit(v) {
-		const missionItems = document.querySelectorAll(`.math-mission--item[data-mission-page="${v.dataset.page}"] .math-mission--game-item`);
+		const missionItems = v.querySelectorAll(`.math-mission--game-item`);
 		if (missionItems) {
 			missionItems.forEach(item => {
 				const missionItem_id = item.dataset.id;
@@ -82,13 +83,12 @@ class QuizPage {
 		this.items.forEach(item => {
 			item.dataset.state = "start";
 		});
-		
-		this.actQuizGameInit(v);
-		this.timer && this.timer.resetTimer();//타이머리셋
+	
+		// this.timer && this.timer.resetTimer();//타이머리셋
 	}
 	actStep() {
-		console.log('step'); 
-		const item = this.mathMission.querySelector(`[data-mission-page="${this.mathMission.dataset.page}"]`);
+		console.log('actStep'); 
+		const item = this.mathMission.querySelector(`.math-mission--item[data-mission-page="${this.content.dataset.missionPage}"]`);
 		const game = item.querySelector('.math-mission--game');
 
 		game.dataset.step = Number(game.dataset.step) + 1;
@@ -99,8 +99,11 @@ class QuizPage {
 	}
 
 	actStart() {
-		const item = this.mathMission.querySelector(`[data-mission-page="${this.mathMission.dataset.page}"]`);
+		const item = this.mathMission.querySelector(`.math-mission--item[data-mission-page="${this.content.dataset.missionPage}"]`);
 		item.dataset.state = "play";
+
+		console.log('actStart', item);
+		this.actQuizGameInit(item);
 
 		//타이머시작
 		this.timer = new QuizTimer({
@@ -110,11 +113,12 @@ class QuizPage {
 	}
 	//미션시작 카운트 3.2.1.. > actStart 실행
 	actCount() {
-		const item = this.mathMission.querySelector(`[data-mission-page="${this.mathMission.dataset.page}"]`);
-		item.querySelector('.math-mission--count-number').textContent = 3;
+		const item = this.mathMission.querySelector(`.math-mission--item[data-mission-page="${this.content.dataset.missionPage}"]`);
+		const countNumber = 3;
+		item.querySelector('.math-mission--count-number').textContent = countNumber;
 		item.dataset.state = "ready";
 
-		let timeLeft = 3;
+		let timeLeft = countNumber;
 		const timer = setInterval(() => {
 			if (timeLeft > 0) {
 				timeLeft--;
@@ -126,24 +130,39 @@ class QuizPage {
 			}
 		}, 1000);
 	}
+	actMissionNext(v) {
+		this.content.dataset.missionPage = v.dataset.missionPage;
+	}
 	actEvent(e) {
 		const _this = e.currentTarget;
 		switch (_this.dataset.missionBtn) {
-			case 'again':
-				this.actMove(_this);
-				_this.closest('.math-mission--item').querySelector('.math-mission--game').dataset.step = 0;
-				break;
-			case 'next':
 			case 'reset':
-			case 'complete': 
 				this.actMove(_this);
 				break;
+
+			case 'again':
+				_this.closest('.math-mission--item')
+				const item = _this.closest('.math-mission--item');
+				item.querySelector('.math-mission--game').dataset.step = 0;
+				item.dataset.state = "start";
+				break;
+
+			case 'mission-next':
+				this.actMissionNext(_this);
+				break;
+
+			case 'next':
+				this.actMove(_this);
+				break;
+
 			case 'step': 
 				this.actStep(_this);
 				break;
+
 			case 'start':
 				this.actCount();
 				break;
+
 			case 'out':
 				this.timer && this.timer.resetTimer();//타이머리셋	
 				console.log('나가기');
@@ -160,27 +179,26 @@ class QuizPage {
 
 		//이벤트
 		this.pages.forEach((page, index) => {
-			page.dataset.missionPage = index;
-			if (page.querySelector('[data-mission-btn="next"]')) {
-				page.querySelector('[data-mission-btn="next"]').dataset.page = index + 1;
-			}
-			if (page.querySelector('[data-mission-btn="complete"]')) {
-				page.querySelector('[data-mission-btn="complete"]').dataset.page = index + 1;
-			}
-			if (page.querySelector('[data-mission-btn="again"]')) {
-				page.querySelector('[data-mission-btn="again"]').dataset.page = index;
-				page.querySelector('.math-mission--game').dataset.step = 0;
-			}
+			// page.dataset.missionPage = index;
+			// if (page.querySelector('[data-mission-btn="next"]')) {
+			// 	page.querySelector('[data-mission-btn="next"]').dataset.page = index + 1;
+			// }
+			// if (page.querySelector('[data-mission-btn="complete"]')) {
+			// 	page.querySelector('[data-mission-btn="complete"]').dataset.page = index + 1;
+			// }
+			// if (page.querySelector('[data-mission-btn="again"]')) {
+			// 	page.querySelector('[data-mission-btn="again"]').dataset.page = index;
+			// 	page.querySelector('.math-mission--game').dataset.step = 0;
+			// }
 		});
 		this.pageNextBtns.forEach((btn, index) => {
 			btn.addEventListener('click', this.actEvent.bind(this));
 		});
 	}
 
-
 	missionCheck(v) {
 		const isAnswer = v;
-		const item = this.mathMission.querySelector(`[data-mission-page="${this.mathMission.dataset.page}"]`);
+		const item = this.mathMission.querySelector(`.math-mission--item[data-mission-page="${this.content.dataset.missionPage}"]`);
 		const game = item.querySelector('.math-mission--game');
 		const games = item.querySelectorAll('.math-mission--game-item');
 		const gameLen = games.length;
