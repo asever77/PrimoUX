@@ -372,11 +372,11 @@ class QuizMating {
 
 		if (this.data.length === selectedBtns.length) {
 			let n = 0;
-			for (let i = 1, len = selectedBtns.length; i <= len; i = i + 2) {
-				const a = this.game.querySelector(`.game-mating--item[data-n="${i}"]`);
-				const b = this.game.querySelector(`.game-mating--item[data-n="${i + 1}"]`);
+			
+			for (let i = 1, len = selectedBtns.length/2; i <= len; i++) {
+				const items = this.game.querySelectorAll(`.game-mating--item[data-n="${i}"]`);
 
-				if (a.dataset.answer === b.dataset.answer) {
+				if (items[0].dataset.answer === items[1].dataset.answer) {
 					n = n + 1;
 				} else {
 					console.log('오답')
@@ -385,13 +385,12 @@ class QuizMating {
 				}
 			}
 
-			if (this.data.length / 2 === n ) {
+			if (this.data.length/2 === n ) {
 				console.log('정답')
 				QuizGame.exe.quizPage.missionCheck(true);
 			}
 
 		} else {
-			console.log('오답2222222')
 			QuizGame.exe.quizPage.missionCheck(false);
 		}
 	}

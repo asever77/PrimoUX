@@ -895,4 +895,65 @@ codebox code {
 }
 .game-mating--item[data-selected=true][data-n="3"] {
   background-color: yellowgreen;
+}
+
+.math-mission--intro {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.math-mission--intro-tit {
+  font-size: 6rem;
+}
+.math-mission--intro-stit {
+  font-size: 4rem;
+}
+
+.math-mission--start {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+.math-mission--start-tit {
+  font-size: 6rem;
+}
+
+.math-mission--quiz {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding: 2rem;
+}
+.math-mission--quiz-tit {
+  font-size: 2rem;
+}
+
+.math-mission--count {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+.math-mission--count-number {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 5rem;
+  border-radius: 50%;
+  background-color: #222;
+  color: #fff;
+  width: 8rem;
+  height: 8rem;
+  line-height: 1;
+}
+
+.math-mission--clear {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.math-mission--clear-tit {
+  font-size: 6rem;
 }/*# sourceMappingURL=app.css.map */
