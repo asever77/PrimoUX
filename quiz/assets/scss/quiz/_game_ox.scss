@@ -1,0 +1,70 @@
+.game-ox {
+  display: flex;
+  flex:1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  &--wrap {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    gap:.8rem;
+  }
+  &--item {
+    flex:1;
+    padding:4rem 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    flex-direction: column;
+    width: 100%;
+    gap:1.2rem;
+
+    &-title {
+      display: flex;
+      width: 100%;
+      align-items: center;
+      justify-content: center;
+      font-size: 4rem; 
+      padding: 2rem;
+    }
+    &-group {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap:8rem;
+    }
+    &-input {
+      position: relative;
+
+      input:checked + .game-ox--item-o{
+        background-color: skyblue;
+      }
+      input:checked + .game-ox--item-x{
+        background-color: pink;
+      }
+    }
+    &-x,
+    &-o {
+      display: flex;
+      width: 8rem;
+      height: 8rem;
+      border: .2rem solid black;
+      border-radius: 1.2rem;
+
+      &::before{
+        content:"";
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 4rem;
+        line-height: 1;
+        width: 100%;
+      }
+    }
+    &-o::before{content:"O"}
+    &-x::before{content:"X"}
+  }
+}

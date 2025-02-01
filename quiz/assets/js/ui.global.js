@@ -55,6 +55,13 @@
 					});
 			});
 		},
+		shuffleArray(array) {
+			for (let i = array.length - 1; i > 0; i--) {
+					const j = Math.floor(Math.random() * (i + 1)); // 0부터 i까지의 랜덤한 인덱스 선택
+					[array[i], array[j]] = [array[j], array[i]]; // 요소 교환
+			}
+			return array;
+		},
 	}
 })();
 
@@ -66,9 +73,15 @@ class QuizPage {
 		this.pageNextBtns = document.querySelectorAll('[data-mission-btn]');
 		this.content = this.mathMission.querySelector('.math-mission--content');
 		this.timer;
-
 		this.data = opt.data;
+		this.gameTime = 3;
 	}
+	init() {
+		this.pageNextBtns.forEach((btn, index) => {
+			btn.addEventListener('click', this.actEvent.bind(this));
+		});
+	}
+
 	actQuizGameInit(v) {
 		const missionItems = v.querySelectorAll(`.math-mission--game-item`);
 		if (missionItems) {
@@ -78,40 +91,47 @@ class QuizPage {
 			});
 		}
 	}
+	actGameTime(m,s) {
+		for (let i = 0, len = this.data.length; i < len; i++) {
+			if (this.data[i].id === this.mathMission.querySelector(`.math-mission--item[data-mission-page="${m}"] .math-mission--game-item[data-step="${s}"]`).dataset.id) {
+				console.log(this.data[i])
+				this.gameTime = this.data[i].time;
+				break;
+			}
+		}
+	}
+
 	actMove(v) {
 		this.mathMission.dataset.page = v.dataset.page;
 		this.items.forEach(item => {
 			item.dataset.state = "start";
 		});
-	
-		// this.timer && this.timer.resetTimer();//타이머리셋
 	}
 	actStep() {
-		console.log('actStep'); 
 		const item = this.mathMission.querySelector(`.math-mission--item[data-mission-page="${this.content.dataset.missionPage}"]`);
 		const game = item.querySelector('.math-mission--game');
 
 		game.dataset.step = Number(game.dataset.step) + 1;
-
-		this.timer.resetTimer();
+		this.actGameTime(this.content.dataset.missionPage, game.dataset.step);
+		this.timer.resetTimer({
+			time: this.gameTime,
+		});
 		item.dataset.state = "play";
 		this.timer.init();
 	}
-
 	actStart() {
 		const item = this.mathMission.querySelector(`.math-mission--item[data-mission-page="${this.content.dataset.missionPage}"]`);
+		const game = item.querySelector('.math-mission--game');
+
 		item.dataset.state = "play";
-
-		console.log('actStart', item);
 		this.actQuizGameInit(item);
-
-		//타이머시작
+		this.actGameTime(this.content.dataset.missionPage, game.dataset.step);
 		this.timer = new QuizTimer({
 			item: item,
+			time: this.gameTime,
 		});
 		this.timer.init();
 	}
-	//미션시작 카운트 3.2.1.. > actStart 실행
 	actCount() {
 		const item = this.mathMission.querySelector(`.math-mission--item[data-mission-page="${this.content.dataset.missionPage}"]`);
 		const countNumber = 3;
@@ -136,10 +156,6 @@ class QuizPage {
 	actEvent(e) {
 		const _this = e.currentTarget;
 		switch (_this.dataset.missionBtn) {
-			case 'reset':
-				this.actMove(_this);
-				break;
-
 			case 'again':
 				_this.closest('.math-mission--item')
 				const item = _this.closest('.math-mission--item');
@@ -151,6 +167,7 @@ class QuizPage {
 				this.actMissionNext(_this);
 				break;
 
+			case 'reset':
 			case 'next':
 				this.actMove(_this);
 				break;
@@ -169,33 +186,6 @@ class QuizPage {
 				break;
 		}
 	}
-	init() {
-		// this.data.forEach((item, index) => {
-		// 	console.log(item)
-		// 	const gameItem = document.querySelector(`.math-mission--game-item[data-id="${item.id}"]`);
-
-		// 	QuizGame.exe[item.id].init();
-		// });
-
-		//이벤트
-		this.pages.forEach((page, index) => {
-			// page.dataset.missionPage = index;
-			// if (page.querySelector('[data-mission-btn="next"]')) {
-			// 	page.querySelector('[data-mission-btn="next"]').dataset.page = index + 1;
-			// }
-			// if (page.querySelector('[data-mission-btn="complete"]')) {
-			// 	page.querySelector('[data-mission-btn="complete"]').dataset.page = index + 1;
-			// }
-			// if (page.querySelector('[data-mission-btn="again"]')) {
-			// 	page.querySelector('[data-mission-btn="again"]').dataset.page = index;
-			// 	page.querySelector('.math-mission--game').dataset.step = 0;
-			// }
-		});
-		this.pageNextBtns.forEach((btn, index) => {
-			btn.addEventListener('click', this.actEvent.bind(this));
-		});
-	}
-
 	missionCheck(v) {
 		const isAnswer = v;
 		const item = this.mathMission.querySelector(`.math-mission--item[data-mission-page="${this.content.dataset.missionPage}"]`);
@@ -216,19 +206,18 @@ class QuizPage {
 			//오답
 			item.dataset.state = 'check-X';
 		}
-		
-		
 	}
 }
 
 class QuizTimer {
 	constructor(opt){
+		this.opt = opt;
 		this.timer = 0;
-		this.limitTime = 15;
-		this.timeLeft = this.limitTime;
 		this.item = opt.item;
 		this.itemTimer = this.item.querySelector('.math-mission--timer');
 		this.itemTimerBar = this.itemTimer.querySelector('.math-mission--timer-bar');
+		this.limitTime = this.opt.time;
+		this.timeLeft = this.limitTime;
 
 		if (!this.itemTimerBar) {
 			this.itemTimer.innerHTML = `<b class="math-mission--timer-bar motion" style="height: 0%;">
@@ -239,9 +228,8 @@ class QuizTimer {
 		this.itemTimerText = this.itemTimerBar.querySelector('.a11y-hidden');
 	}
 	init() {
-		this.limitTime = 15;
-		this.timeLeft = this.limitTime;
-
+		
+console.log('init', this.limitTime)
 		this.itemTimer.innerHTML = `<b class="math-mission--timer-bar motion" style="height: 0%;">
 			<span class="a11y-hidden">남은 시간: ${this.limitTime}초</span>
 		</b>`;
@@ -275,7 +263,13 @@ class QuizTimer {
 			clearTimeout(this.timer);
 		}
 	}
-	resetTimer() {
+	resetTimer(opt) {
+
+		console.log('resetTimer', opt);
+
+		this.limitTime = opt.time;
+		this.timeLeft = this.limitTime;
+
 		this.itemTimerBar.remove();
 		clearTimeout(this.timer);
 		this.itemTimer.dataset.state = "";
@@ -305,17 +299,12 @@ class QuizMating {
 	constructor(opt) {
 		this.id = opt.id;
 		this.data = opt.data;
-		this.game = document.querySelector(`[data-id="${this.id}"] .game-mating`);
-		this.answer = [];
-
-		this.cancel = null;
-		this.n = 1;
-		this.comparison = null;
+		this.game = document.querySelector(`[data-id="${this.id}"]`);
 	}
 	init() {
-		this.n = 1;
-		const quizData = this.shuffleArray(this.data);
-		let game_html = `<div class="game-mating--wrap">`;
+		const quizData = QuizGame.utils.shuffleArray(this.data);
+		let game_html = `<div class="game-mating">
+		<div class="game-mating--wrap">`;
 		quizData.forEach(item => {
 			game_html += `<button type="button" class="game-mating--item" data-answer="${item.answer}">
 				<span class="game-mating--card">
@@ -325,17 +314,18 @@ class QuizMating {
 			</button>`;
 		});
 		game_html += `</div>
-		<div class="math-mission--game-footer">
-			<button type="button" class="math-mission--game-btn" disabled>완료</button>
-		</div>
-		<div class="math-mission--game-timeover">
-			<strong>TIME</strong><strong>OVER</strong>
-		</div>
-		<div class="math-mission--game-O">
-			<span class="a11y-hidden">정답</span>
-		</div>
-		<div class="math-mission--game-X">
-			<span class="a11y-hidden">오답</span>
+			<div class="math-mission--game-footer">
+				<button type="button" class="math-mission--game-btn" disabled>완료</button>
+			</div>
+			<div class="math-mission--game-timeover">
+				<strong>TIME</strong><strong>OVER</strong>
+			</div>
+			<div class="math-mission--game-O">
+				<span class="a11y-hidden">정답</span>
+			</div>
+			<div class="math-mission--game-X">
+				<span class="a11y-hidden">오답</span>
+			</div>
 		</div>`;
 
 		this.game.innerHTML = game_html;
@@ -412,12 +402,144 @@ class QuizMating {
 			QuizGame.exe.quizPage.missionCheck(false);
 		}
 	}
-	shuffleArray(array) {
-    for (let i = array.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1)); // 0부터 i까지의 랜덤한 인덱스 선택
-        [array[i], array[j]] = [array[j], array[i]]; // 요소 교환
-    }
-    return array;
-	}
+}
 
+class QuizOX {
+	constructor(opt){
+		this.id = opt.id;
+		this.data = opt.data;
+		this.game = document.querySelector(`[data-id="${this.id}"]`);
+	}
+	init() {
+		const quizData = QuizGame.utils.shuffleArray(this.data);
+		let game_html = `<div class="game-ox">
+		<div class="game-ox--wrap">`;
+		quizData.forEach((item, index) => {
+			game_html += `<div class="game-ox--item" data-answer="${item.answer}">
+				<div class="game-ox--item-title">
+					${item.content}
+				</div>
+				<div class="game-ox--item-group">
+					<div class="game-ox--item-input">
+						<input type="radio" id=${this.id + '_' + index + '_' + 'o'} name="${this.id + '_' + index}" class="a11y-hidden" value="O">
+						<label for="${this.id + '_' + index + '_' + 'o'}" class="game-ox--item-o"><span class="a11y-hidden">맞다</span></label>
+					</div>
+					<div class="game-ox--item-input">
+						<input type="radio" id=${this.id + '_' + index + '_' + 'x'} name="${this.id + '_' + index}" class="a11y-hidden" value="X">
+						<label for="${this.id + '_' + index + '_' + 'x'}" class="game-ox--item-x"><span class="a11y-hidden">틀리다</span></label>
+					</div>
+				</div>
+			</div>`;
+		});
+		game_html += `</div>
+			<div class="math-mission--game-timeover">
+				<strong>TIME</strong><strong>OVER</strong>
+			</div>
+			<div class="math-mission--game-O">
+				<span class="a11y-hidden">정답</span>
+			</div>
+			<div class="math-mission--game-X">
+				<span class="a11y-hidden">오답</span>
+			</div>
+		</div>`;
+
+		this.game.innerHTML = game_html;
+		this.oxInput = this.game.querySelectorAll('.game-ox--item-input input');
+		this.oxInput.forEach(item => {
+			item.addEventListener('change', this.act.bind(this))
+		});
+	}
+	act(e) {
+		const _this = e.currentTarget;
+		this.complete(_this.value);
+	}
+	complete(v) {
+		console.log(v,this.data[0].answer);
+		QuizGame.exe.quizPage.missionCheck(v === this.data[0].answer);
+		// QuizGame.exe.quizPage.missionCheck(false);
+	}
+}
+
+class QuizSelect {
+	constructor(opt) {
+		this.id = opt.id;
+		this.data = opt.data;
+		this.game = document.querySelector(`[data-id="${this.id}"]`);
+	}
+	init() {
+		const quizData = QuizGame.utils.shuffleArray(this.data);
+		let game_html = `<div class="game-select">
+		<div class="game-select--wrap">`;
+		quizData.forEach((item, index) => {
+			game_html += `<div class="game-select--item">
+				
+				<div class="game-select--card">
+					<div class="game-select--front"></div>
+					<div class="game-select--back">
+						<div class="game-select--input">
+							<input type="checkbox" id=${this.id + '_' + index} class="a11y-hidden" value="${item.answer}">
+							<label for="${this.id + '_' + index}" class="game-select--label">
+								${item.content}
+							</label>
+						</div>
+					</div>
+				</div>
+			</div>`;
+		});
+		game_html += `</div>
+			<div class="math-mission--game-footer">
+				<button type="button" class="math-mission--game-btn" disabled>완료</button>
+			</div>
+			<div class="math-mission--game-timeover">
+				<strong>TIME</strong><strong>OVER</strong>
+			</div>
+			<div class="math-mission--game-O">
+				<span class="a11y-hidden">정답</span>
+			</div>
+			<div class="math-mission--game-X">
+				<span class="a11y-hidden">오답</span>
+			</div>
+		</div>`;
+
+		this.game.innerHTML = game_html;
+		this.btnComplete = this.game.querySelector('.math-mission--game-btn');
+		this.btnComplete.addEventListener('click', this.complete.bind(this));
+		this.selectInput = this.game.querySelectorAll('.game-select--input input');
+		this.selectInput.forEach(item => {
+			item.addEventListener('change', this.act.bind(this))
+		});
+	}
+	act() {
+		//완료버튼
+		const checkedInputs = this.game.querySelectorAll(`.game-select--input input:checked`);
+
+		if (checkedInputs.length) {
+			this.btnComplete.disabled = false;
+		} else {
+			this.btnComplete.disabled = true;
+		}
+	}
+	complete() {
+		const checkedInputs = this.game.querySelectorAll(`.game-select--input input`);
+		let valueLen = 0;
+		let checkLen = 0;
+		let answerLen = 0;
+		checkedInputs.forEach(item => {
+			if (item.value === 'O') {
+				valueLen = valueLen + 1;
+			}
+			if (item.value === 'O' && item.checked) {
+				answerLen = answerLen + 1;
+			}
+			if (item.checked) {
+				checkLen = checkLen + 1;
+			}
+		});
+		
+		if (valueLen === answerLen && checkLen === answerLen) {
+			QuizGame.exe.quizPage.missionCheck(true);
+		} else {
+			QuizGame.exe.quizPage.missionCheck(false);
+		}
+	}
 }

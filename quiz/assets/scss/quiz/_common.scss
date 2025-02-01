@@ -22,7 +22,9 @@
   [data-mission-page] [data-mission-page] {display: none;}
   [data-mission-page="0"] [data-mission-page="0"],
   [data-mission-page="1"] [data-mission-page="1"],
-  [data-mission-page="2"] [data-mission-page="2"] {
+  [data-mission-page="2"] [data-mission-page="2"],
+  [data-mission-page="3"] [data-mission-page="3"],
+  [data-mission-page="4"] [data-mission-page="4"] {
     position: relative;
     display: flex;
     flex-direction: column;
@@ -286,38 +288,6 @@
   background-color: blue;
 }
 
-// 짝 짓기
-.game-mating {
-  display: flex;
-  flex:1;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-
-  &--wrap {
-    width: 100%;
-    display: flex;
-    flex-wrap: wrap;
-    gap:.8rem;
-  }
-  &--item {
-    flex:1;
-    padding:4rem 2rem;
-    border-radius: 1.6rem;
-    border:.2rem solid black;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 2rem;
-    min-width: calc(33% - .8rem);
-
-    &[data-selected="true"][data-n="1"] {background-color: skyblue;}
-    &[data-selected="true"][data-n="2"] {background-color: pink;}
-    &[data-selected="true"][data-n="3"] {background-color: yellowgreen;}
-  }
-}
-
-
 .math-mission--intro{
   display: flex;
   justify-content: center;
@@ -377,4 +347,12 @@
   &-tit {
     font-size: 6rem;
   }
+}
+
+
+math {font-size: 3rem}
+msup mn + mn {font-size: 1.6rem;}
+mfrac {
+  padding-inline-start: 1.3rem;
+  padding-inline-end: 1.3rem;
 }

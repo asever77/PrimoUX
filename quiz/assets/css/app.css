@@ -600,7 +600,9 @@ codebox code {
 }
 .math-mission [data-mission-page="0"] [data-mission-page="0"],
 .math-mission [data-mission-page="1"] [data-mission-page="1"],
-.math-mission [data-mission-page="2"] [data-mission-page="2"] {
+.math-mission [data-mission-page="2"] [data-mission-page="2"],
+.math-mission [data-mission-page="3"] [data-mission-page="3"],
+.math-mission [data-mission-page="4"] [data-mission-page="4"] {
   position: relative;
   display: flex;
   flex-direction: column;
@@ -880,40 +882,6 @@ codebox code {
   background-color: blue;
 }
 
-.game-mating {
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-.game-mating--wrap {
-  width: 100%;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.8rem;
-}
-.game-mating--item {
-  flex: 1;
-  padding: 4rem 2rem;
-  border-radius: 1.6rem;
-  border: 0.2rem solid black;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 2rem;
-  min-width: calc(33% - 0.8rem);
-}
-.game-mating--item[data-selected=true][data-n="1"] {
-  background-color: skyblue;
-}
-.game-mating--item[data-selected=true][data-n="2"] {
-  background-color: pink;
-}
-.game-mating--item[data-selected=true][data-n="3"] {
-  background-color: yellowgreen;
-}
-
 .math-mission--intro {
   display: flex;
   justify-content: center;
@@ -973,4 +941,169 @@ codebox code {
 }
 .math-mission--clear-tit {
   font-size: 6rem;
+}
+
+math {
+  font-size: 3rem;
+}
+
+msup mn + mn {
+  font-size: 1.6rem;
+}
+
+mfrac {
+  padding-inline-start: 1.3rem;
+  padding-inline-end: 1.3rem;
+}
+
+.game-mating {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.game-mating--wrap {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+}
+.game-mating--item {
+  flex: 1;
+  padding: 4rem 2rem;
+  border-radius: 1.6rem;
+  border: 0.2rem solid black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2rem;
+  min-width: calc(33% - 0.8rem);
+}
+.game-mating--item[data-selected=true][data-n="1"] {
+  background-color: skyblue;
+}
+.game-mating--item[data-selected=true][data-n="2"] {
+  background-color: pink;
+}
+.game-mating--item[data-selected=true][data-n="3"] {
+  background-color: yellowgreen;
+}
+
+.game-ox {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.game-ox--wrap {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+}
+.game-ox--item {
+  flex: 1;
+  padding: 4rem 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  flex-direction: column;
+  width: 100%;
+  gap: 1.2rem;
+}
+.game-ox--item-title {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  font-size: 4rem;
+  padding: 2rem;
+}
+.game-ox--item-group {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8rem;
+}
+.game-ox--item-input {
+  position: relative;
+}
+.game-ox--item-input input:checked + .game-ox--item-o {
+  background-color: skyblue;
+}
+.game-ox--item-input input:checked + .game-ox--item-x {
+  background-color: pink;
+}
+.game-ox--item-x, .game-ox--item-o {
+  display: flex;
+  width: 8rem;
+  height: 8rem;
+  border: 0.2rem solid black;
+  border-radius: 1.2rem;
+}
+.game-ox--item-x::before, .game-ox--item-o::before {
+  content: "";
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 4rem;
+  line-height: 1;
+  width: 100%;
+}
+.game-ox--item-o::before {
+  content: "O";
+}
+.game-ox--item-x::before {
+  content: "X";
+}
+
+.game-select {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.game-select--wrap {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+}
+.game-select--card {
+  height: 100%;
+  width: 100%;
+  position: relative;
+}
+.game-select--back {
+  height: 100%;
+  width: 100%;
+  position: relative;
+}
+.game-select--item {
+  flex: 1;
+  min-width: calc(50% - 0.8rem);
+}
+.game-select--input {
+  height: 100%;
+  width: 100%;
+  position: relative;
+}
+.game-select--label {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  padding: 4rem 2rem;
+  border-radius: 1.6rem;
+  border: 0.2rem solid black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2rem;
+}
+.game-select input:checked + .game-select--label {
+  background-color: powderblue;
 }/*# sourceMappingURL=app.css.map */

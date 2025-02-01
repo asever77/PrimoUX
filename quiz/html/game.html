@@ -9,27 +9,23 @@
 </head>
 <body>
   <main class="math-mission">
-    <div class="math-mission--game-item" data-id="gameMating_1" style="display: flex;">
-      <div class="game-mating"></div>
-    </div>
+    <div class="math-mission--game-item" data-id="game" style="display: flex;"></div>
   </main>
 
   <script src="../assets/js/ui.global.js"></script>
   <script>
     document.addEventListener("DOMContentLoaded", () => {
       // quiz
-      QuizGame.exe.gameMating_1 = new QuizMating({
-        id: 'gameMating_1',
+      QuizGame.exe.game = new QuizSelect({
+        id: 'game',
         data: [
-          {answer: 1, content: '<math><mn>1.5702702702</mn><mo>…</mo></math>'},
-          {answer: 2, content: '<math><mn>2.5702702702</mn><mo>…</mo></math>'},
-          {answer: 3, content: '<math><mn>3.5702702702</mn><mo>…</mo></math>'},
-          {answer: 1, content: '<math><mn>11.5702702702</mn><mo>…</mo></math>'},
-          {answer: 2, content: '<math><mn>22.5702702702</mn><mo>…</mo></math>'},
-          {answer: 3, content: '<math><mn>33.5702702702</mn><mo>…</mo></math>'},
-        ]
+				  { answer: 'O', content: '<math><mfrac><mn>3</mn><msup><mn>2</mn><mn>3</mn></msup></mfrac></math>' },
+					{ answer: 'X', content: '<math><mfrac><mn>8</mn><mrow><msup><mn>2</mn><mn>2</mn></msup><mo>×</mo><mn>3</mn><mo>×</mo><mn>5</mn></mrow></mfrac></math>' },
+					{ answer: 'O', content: '<math><mn>3.570</mn><mo>…</mo></math>' },
+					{ answer: 'X', content: '<math><mn>11.570</mn><mo>…</mo></math>' },
+				]
       });
-      QuizGame.exe.gameMating_1.init();
+      QuizGame.exe.game.init();
       
 
     });

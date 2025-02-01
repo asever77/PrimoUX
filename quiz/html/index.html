@@ -29,7 +29,11 @@
 					<h2 class="math-mission--start-tit">Mission 1</h2>
 					<button type="button" data-mission-btn="start">시작</button>
 				</div>
-				
+				<div class="math-mission--timer" role="timer" aria-live="assertive" aria-atomic="true">
+          <b class="math-mission--timer-bar" style="height: 0%;">
+            <span class="a11y-hidden">남은 시간: 10초</span>
+          </b>
+        </div>
 				<div class="math-mission--quiz">
 					<h2 class="math-mission--quiz-tit">순환소수와 그 순환마디를 짝 지으세요.</h2>
 				</div>
@@ -39,26 +43,16 @@
 
 				<!-- 퀴즈 mating, ox, select -->
 				<div class="math-mission--game" data-step="0">
-					<div class="math-mission--timer" role="timer" aria-live="assertive" aria-atomic="true">
-						<b class="math-mission--timer-bar" style="height: 0%;">
-							<span class="a11y-hidden">남은 시간: 10초</span>
-						</b>
-					</div>
 					<!-- game1 -->
-					<div class="math-mission--game-item" data-id="gameMating_1" data-step="0">
-						<div class="game-mating"></div>
-					</div>
-					<div class="math-mission--game-item" data-id="gameMating_2" data-step="1">
-						<div class="game-mating"></div>
-					</div>
-					<div class="math-mission--game-item" data-id="gameMating_3" data-step="2">
-						<div class="game-mating"></div>
-					</div>
+					<div class="math-mission--game-item" data-id="gameMating_1" data-step="0"></div>
+					<div class="math-mission--game-item" data-id="gameMating_2" data-step="1"></div>
+					<div class="math-mission--game-item" data-id="gameMating_3" data-step="2"></div>
 				</div>
 
 				<div class="math-mission--control">
 					<button type="button" data-mission-btn="step">다음(퀴즈)</button>
 					<button type="button" data-mission-btn="mission-next" data-mission-page="1">다음(미션)</button>
+          <!-- <button type="button" data-mission-btn="next" data-page="2">다음(clear)</button> -->
 					<button type="button" data-mission-btn="again" data-mission-page="0">다시하기(미션1)</button>
 					<button type="button" data-mission-btn="out" data-page="out">나가기</button>
 				</div>
@@ -85,18 +79,48 @@
 				<!-- 퀴즈 mating, ox, select -->
 				<div class="math-mission--game" data-step="0">
 					<!-- game1 -->
-					<div class="math-mission--game-item" data-id="gameMating2_1" data-step="0">
-						<div class="game-mating"></div>
-					</div>
-					<div class="math-mission--game-item" data-id="gameMating2_2" data-step="1">
-						<div class="game-mating"></div>
-					</div>
+					<div class="math-mission--game-item" data-id="gameOX_1" data-step="0"></div>
+					<div class="math-mission--game-item" data-id="gameOX_2" data-step="1"></div>
 				</div>
 
 				<div class="math-mission--control">
 					<button type="button" data-mission-btn="step">다음(퀴즈)</button>
-					<button type="button" data-mission-btn="next" data-page="2">다음(clear)</button>
+          <button type="button" data-mission-btn="mission-next" data-mission-page="2">다음(미션)</button>
+					<!-- <button type="button" data-mission-btn="next" data-page="2">다음(clear)</button> -->
 					<button type="button" data-mission-btn="again" data-mission-page="1">다시하기(미션2)</button>
+					<button type="button" data-mission-btn="out" data-page="out">나가기</button>
+				</div>
+			</div>
+
+      <!-- Mission 3 -->
+			<div class="math-mission--item" data-mission-page="2" data-state="start">
+				<div class="math-mission--start">
+					<h2 class="math-mission--start-tit">Mission 3</h2>
+					<button type="button" data-mission-btn="start">시작</button>
+				</div>
+				<div class="math-mission--timer" role="timer" aria-live="assertive" aria-atomic="true">
+					<b class="math-mission--timer-bar" style="height: 0%;">
+						<span class="a11y-hidden">남은 시간: 10초</span>
+					</b>
+				</div>
+				<div class="math-mission--quiz">
+					<h2 class="math-mission--quiz-tit">3333 순환소수와 그 순환마디를 짝 지으세요.</h2>
+				</div>
+				<div class="math-mission--count">
+					<strong class="math-mission--count-number">3</strong>
+				</div>
+
+				<!-- 퀴즈 mating, ox, select -->
+				<div class="math-mission--game" data-step="0">
+					<!-- game1 -->
+					<div class="math-mission--game-item" data-id="gameSelect_1" data-step="0"></div>
+				</div>
+
+				<div class="math-mission--control">
+					<button type="button" data-mission-btn="step">다음(퀴즈)</button>
+          <!-- <button type="button" data-mission-btn="mission-next" data-mission-page="3">다음(미션)</button> -->
+					<button type="button" data-mission-btn="next" data-page="2">다음(clear)</button>
+					<button type="button" data-mission-btn="again" data-mission-page="2">다시하기(미션2)</button>
 					<button type="button" data-mission-btn="out" data-page="out">나가기</button>
 				</div>
 			</div>
@@ -115,7 +139,7 @@
 	<script src="../assets/js/ui.global.js"></script>
 	<script>
 		document.addEventListener("DOMContentLoaded", () => {
-			// quiz
+			// quiz : mating
 			QuizGame.exe.gameMating_1 = new QuizMating({
 				id: 'gameMating_1',
 				data: [
@@ -149,39 +173,41 @@
 					{ answer: 3, content: '<math><mn>c 33.570</mn><mo>…</mo></math>' },
 				]
 			});
-
-			QuizGame.exe.gameMating2_1 = new QuizMating({
-				id: 'gameMating2_1',
+      // quiz : ox
+			QuizGame.exe.gameOX_1 = new QuizOX({
+				id: 'gameOX_1',
 				data: [
-					{ answer: 1, content: '<math><mn>d 1.570</mn><mo>…</mo></math>' },
-					{ answer: 2, content: '<math><mn>d 2.570</mn><mo>…</mo></math>' },
-					{ answer: 3, content: '<math><mn>d 3.570</mn><mo>…</mo></math>' },
-					{ answer: 1, content: '<math><mn>d 11.570</mn><mo>…</mo></math>' },
-					{ answer: 2, content: '<math><mn>d 22.570</mn><mo>…</mo></math>' },
-					{ answer: 3, content: '<math><mn>d 33.570</mn><mo>…</mo></math>' },
+					{ answer: 'O', content: '<math><mn>1.570</mn><mo>…</mo></math>' },
 				]
 			});
-			QuizGame.exe.gameMating2_2 = new QuizMating({
-				id: 'gameMating2_2',
+			QuizGame.exe.gameOX_2 = new QuizOX({
+				id: 'gameOX_2',
 				data: [
-					{ answer: 1, content: '<math><mn>e 1.570</mn><mo>…</mo></math>' },
-					{ answer: 2, content: '<math><mn>e 2.570</mn><mo>…</mo></math>' },
-					{ answer: 3, content: '<math><mn>e 3.570</mn><mo>…</mo></math>' },
-					{ answer: 1, content: '<math><mn>e 11.570</mn><mo>…</mo></math>' },
-					{ answer: 2, content: '<math><mn>e 22.570</mn><mo>…</mo></math>' },
-					{ answer: 3, content: '<math><mn>e 33.570</mn><mo>…</mo></math>' },
+					{ answer: 'X', content: '<math><mn>d 2.570</mn><mo>…</mo></math>' },
+				]
+			});
+      // quiz : select
+      QuizGame.exe.gameSelect_1 = new QuizSelect({
+				id: 'gameSelect_1',
+				data: [
+          { answer: 'O', content: '<math><mfrac><mn>3</mn><msup><mn>2</mn><mn>3</mn></msup></mfrac></math>' },
+					{ answer: 'X', content: '<math><mfrac><mn>8</mn><mrow><msup><mn>2</mn><mn>2</mn></msup><mo>×</mo><mn>3</mn><mo>×</mo><mn>5</mn></mrow></mfrac></math>' },
+					{ answer: 'O', content: '<math><mn>3.570</mn><mo>…</mo></math>' },
+					{ answer: 'X', content: '<math><mn>11.570</mn><mo>…</mo></math>' },
 				]
 			});
 
 			// page
 			QuizGame.exe.quizPage = new QuizPage({
 				data: [
-					{ mission: 1, id: 'gameMating_1', type: 'mating' },
-					{ mission: 1, id: 'gameMating_2', type: 'mating' },
-					{ mission: 1, id: 'gameMating_3', type: 'mating' },
+					{ mission: 1, id: 'gameMating_1', time: 15, },
+					{ mission: 1, id: 'gameMating_2', time: 15, },
+					{ mission: 1, id: 'gameMating_3', time: 15, },
 
-					{ mission: 2, id: 'gameMating2_1', type: 'mating' },
-					{ mission: 2, id: 'gameMating2_2', type: 'mating' },
+					{ mission: 2, id: 'gameOX_1', time:5, },
+					{ mission: 2, id: 'gameOX_2', time:5, },
+
+          { mission: 3, id: 'gameSelect_1', time:15, },
 				],
 			});
 			QuizGame.exe.quizPage.init();
