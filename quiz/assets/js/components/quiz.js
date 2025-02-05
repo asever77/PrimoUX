@@ -279,22 +279,19 @@ export class QuizMating {
 	act(e) {
 		const _this = e.currentTarget;
 		if (_this.dataset.selected !== 'true') {
-			const isMating_1 = this.game.querySelectorAll(`.game-mating--item[data-n="1"]`);
-			const isMating_2 = this.game.querySelectorAll(`.game-mating--item[data-n="2"]`);
-			const isMating_3 = this.game.querySelectorAll(`.game-mating--item[data-n="3"]`);
+      const maxMating = this.data.length/2; // 최대 그룹 개수 (필요에 따라 조정)
+      let n = 1;
 
-			if (isMating_1.length !== 2) {
-				_this.dataset.n = 1;
-			} else if (isMating_1.length === 2) {
-				if (isMating_2.length !== 2) {
-					_this.dataset.n = 2;
-				} else if (isMating_2.length === 2) {
-					if (isMating_3.length !== 2) {
-						_this.dataset.n = 3;
-					}
-				}
-			}
-			_this.dataset.selected = true;
+      while (n <= maxMating) {
+          const isMating = this.game.querySelectorAll(`.game-mating--item[data-n="${n}"]`);
+          if (isMating.length !== 2) {
+              _this.dataset.n = n;
+              break;
+          }
+          n++;
+      }
+
+      _this.dataset.selected = true;
 		}
 		else {
 			console.log('선택취소',_this.dataset.n)

@@ -989,6 +989,12 @@ mfrac {
 .game-mating--item[data-selected=true][data-n="3"] {
   background-color: yellowgreen;
 }
+.game-mating--item[data-selected=true][data-n="4"] {
+  background-color: gold;
+}
+.game-mating--item[data-selected=true][data-n="5"] {
+  background-color: gray;
+}
 
 .game-ox {
   display: flex;
