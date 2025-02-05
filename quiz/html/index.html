@@ -136,85 +136,85 @@
 		</div>
 	</main>
 
-	<script src="../assets/js/ui.global.js"></script>
-	<script>
-		document.addEventListener("DOMContentLoaded", () => {
-			// quiz : mating
-			QuizGame.exe.gameMating_1 = new QuizMating({
-				id: 'gameMating_1',
-				data: [
-					{ answer: 1, content: '<math><mn>1.570</mn><mo>…</mo></math>' },
-					{ answer: 2, content: '<math><mn>2.570</mn><mo>…</mo></math>' },
-					{ answer: 3, content: '<math><mn>3.570</mn><mo>…</mo></math>' },
-					{ answer: 1, content: '<math><mn>11.570</mn><mo>…</mo></math>' },
-					{ answer: 2, content: '<math><mn>22.570</mn><mo>…</mo></math>' },
-					{ answer: 3, content: '<math><mn>33.570</mn><mo>…</mo></math>' },
-				]
-			});
-			QuizGame.exe.gameMating_2 = new QuizMating({
-				id: 'gameMating_2',
-				data: [
-					{ answer: 1, content: '<math><mn>b 1.570</mn><mo>…</mo></math>' },
-					{ answer: 2, content: '<math><mn>b 2.570</mn><mo>…</mo></math>' },
-					{ answer: 3, content: '<math><mn>b 3.570</mn><mo>…</mo></math>' },
-					{ answer: 1, content: '<math><mn>b 11.570</mn><mo>…</mo></math>' },
-					{ answer: 2, content: '<math><mn>b 22.570</mn><mo>…</mo></math>' },
-					{ answer: 3, content: '<math><mn>b 33.570</mn><mo>…</mo></math>' },
-				]
-			});
-			QuizGame.exe.gameMating_3 = new QuizMating({
-				id: 'gameMating_3',
-				data: [
-					{ answer: 1, content: '<math><mn>c 1.570</mn><mo>…</mo></math>' },
-					{ answer: 2, content: '<math><mn>c 2.570</mn><mo>…</mo></math>' },
-					{ answer: 3, content: '<math><mn>c 3.570</mn><mo>…</mo></math>' },
-					{ answer: 1, content: '<math><mn>c 11.570</mn><mo>…</mo></math>' },
-					{ answer: 2, content: '<math><mn>c 22.570</mn><mo>…</mo></math>' },
-					{ answer: 3, content: '<math><mn>c 33.570</mn><mo>…</mo></math>' },
-				]
-			});
-      // quiz : ox
-			QuizGame.exe.gameOX_1 = new QuizOX({
-				id: 'gameOX_1',
-				data: [
-					{ answer: 'O', content: '<math><mn>1.570</mn><mo>…</mo></math>' },
-				]
-			});
-			QuizGame.exe.gameOX_2 = new QuizOX({
-				id: 'gameOX_2',
-				data: [
-					{ answer: 'X', content: '<math><mn>d 2.570</mn><mo>…</mo></math>' },
-				]
-			});
-      // quiz : select
-      QuizGame.exe.gameSelect_1 = new QuizSelect({
-				id: 'gameSelect_1',
-				data: [
-          { answer: 'O', content: '<math><mfrac><mn>3</mn><msup><mn>2</mn><mn>3</mn></msup></mfrac></math>' },
-					{ answer: 'X', content: '<math><mfrac><mn>8</mn><mrow><msup><mn>2</mn><mn>2</mn></msup><mo>×</mo><mn>3</mn><mo>×</mo><mn>5</mn></mrow></mfrac></math>' },
-					{ answer: 'O', content: '<math><mn>3.570</mn><mo>…</mo></math>' },
-					{ answer: 'X', content: '<math><mn>11.570</mn><mo>…</mo></math>' },
-				]
-			});
+	<script type="module" src="../assets/js/ui.global.js"></script>
+	<script type="module">
+		import * as quiz from '../assets/js/components/quiz.js'
 
-			// page
-			QuizGame.exe.quizPage = new QuizPage({
-				data: [
-					{ mission: 1, id: 'gameMating_1', time: 15, },
-					{ mission: 1, id: 'gameMating_2', time: 15, },
-					{ mission: 1, id: 'gameMating_3', time: 15, },
-
-					{ mission: 2, id: 'gameOX_1', time:5, },
-					{ mission: 2, id: 'gameOX_2', time:5, },
-
-          { mission: 3, id: 'gameSelect_1', time:15, },
-				],
-			});
-			QuizGame.exe.quizPage.init();
-
-
-
+		// quiz : mating
+		QuizGame.exe.gameMating_1 = new quiz.QuizMating({
+			id: 'gameMating_1',
+			data: [
+				{ answer: 1, content: '<math><mn>1.570</mn><mo>…</mo></math>' },
+				{ answer: 2, content: '<math><mn>2.570</mn><mo>…</mo></math>' },
+				{ answer: 3, content: '<math><mn>3.570</mn><mo>…</mo></math>' },
+				{ answer: 1, content: '<math><mn>11.570</mn><mo>…</mo></math>' },
+				{ answer: 2, content: '<math><mn>22.570</mn><mo>…</mo></math>' },
+				{ answer: 3, content: '<math><mn>33.570</mn><mo>…</mo></math>' },
+			]
 		});
+		QuizGame.exe.gameMating_2 = new quiz.QuizMating({
+			id: 'gameMating_2',
+			data: [
+				{ answer: 1, content: '<math><mn>b 1.570</mn><mo>…</mo></math>' },
+				{ answer: 2, content: '<math><mn>b 2.570</mn><mo>…</mo></math>' },
+				{ answer: 3, content: '<math><mn>b 3.570</mn><mo>…</mo></math>' },
+				{ answer: 1, content: '<math><mn>b 11.570</mn><mo>…</mo></math>' },
+				{ answer: 2, content: '<math><mn>b 22.570</mn><mo>…</mo></math>' },
+				{ answer: 3, content: '<math><mn>b 33.570</mn><mo>…</mo></math>' },
+			]
+		});
+		QuizGame.exe.gameMating_3 = new quiz.QuizMating({
+			id: 'gameMating_3',
+			data: [
+				{ answer: 1, content: '<math><mn>c 1.570</mn><mo>…</mo></math>' },
+				{ answer: 2, content: '<math><mn>c 2.570</mn><mo>…</mo></math>' },
+				{ answer: 3, content: '<math><mn>c 3.570</mn><mo>…</mo></math>' },
+				{ answer: 1, content: '<math><mn>c 11.570</mn><mo>…</mo></math>' },
+				{ answer: 2, content: '<math><mn>c 22.570</mn><mo>…</mo></math>' },
+				{ answer: 3, content: '<math><mn>c 33.570</mn><mo>…</mo></math>' },
+			]
+		});
+		// quiz : ox
+		QuizGame.exe.gameOX_1 = new quiz.QuizOX({
+			id: 'gameOX_1',
+			data: [
+				{ answer: 'O', content: '<math><mn>1.570</mn><mo>…</mo></math>' },
+			]
+		});
+		QuizGame.exe.gameOX_2 = new quiz.QuizOX({
+			id: 'gameOX_2',
+			data: [
+				{ answer: 'X', content: '<math><mn>d 2.570</mn><mo>…</mo></math>' },
+			]
+		});
+		// quiz : select
+		QuizGame.exe.gameSelect_1 = new quiz.QuizSelect({
+			id: 'gameSelect_1',
+			data: [
+				{ answer: 'O', content: '<math><mfrac><mn>3</mn><msup><mn>2</mn><mn>3</mn></msup></mfrac></math>' },
+				{ answer: 'X', content: '<math><mfrac><mn>8</mn><mrow><msup><mn>2</mn><mn>2</mn></msup><mo>×</mo><mn>3</mn><mo>×</mo><mn>5</mn></mrow></mfrac></math>' },
+				{ answer: 'O', content: '<math><mn>3.570</mn><mo>…</mo></math>' },
+				{ answer: 'X', content: '<math><mn>11.570</mn><mo>…</mo></math>' },
+			]
+		});
+
+		// page
+		QuizGame.exe.quizPage = new quiz.QuizPage({
+			data: [
+				{ mission: 1, id: 'gameMating_1', time: 15, },
+				{ mission: 1, id: 'gameMating_2', time: 15, },
+				{ mission: 1, id: 'gameMating_3', time: 15, },
+
+				{ mission: 2, id: 'gameOX_1', time:5, },
+				{ mission: 2, id: 'gameOX_2', time:5, },
+
+				{ mission: 3, id: 'gameSelect_1', time:15, },
+			],
+		});
+		QuizGame.exe.quizPage.init();
+
+
+
 	</script>
 </body>
 
