@@ -232,13 +232,17 @@ console.log('init', this.limitTime)
 export class QuizMating {
 	constructor(opt) {
 		this.id = opt.id;
+    this.example = opt.example;
 		this.data = opt.data;
 		this.game = document.querySelector(`[data-id="${this.id}"]`);
 	}
 	init() {
 		const quizData = QuizGame.utils.shuffleArray(this.data);
-		let game_html = `<div class="game-mating">
-		<div class="game-mating--wrap">`;
+		let game_html = `<div class="game-mating">`;
+    if (this.example) {
+      game_html += `<div class="game-mating--ex">${this.example}</div>`;
+    }
+		game_html += `<div class="game-mating--wrap">`;
 		quizData.forEach(item => {
 			game_html += `<button type="button" class="game-mating--item" data-answer="${item.answer}">
 				<span class="game-mating--card">
@@ -261,8 +265,8 @@ export class QuizMating {
 				<span class="a11y-hidden">오답</span>
 			</div>
 		</div>`;
-
-		this.game.innerHTML = game_html;
+    this.game.querySelector('.game-mating') && this.game.querySelector('.game-mating').remove();
+		this.game.insertAdjacentHTML('beforeend', game_html);
 
 		this.btnComplete = this.game.querySelector('.math-mission--game-btn');
 		this.btnComplete.addEventListener('click', this.complete.bind(this));
@@ -341,13 +345,17 @@ export class QuizMating {
 export class QuizOX {
 	constructor(opt){
 		this.id = opt.id;
+    this.example = opt.example;
 		this.data = opt.data;
 		this.game = document.querySelector(`[data-id="${this.id}"]`);
 	}
 	init() {
 		const quizData = QuizGame.utils.shuffleArray(this.data);
-		let game_html = `<div class="game-ox">
-		<div class="game-ox--wrap">`;
+		let game_html = `<div class="game-ox">`;
+    if (this.example) {
+      game_html += `<div class="game-ox--ex">${this.example}</div>`;
+    }
+		game_html += `<div class="game-ox--wrap">`;
 		quizData.forEach((item, index) => {
 			game_html += `<div class="game-ox--item" data-answer="${item.answer}">
 				<div class="game-ox--item-title">
@@ -397,13 +405,17 @@ export class QuizOX {
 export class QuizSelect {
 	constructor(opt) {
 		this.id = opt.id;
+    this.example = opt.example;
 		this.data = opt.data;
 		this.game = document.querySelector(`[data-id="${this.id}"]`);
 	}
 	init() {
 		const quizData = QuizGame.utils.shuffleArray(this.data);
-		let game_html = `<div class="game-select">
-		<div class="game-select--wrap">`;
+		let game_html = `<div class="game-select">`;
+    if (this.example) {
+      game_html += `<div class="game-ox--ex">${this.example}</div>`;
+    }
+		game_html += `<div class="game-select--wrap">`;
 		quizData.forEach((item, index) => {
 			game_html += `<div class="game-select--item">
 				

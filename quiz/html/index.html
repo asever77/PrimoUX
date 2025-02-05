@@ -44,7 +44,9 @@
 				<!-- 퀴즈 mating, ox, select -->
 				<div class="math-mission--game" data-step="0">
 					<!-- game1 -->
-					<div class="math-mission--game-item" data-id="gameMating_1" data-step="0"></div>
+					<div class="math-mission--game-item" data-id="gameMating_1" data-step="0">
+						<div>dddd</div>
+					</div>
 					<div class="math-mission--game-item" data-id="gameMating_2" data-step="1"></div>
 					<div class="math-mission--game-item" data-id="gameMating_3" data-step="2"></div>
 				</div>
@@ -143,6 +145,7 @@
 		// quiz : mating
 		QuizGame.exe.gameMating_1 = new quiz.QuizMating({
 			id: 'gameMating_1',
+			example: '<math><mn>2.570</mn><mo>…</mo></math>',
 			data: [
 				{ answer: 1, content: '<math><mn>1.570</mn><mo>…</mo></math>' },
 				{ answer: 2, content: '<math><mn>2.570</mn><mo>…</mo></math>' },
@@ -177,6 +180,7 @@
 		// quiz : ox
 		QuizGame.exe.gameOX_1 = new quiz.QuizOX({
 			id: 'gameOX_1',
+			example: '<math><mn>2.570</mn><mo>…</mo></math>',
 			data: [
 				{ answer: 'O', content: '<math><mn>1.570</mn><mo>…</mo></math>' },
 			]
@@ -190,6 +194,7 @@
 		// quiz : select
 		QuizGame.exe.gameSelect_1 = new quiz.QuizSelect({
 			id: 'gameSelect_1',
+			example: '<math><mn>2.570</mn><mo>…</mo></math>',
 			data: [
 				{ answer: 'O', content: '<math><mfrac><mn>3</mn><msup><mn>2</mn><mn>3</mn></msup></mfrac></math>' },
 				{ answer: 'X', content: '<math><mfrac><mn>8</mn><mrow><msup><mn>2</mn><mn>2</mn></msup><mo>×</mo><mn>3</mn><mo>×</mo><mn>5</mn></mrow></mfrac></math>' },
