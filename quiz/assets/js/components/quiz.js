@@ -1869,9 +1869,19 @@ export class CrosswordPuzzle {
       const modal = _this.closest('.ui-modal');
       const inputs = modal.querySelectorAll('.ui-modal-body input');
 
+     
+
+
       inputs.forEach(item => {
+        const inp = modal.querySelectorAll(`input[data-col="${item.dataset.col}"][data-row="${item.dataset.row}"]`);
+
+        if (inp.length === 2) {
+          inp[0].value ? inp[1].value = inp[0].value : '';
+        }
+
         document.querySelector(`.crossword-puzzle--item-td[data-col="${item.dataset.col}"][data-row="${item.dataset.row}"] .text`).innerHTML = item.value;
       });
+
       QuizGame.modal.hide({
         id: modal.id
       });
@@ -1886,19 +1896,12 @@ export class CrosswordPuzzle {
       QuizGame.modal.show({ 
         id: 'modal_' + _this.dataset.n, 
         ps: 'center', 
-        callbackClose: function(v) { 
-          console.log('close callback', v); 
-        },
-        callback: function(v) { 
-          
+        callback: (v) => { 
           const inps = document.querySelectorAll(`.ui-modal#${v} .word-quiz-wrap input`);
-          console.log('callback', inps.length); 
-
           inps.forEach(item => {
             const text = document.querySelector(`.crossword-puzzle--item-td[data-col="${item.dataset.col}"][data-row="${ item.dataset.row}"] .text`).textContent;
-
             item.value = text;
-          })
+          });
         }
       });
     }
