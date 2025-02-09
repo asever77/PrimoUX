@@ -104,6 +104,10 @@
       background-color: #d7eff1;
       font-size: 3rem;
       text-align: center;
+
+      &.overlap{
+        outline: .2rem solid black;
+      }
     }
   }
   .ui-modal-footer {

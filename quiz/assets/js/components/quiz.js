@@ -1869,14 +1869,13 @@ export class CrosswordPuzzle {
       const modal = _this.closest('.ui-modal');
       const inputs = modal.querySelectorAll('.ui-modal-body input');
 
-     
-
-
       inputs.forEach(item => {
         const inp = modal.querySelectorAll(`input[data-col="${item.dataset.col}"][data-row="${item.dataset.row}"]`);
 
         if (inp.length === 2) {
           inp[0].value ? inp[1].value = inp[0].value : '';
+          inp[0].classList.add('overlap');
+          inp[1].classList.add('overlap');
         }
 
         document.querySelector(`.crossword-puzzle--item-td[data-col="${item.dataset.col}"][data-row="${item.dataset.row}"] .text`).innerHTML = item.value;
@@ -1901,6 +1900,13 @@ export class CrosswordPuzzle {
           inps.forEach(item => {
             const text = document.querySelector(`.crossword-puzzle--item-td[data-col="${item.dataset.col}"][data-row="${ item.dataset.row}"] .text`).textContent;
             item.value = text;
+
+            const inp = document.querySelectorAll(`.ui-modal#${v} input[data-col="${item.dataset.col}"][data-row="${item.dataset.row}"]`);
+
+            if (inp.length === 2) {
+              inp[0].classList.add('overlap');
+              inp[1].classList.add('overlap');
+            }
           });
         }
       });
