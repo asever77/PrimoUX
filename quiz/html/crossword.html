@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="../assets/css/app.css">
+  <title>Document</title>
+
+</head>
+<body>
+  <main>
+    <div class="crossword-puzzle" data-id="crossword">
+      <div class="crossword-puzzle--main">
+        <div class="crossword-puzzle--item"></div>
+      </div>
+     
+    </div>
+  </main>
+
+  <div class="area-modal"></div>
+  <div class="area-toast"></div>
+
+
+  <script type="module" src="../assets/js/ui.global.js"></script>
+	<script type="module">
+		import * as quiz from '../assets/js/components/quiz.js';
+
+    const aaaa = new quiz.CrosswordPuzzle({
+      id: 'crossword',
+      size: [11,12],
+      answer: [
+        { number: 1, ps: [1, 2], 
+          quiz : [
+          {type: 'row', question: '삼각형에서 한 내각과 마주 보는 변', word: '가나'},
+          {type: 'col', question: '삼각형에서 한 변과 마주 보는 각', word: '가나'},
+        ]},
+        { number: 2, ps: [1, 5], 
+          quiz: [ 
+          {type: 'row', question: '모든 면이 합동인 정다각형이고 각 꼭짓점에 모인 면의 개수가 모두 같은 다면체', word: '가나다라'},
+          {type: 'col', question: '변의 길이와 내각의 크기가 각각 모두 같은 육각형', word: '가나다라'},
+        ]},
+        { number: 3, ps: [2, 1], 
+          quiz: [ 
+          {type: 'row', question: '크기가 180*인 각', word: '가나'},
+          {type: 'col', question: '평행한 두 직선', word: '가나다'},
+        ]},
+        { number: 4, ps: [4, 1], 
+          quiz: [
+          {type: 'row', question: '반으로 접으면 완전히 겹치는 도형', word: '가나다라마'},
+        ]},
+        { number: 5, ps: [4, 2], 
+          quiz: [
+          {type: 'col', question: '다각형에서 이웃하지 않는 두 꼭짓점을 연결한 선분', word: '가나다'},
+        ]},
+        { number: 6, ps: [6, 1], 
+          quiz: [
+          {type: 'row', question: '두 점을 지나는 곧은 선', word: '가나'},
+          {type: 'col', question: '한 내각의 크기가 90*인 삼각형', word: '가나다라마바'}
+        ]},
+        { number: 7, ps: [9, 1], 
+          quiz: [
+          {type: 'row', question: '각뿔을 밑면에 평행한 평면으로 자를 때 생기는 두 입체도형 중에서 각뿔이 아닌 부분', word: '가나다'},
+        ]},
+        { number: 8, ps: [7, 3], 
+          quiz:[
+          {type: 'col', question: '원뿔을 밑면에 평행한 평면으로 자를 때 생기는 두 입체도형 중에서 원뿔이 아닌 부분', word: '가나다' },
+          ]},
+        { number: 9, ps: [3, 12], 
+          quiz:[
+          {type: 'col', question: '부피를 가지는 도형', word: '가나다라' },
+        ]}, 
+        { number: 10, ps: [4, 10], 
+          quiz:[
+          {type: 'row', question: '평면도형을 한 직선을 축으로 하여 1회전 시킬 때 생기는 입체도형', word: '가나다' },
+        ]},
+        { number: 11, ps: [3, 8], 
+          quiz:[
+          {type: 'col', question: '선분의 중점을 지나고 그 선분에 수직인 직선', word: '가나다라마바' },
+        ]}, 
+        { number: 12, ps: [6, 7], 
+          quiz:[
+          {type: 'row', question: '두 변의 길이가 같은 삼각형', word: '가나다라마바' },
+        ]},
+        { number: 13, ps: [6, 10], 
+          quiz:[
+          {type: 'col', question: '면이 5개인 기둥 모양의 입체도형', word: '가나다라' },
+        ]},
+        { number: 14, ps: [8, 7], 
+          quiz:[
+          {type: 'row', question: '면과 면이 만나서 생기는 선', word: '가나' },
+          {type: 'col', question: '선과 선 또는 선과 면이 만나서 생기는 점', word: '가나' },
+        ]},
+        { number: 15, ps: [8, 5], 
+          quiz:[
+          {type: 'col', question: '두 직선이 만나서 생기는 교각 중에서 서로 마주 보는 각', word: '가나다라' },
+        ]},
+        { number: 16, ps: [9, 5], 
+          quiz:[
+          {type: 'row', question: '다각형에서 변과 변이 만나는 점', word: '가나다' },
+        ]},
+        { number: 17, ps: [11, 3], 
+          quiz:[
+          {type: 'row', question: '서로 다른 두 직선이 한 직선과 만나서 생기는 교각 중에서 서로 같은 위치에 있는 두 각', word: '가나다' },
+        ]},
+        { number: 18, ps: [11, 8], 
+          quiz:[
+          {type: 'row', question: '면이 정오각형인 정다면체', word: '가나다라마' },
+        ]},
+        { number: 19, ps: [9, 12], 
+          quiz:[
+          {type: 'col', question: '면의 개수가 가장 적은 다면체', word: '가나다' },
+        ]},
+      ],
+      
+
+    })
+
+
+    
+  </script>
+</body>
+</html>

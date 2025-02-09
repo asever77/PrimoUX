@@ -1,0 +1,125 @@
+.crossword-puzzle {
+  position: relative;
+  display: flex;
+  width: 100%;
+  &--main {
+    display: flex;
+    flex: 1;
+    width: 100%;
+  }
+  &--item {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    &-tr{
+      display: flex;
+      justify-content: space-between;
+    }
+    &-td {
+      position: relative;
+      flex: 1;
+      aspect-ratio: 1/1;
+      border: 1px solid black;
+      margin: -1px 0 0 -1px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      aspect-ratio: 1/1;
+      font-size: 3rem;
+      font-weight: 600;
+
+      &[data-on] {background-color: #d7eff1;}
+
+      em {
+        display: flex;
+        width: 3rem;
+        height: 3rem;
+        border-radius: 50%;
+        background-color: #939598;
+        color: #fff;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 2rem;
+        flex-shrink: 0;
+      }
+    }
+  }
+  &--btn{
+    position: absolute;
+    top:0; left:0;
+    width: 100%;
+    height: 100%;
+    border:.3rem dashed rgba(0,0,0,0.2);
+    display: flex;
+    align-items: flex-start;
+    padding:.2rem;
+    z-index: 1;
+  }
+  
+  &--answer-row {
+    position: absolute; 
+    top: 0;
+    left: 0;
+    height: 100%;
+    display: flex;
+    z-index: 1;
+    gap:1px;
+  }
+  &--answer-col {
+    position: absolute; 
+    top: 0;
+    left: 0;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    z-index: 1;
+    gap:1px;
+  }
+}
+
+.ui-modal.word {
+  h2 {
+    font-size: 3rem;
+    text-align: center;
+    padding:0 1.6rem 1.6rem;
+  }
+  .ui-modal-body {
+    display: flex;
+    flex-direction: column;
+    gap: 3.2rem;
+  }
+  .word-quiz-wrap {
+    display: flex;
+    gap:.6rem; 
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+
+    input{
+      width: 8rem;
+      height: 8rem;
+      border-radius: .8rem;
+      border: .1rem solid black;
+      background-color: #d7eff1;
+      font-size: 3rem;
+      text-align: center;
+    }
+  }
+  .ui-modal-footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .btn-base {
+      width: 10rem;
+      height: 4rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 3rem;
+      background-color: goldenrod;
+    }
+  }
+ 
+}

@@ -488,17 +488,26 @@ export class QuizSelect {
 export class DrawDrop {
   constructor(opt) {
     this.id = opt.id;
-
-    this.wrap = document.querySelector('[data-drag-id="' + this.id + '"]');
+    this.wrap = document.querySelector(`[data-drag-id="${this.id}"]`);
     this.doc = this.wrap;
     this.type = this.wrap.dataset.type;
+    this.a11y = opt.a11y === 'true';
+    this.isRotate = opt.isRotate;
+    this.answer_len = +opt.answerLen; // 숫자 변환 최적화
+    this.answer_last = opt.lastAnswer || [];
+    this.answer_state = false;
+    this.callback = opt.callback;
+    this.isTouch = navigator.maxTouchPoints || 'ontouchstart' in document.documentElement;
+    this.timer = 0;
+
+    this.el_scroll = document.body;
     this.drag_objects = this.wrap.querySelectorAll('[data-drag-object]');
     this.drag_targets = this.wrap.querySelectorAll('[data-drag-target]');
     this.drag_items = this.wrap.querySelectorAll('[data-drag-item="object"]');
-    this.a11y = opt.a11y === 'true' ? true : false;
     this.array_target = [];
     this.array_items = [];
-    this.el_scroll = document.querySelector('body');
+    this.reset_data = [];
+    
     // this.el_scroll = document.querySelector('.innerContsScroll');
 
     this.wrap_rect = this.wrap.getBoundingClientRect();
@@ -518,23 +527,12 @@ export class DrawDrop {
       this.group_object_t = this.group_object_rect.top;
       this.group_object_l = this.group_object_rect.left;
     }
-
-    this.reset_data = [];
+   
     this.win_y = this.el_scroll ? this.el_scroll.scrollTop : window.scrollY;
     this.win_x = this.el_scroll ? this.el_scroll.scrollLeft : window.scrollX;
-
-		this.isRotate = opt.isRotate;
-    this.answer_len = Number(opt.answerLen);
-    this.answer_last = opt.lastAnswer;
-    this.answer_state = false;
-    this.callback = opt.callback;
-    this.isTouch = (navigator.maxTouchPoints || 'ontouchstart' in document.documentElement)
-    this.timer = 0;
   }
 
   init() {
-		console.log('this.isRotate', this.isRotate);
-
     const set = () => {
       this.wrap.dataset.exe = 'true';
       this.wrap_rect = this.wrap.getBoundingClientRect();
@@ -579,7 +577,7 @@ export class DrawDrop {
             rangeY: [rect.top, rect.top + rect.height],
           });
           this.reset_data.push(
-            item.querySelector('[data-drag-object').dataset.dragObject
+            item.querySelector('[data-drag-object]').dataset.dragObject
           );
         }
       }
@@ -684,7 +682,7 @@ export class DrawDrop {
 							<span class="rotate" data-drag-rotate="right"><span class="a11y-hidden">우 회전</span></span>`);
 					}
 
-					console.log(item.querySelector('[data-drag-object'));
+					console.log(item.querySelector('[data-drag-object]'));
         }
       }
  
@@ -1709,4 +1707,207 @@ console.log(current_area)
       }
     }
   };
+}
+
+export class CrosscolorPuzzle {
+  constructor(opt) {
+    this.wrap = document.querySelector(`.crosscolor-puzzle[data-id=${opt.id}]`);
+    this.colorBtns = this.wrap.querySelectorAll(`.crosscolor-puzzle--color`);
+    this.item = this.wrap.querySelector(`.crosscolor-puzzle--item`);
+    this.answer = opt.answer;
+    this.color = null;
+    this.currentAnswer = [];
+    this.init();
+  }
+
+  init() {
+    let htmlPuzzle = ``;
+    this.answer.forEach((item, index) => {
+      const n = index + 1;
+      const currentAnswerRow = [];
+      htmlPuzzle += `<div class="crosscolor-puzzle--item-tr" data-row="${n}">`;
+      
+      for (let i = 0; i < item.length; i++) {
+        let _value = item[i].split(',');
+        htmlPuzzle += `<button type="button" class="crosscolor-puzzle--item-td" aria-label="${n}열 ${i + 1}행" data-col="${n}" data-row="${i + 1}" data-group="${_value[0]}">
+          ${_value[1] ? _value[1] : ''}
+        </button>`;
+        currentAnswerRow.push('');
+      }
+
+      this.currentAnswer.push(currentAnswerRow);
+      htmlPuzzle += `</div>`;
+    });
+    this.item.innerHTML = htmlPuzzle;
+    this.tdBtns = this.wrap.querySelectorAll(`.crosscolor-puzzle--item-td`);
+    this.event();
+    console.log(this.currentAnswer);
+  }
+  event() {
+    this.colorBtns.forEach(item => {
+      item.addEventListener('click', this.actColorSelect.bind(this));
+    });
+    this.tdBtns.forEach(item => {
+      item.addEventListener('click', this.actTdSelect.bind(this));
+    });
+  }
+  actColorSelect (e) {
+    const _this = e.currentTarget;
+    const _thisSelected = this.wrap.querySelector(`.crosscolor-puzzle--color[data-selected="true"]`);
+
+    if (_thisSelected) _thisSelected.dataset.selected = false;
+    _this.dataset.selected = true;
+    this.color = _this.dataset.color;
+  }
+  actTdSelect(e) {
+    if (this.color === null) {
+      alert('색상을 선택해주세요')
+      return false;
+    }
+
+    const _this = e.currentTarget;
+    _this.dataset.selected = _this.dataset.selected ? true : false;
+    const a = Number(_this.dataset.row) - 1;
+
+    if (_this.dataset.color === this.color) {
+      _this.dataset.color = '';
+      this.currentAnswer[Number(_this.dataset.col) - 1].splice(a, 1, '');
+    } else {
+      _this.dataset.color = this.color;
+      this.currentAnswer[Number(_this.dataset.col) - 1].splice(a, 1, this.color);
+    }
+    console.log(this.currentAnswer);
+  }
+}
+
+export class CrosswordPuzzle {
+  constructor(opt) {
+    this.wrap = document.querySelector(`.crossword-puzzle[data-id=${opt.id}]`);
+    this.item = this.wrap.querySelector(`.crossword-puzzle--item`);
+    this.size = opt.size;
+    this.answer = opt.answer;
+
+    this.init()
+  }
+  init() {
+    let htmlPuzzle = ``;
+
+    // 퍼즐판 만들기
+    for (let i = 0; i < this.size[0]; i++) {
+      const n = i + 1;
+      htmlPuzzle += `<div class="crossword-puzzle--item-tr" data-row="${n}">`;
+
+      for (let j = 0; j < this.size[1]; j++) {
+        htmlPuzzle += `<div class="crossword-puzzle--item-td" data-col="${n}" data-row="${j + 1}"><div class="text"></div></div>`;
+      }
+
+      htmlPuzzle += `</div>`;
+    }
+    this.item.innerHTML = htmlPuzzle;
+    this.tds = this.wrap.querySelectorAll('.crossword-puzzle--item-td');
+
+    // 입력모달 및 퍼즐버튼 및 단어칸
+    let modalHtml = ``;
+    let inputWord = ``;
+    this.answer.forEach(item => {
+      const _this = document.querySelector(`.crossword-puzzle--item-td[data-col="${item.ps[0]}"][data-row="${item.ps[1]}"]`);
+
+      let html = `<button type="button" class="crossword-puzzle--btn" data-n="${item.number}"><em>${item.number}</em></button>`;
+
+      _this.dataset.on = 'true';
+      _this.insertAdjacentHTML('beforeend',html);
+
+      modalHtml += `<section class="ui-modal word" id="modal_${item.number}">
+        <div class="ui-modal-wrap">
+          <div class="ui-modal-header">
+            <button type="button" class="ui-modal-close" aria-label="close"><span class="for-a11y">close</span></button>
+          </div>
+          <div class="ui-modal-body">`;
+
+        item.quiz.forEach((qz) => {
+          modalHtml += `<div class="word-quiz">`;
+
+          if (qz.type === 'row') {
+            modalHtml += `<h2>(가로) ${qz.question}</h2>
+            <div class="word-quiz-wrap">`;
+            
+            for (let i = 0; i < qz.word.length; i++) {
+              document.querySelector(`.crossword-puzzle--item-td[data-col="${item.ps[0]}"][data-row="${Number(item.ps[1]) + i}"]`).dataset.on = 'true';
+    
+              modalHtml += `<input type="text" maxlength="1" data-col="${item.ps[0]}" data-row="${Number(item.ps[1]) + i}">`;   
+            }
+          } else {
+            modalHtml += `<h2>(세로) ${qz.question}</h2>
+             <div class="word-quiz-wrap">`;
+
+            for (let i = 0; i < qz.word.length; i++) {
+              document.querySelector(`.crossword-puzzle--item-td[data-col="${Number(item.ps[0]) + i}"][data-row="${item.ps[1]}"]`).dataset.on = 'true';
+    
+              modalHtml += `<input type="text" maxlength="1" data-col="${Number(item.ps[0]) + i}" data-row="${item.ps[1]}">`;   
+            }
+          }
+          modalHtml += `</div>
+          </div>`;
+        });
+        
+      modalHtml += `</div>
+          <div class="ui-modal-footer">
+            <button type="button" class="btn-base" data-color="primary" data-crossword="input">
+              <span>확인</span>
+            </button>
+          </div>
+        </div>
+      </section>`;
+      inputWord = '';
+    });
+    document.querySelector('.area-modal').innerHTML = modalHtml;
+
+    // 낱말입력
+    const crosswordInput = document.querySelectorAll('[data-crossword="input"]');
+    const actWordInput = e => {
+      const _this = e.currentTarget; 
+      const modal = _this.closest('.ui-modal');
+      const inputs = modal.querySelectorAll('.ui-modal-body input');
+
+      inputs.forEach(item => {
+        document.querySelector(`.crossword-puzzle--item-td[data-col="${item.dataset.col}"][data-row="${item.dataset.row}"] .text`).innerHTML = item.value;
+      });
+      QuizGame.modal.hide({
+        id: modal.id
+      });
+    }
+    crosswordInput.forEach(item => {
+      item.addEventListener('click', actWordInput)
+    });
+
+    const btns = document.querySelectorAll('.crossword-puzzle--btn');
+    const act = e => {
+      const _this = e.currentTarget;
+      QuizGame.modal.show({ 
+        id: 'modal_' + _this.dataset.n, 
+        ps: 'center', 
+        callbackClose: function(v) { 
+          console.log('close callback', v); 
+        },
+        callback: function(v) { 
+          
+          const inps = document.querySelectorAll(`.ui-modal#${v} .word-quiz-wrap input`);
+          console.log('callback', inps.length); 
+
+          inps.forEach(item => {
+            const text = document.querySelector(`.crossword-puzzle--item-td[data-col="${item.dataset.col}"][data-row="${ item.dataset.row}"] .text`).textContent;
+
+            item.value = text;
+          })
+        }
+      });
+    }
+
+    btns.forEach(item => {
+      item.addEventListener('click', act)
+    });
+
+    
+  }
+
 }
