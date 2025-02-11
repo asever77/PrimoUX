@@ -1826,15 +1826,15 @@ export class CrosswordPuzzle {
 
         item.quiz.forEach((qz) => {
           modalHtml += `<div class="word-quiz">`;
-
+          const answerWord = qz.word.split('');
+          
           if (qz.type === 'row') {
             modalHtml += `<h2>(가로) ${qz.question}</h2>
             <div class="word-quiz-wrap">`;
-            
             for (let i = 0; i < qz.word.length; i++) {
               document.querySelector(`.crossword-puzzle--item-td[data-col="${item.ps[0]}"][data-row="${Number(item.ps[1]) + i}"]`).dataset.on = 'true';
     
-              modalHtml += `<input type="text" maxlength="1" data-col="${item.ps[0]}" data-row="${Number(item.ps[1]) + i}">`;   
+              modalHtml += `<input type="text" maxlength="1" data-col="${item.ps[0]}" data-row="${Number(item.ps[1]) + i}" data-answer="${answerWord[i]}">`;   
             }
           } else {
             modalHtml += `<h2>(세로) ${qz.question}</h2>
@@ -1843,7 +1843,7 @@ export class CrosswordPuzzle {
             for (let i = 0; i < qz.word.length; i++) {
               document.querySelector(`.crossword-puzzle--item-td[data-col="${Number(item.ps[0]) + i}"][data-row="${item.ps[1]}"]`).dataset.on = 'true';
     
-              modalHtml += `<input type="text" maxlength="1" data-col="${Number(item.ps[0]) + i}" data-row="${item.ps[1]}">`;   
+              modalHtml += `<input type="text" maxlength="1" data-col="${Number(item.ps[0]) + i}" data-row="${item.ps[1]}" data-answer="${answerWord[i]}">`;   
             }
           }
           modalHtml += `</div>
@@ -1868,7 +1868,7 @@ export class CrosswordPuzzle {
       const _this = e.currentTarget; 
       const modal = _this.closest('.ui-modal');
       const inputs = modal.querySelectorAll('.ui-modal-body input');
-
+      let isAnswer = [];
       inputs.forEach(item => {
         const inp = modal.querySelectorAll(`input[data-col="${item.dataset.col}"][data-row="${item.dataset.row}"]`);
 
@@ -1878,8 +1878,17 @@ export class CrosswordPuzzle {
           inp[1].classList.add('overlap');
         }
 
-        document.querySelector(`.crossword-puzzle--item-td[data-col="${item.dataset.col}"][data-row="${item.dataset.row}"] .text`).innerHTML = item.value;
+        console.log(item.value, item.dataset.answer)
+        if (item.value === item.dataset.answer) {
+          isAnswer.push(item.value);
+        } else {
+          isAnswer.push('');
+        }
       });
+      inputs.forEach((item, index) => {
+        document.querySelector(`.crossword-puzzle--item-td[data-col="${item.dataset.col}"][data-row="${item.dataset.row}"] .text`).innerHTML = isAnswer[index];
+      });
+     
 
       QuizGame.modal.hide({
         id: modal.id
@@ -1899,7 +1908,12 @@ export class CrosswordPuzzle {
           const inps = document.querySelectorAll(`.ui-modal#${v} .word-quiz-wrap input`);
           inps.forEach(item => {
             const text = document.querySelector(`.crossword-puzzle--item-td[data-col="${item.dataset.col}"][data-row="${ item.dataset.row}"] .text`).textContent;
-            item.value = text;
+
+            if (text !== '') {
+              item.value = text;
+              item.readOnly  = true;
+            }
+            
 
             const inp = document.querySelectorAll(`.ui-modal#${v} input[data-col="${item.dataset.col}"][data-row="${item.dataset.row}"]`);
 

@@ -1539,6 +1539,12 @@ mfrac {
   font-size: 3rem;
   text-align: center;
 }
+.ui-modal.word .word-quiz-wrap input:-moz-read-only {
+  background-color: #f2f2f2;
+}
+.ui-modal.word .word-quiz-wrap input:read-only {
+  background-color: #f2f2f2;
+}
 .ui-modal.word .word-quiz-wrap input.overlap {
   outline: 0.2rem solid black;
 }
