@@ -714,9 +714,9 @@
 				}
 			}
 
-			if (!!el.querySelector('.ui-modal-wrap') && !el.querySelector('.ui-modal-wrap .ui-modal-last') && !el.getAttribute('aria-live')) {
-				const modal_wrap = el.querySelector('.ui-modal-wrap');
-				const last = '<button type="button" class="ui-modal-last ui-focusloop-end ui-modal-close" aria-label="'+ (el.querySelector('.ui-modal-tit') && el.querySelector('.ui-modal-tit').textContent) +' 레이어 문서 마지막 지점입니다. 모달 창 닫기"></button>'
+			if (!!el.querySelector('.ui-dialog-wrap') && !el.querySelector('.ui-dialog-wrap .ui-dialog-last') && !el.getAttribute('aria-live')) {
+				const modal_wrap = el.querySelector('.ui-dialog-wrap');
+				const last = '<button type="button" class="ui-dialog-last ui-focusloop-end ui-dialog-close" aria-label="'+ (el.querySelector('.ui-dialog-tit') && el.querySelector('.ui-dialog-tit').textContent) +' 레이어 문서 마지막 지점입니다. 모달 창 닫기"></button>'
 				modal_wrap.insertAdjacentHTML('beforeend', last);
 			} else if (!el.querySelector('.ui-focusloop-end')) {
 				for (let i = tagLen - 1; i >= 0; i--) {
@@ -1555,7 +1555,7 @@
 			hour > 11 ? isPM = 1 : '';
 			hour > 23 ? isPM = 0 : '';
 
-			let html = '<div class="ui-time-modal">';
+			let html = '<div class="ui-time-dialog">';
 			html += '<div class="ui-time-wrap" data-id="'+ id +'">';
 			html += '<h2 class="ui-time-tit">'+ title +'</h2>';
 			html += '<div class="ui-time-line"><div></div><div></div><div></div></div>';
@@ -1715,7 +1715,7 @@
 		},
 		hide(e){
 			const that = e.currentTarget;
-			const el_mdoal = that.closest('.ui-time-modal');
+			const el_mdoal = that.closest('.ui-time-dialog');
 			el_mdoal.classList.remove('on');
 			
 			const act = () => {
@@ -3497,9 +3497,9 @@
 
 			if (!el_dp) {
 				if (period) {
-					_dpHtml += '<section class="datepicker" data-id="'+setId+'" data-date="'+yyyymm+'" data-start="'+currentDate+'" data-end="'+wdate+'" data-period="start" data-visible="'+ opt.visible +'" aria-labelledby="'+setId+'_label" aria-describedby="'+setId+'_desc" aria-modal="true">';
+					_dpHtml += '<section class="datepicker" data-id="'+setId+'" data-date="'+yyyymm+'" data-start="'+currentDate+'" data-end="'+wdate+'" data-period="start" data-visible="'+ opt.visible +'" aria-labelledby="'+setId+'_label" aria-describedby="'+setId+'_desc" aria-dialog="true">';
 				} else {
-					_dpHtml += '<section class="datepicker" data-id="'+setId+'" data-date="'+yyyymm+'" data-start="'+currentDate+'" data-visible="'+ opt.visible +'" aria-labelledby="'+setId+'_label" aria-modal="true">';
+					_dpHtml += '<section class="datepicker" data-id="'+setId+'" data-date="'+yyyymm+'" data-start="'+currentDate+'" data-visible="'+ opt.visible +'" aria-labelledby="'+setId+'_label" aria-dialog="true">';
 				}
 				
 				_dpHtml += '<div class="datepicker-wrap">';
@@ -5642,11 +5642,11 @@
 			const sCancelCallback = opt.sCancelCallback;
 			const focusID = id + Math.random().toString(36).substr(2, 16);
 			const isTouch = (navigator.maxTouchPoints || 'ontouchstart' in document.documentElement)
-			!document.querySelector('.area-modal') && el_body.insertAdjacentHTML('beforeend', `<div class="area-modal"></div>`);
-			const el_area_modal = document.querySelector('.area-modal');
+			!document.querySelector('.area-dialog') && el_body.insertAdjacentHTML('beforeend', `<div class="area-dialog"></div>`);
+			const el_area_modal = document.querySelector('.area-dialog');
 			const act = () => {
 				const elModal = document.querySelector('#' + id);
-				const elModals = document.querySelectorAll('.ui-modal');
+				const elModals = document.querySelectorAll('.ui-dialog');
 				if (!elModal) return false;
 				for (let i = 0, len = elModals.length; i < len; i++) {
 					const that = elModals[i];
@@ -5656,20 +5656,20 @@
 					}
 				}
 				if (dim) {
-					(!elModal.querySelector('.ui-modal-dim')) && elModal.insertAdjacentHTML('beforeend', '<div class="ui-modal-dim"></div>');
+					(!elModal.querySelector('.ui-dialog-dim')) && elModal.insertAdjacentHTML('beforeend', '<div class="ui-dialog-dim"></div>');
 				}
-				const elModalWrap = elModal.querySelector('.ui-modal-wrap');
-				const elModalBody = elModalWrap.querySelector('.ui-modal-body');
-				const elModalHeader = elModalWrap.querySelector('.ui-modal-header');
-				const elModalFooter = elModalWrap.querySelector('.ui-modal-footer');
-				const elModalTit = elModal.querySelector('.ui-modal-tit');
-				const elModalDim = elModal.querySelector('.ui-modal-dim');
-				const elModalCancel = elModal.querySelector('.ui-modal-cancel');
-				const elModalConfirm = elModal.querySelector('.ui-modal-confirm');
-				const elModalClose = elModal.querySelector('.ui-modal-close');
-				const elModalOpen = document.querySelectorAll('.ui-modal.open');
+				const elModalWrap = elModal.querySelector('.ui-dialog-wrap');
+				const elModalBody = elModalWrap.querySelector('.ui-dialog-body');
+				const elModalHeader = elModalWrap.querySelector('.ui-dialog-header');
+				const elModalFooter = elModalWrap.querySelector('.ui-dialog-footer');
+				const elModalTit = elModal.querySelector('.ui-dialog-tit');
+				const elModalDim = elModal.querySelector('.ui-dialog-dim');
+				const elModalCancel = elModal.querySelector('.ui-dialog-cancel');
+				const elModalConfirm = elModal.querySelector('.ui-dialog-confirm');
+				const elModalClose = elModal.querySelector('.ui-dialog-close');
+				const elModalOpen = document.querySelectorAll('.ui-dialog.open');
 				const openLen = !!elModalOpen ? elModalOpen.length : 0;
-				document.querySelector('html').classList.add('is-modal');
+				document.querySelector('html').classList.add('is-dialog');
 				elModal.classList.remove('close');
 				elModal.classList.remove('type-whole');
 				elModal.classList.remove('ps-center');
@@ -5830,7 +5830,7 @@
 						if (y - 100 > y_m && isMove) {
 							elModal.dataset.state = 'drag-full';
 							elModalWrap.classList.add('motion');
-							const dragCloseBtn = elModal.querySelector('[data-modal-drag="close"]');
+							const dragCloseBtn = elModal.querySelector('[data-dialog-drag="close"]');
 							isDragState = true;
 							dragCloseBtn && dragCloseBtn.addEventListener('click', reDragClose);
 							elModalWrap.setAttribute(
@@ -5871,7 +5871,7 @@
 				//close button event
 				const closeAct = (e) => {
 					const elThis = e.currentTarget;
-					const elThisModal = elThis.closest('.ui-modal');
+					const elThisModal = elThis.closest('.ui-dialog');
 					!!elModalClose && elModalClose.removeEventListener('click', closeAct);
 					Global.modal.hide({
 						id: elThisModal.id,
@@ -5880,7 +5880,7 @@
 					});
 				}
 
-				const lastClose = elModal.querySelector('.ui-modal-last');
+				const lastClose = elModal.querySelector('.ui-dialog-last');
 				if (!!elModalClose) {
 					elModalClose.addEventListener('click', closeAct);
 				}
@@ -5919,19 +5919,19 @@
 			//system modal 
 			const makeSystemModal = () => {
 				let htmlSystem = '';
-				htmlSystem += '<div class="ui-modal type-system ' + sClass + '" id="' + id + '" role="alertdialog" aria-modal="true" aria-live="polite">';
-				htmlSystem += '<div class="ui-modal-wrap">';
-				htmlSystem += '<div class="ui-modal-body">';
+				htmlSystem += '<div class="ui-dialog type-system ' + sClass + '" id="' + id + '" role="alertdialog" aria-dialog="true" aria-live="polite">';
+				htmlSystem += '<div class="ui-dialog-wrap">';
+				htmlSystem += '<div class="ui-dialog-body">';
 				htmlSystem += sMessage;
 				htmlSystem += '</div>';
-				htmlSystem += '<div class="ui-modal-footer">';
+				htmlSystem += '<div class="ui-dialog-footer">';
 				htmlSystem += '<div class="modal-footer-btn-group">';
 
 				if (sBtnCancelTxt) {
-					htmlSystem += '<button type="button" class="btn-base ui-modal-cancel" data-color="tertiary" data-size="48"><span class="btn-text">' + sBtnCancelTxt + '</span></button>';
+					htmlSystem += '<button type="button" class="btn-base ui-dialog-cancel" data-color="tertiary" data-size="48"><span class="btn-text">' + sBtnCancelTxt + '</span></button>';
 				}
 				if (sBtnConfirmTxt) {
-					htmlSystem += '<button type="button" class="btn-base ui-modal-confirm" data-color="secondary" data-size="48"><span class="btn-text">' + sBtnConfirmTxt + '</span></button>';
+					htmlSystem += '<button type="button" class="btn-base ui-dialog-confirm" data-color="secondary" data-size="48"><span class="btn-text">' + sBtnConfirmTxt + '</span></button>';
 				}
 
 				htmlSystem += '</div>';
@@ -5973,7 +5973,7 @@
 			}
 		},
 		dimAct() {
-			const elOpens = document.querySelectorAll('.ui-modal.open');
+			const elOpens = document.querySelectorAll('.ui-dialog.open');
 			let openN = [];
 
 			for (let i = 0, len = elOpens.length; i < len; i++) {
@@ -5981,7 +5981,7 @@
 				that.dataset.n && openN.push(that.dataset.n);
 			}
 
-			const elCurrent = document.querySelector('.ui-modal.open[data-n="' + Math.max.apply(null, openN) + '"]');
+			const elCurrent = document.querySelector('.ui-dialog.open[data-n="' + Math.max.apply(null, openN) + '"]');
 			const currentID = elCurrent.id;
 
 			//system modal 제외
@@ -5993,13 +5993,13 @@
 			}
 		},
 		reset() {
-			const elModals = document.querySelectorAll('.ui-modal.open.ps-center');
+			const elModals = document.querySelectorAll('.ui-dialog.open.ps-center');
 
 			for (let i = 0, len = elModals.length; i < len; i++) {
 				const that = elModals[i];
-				const elModalHead = that.querySelector('.ui-modal-header');
-				const elModalBody = that.querySelector('.ui-modal-body');
-				const elModalFoot = that.querySelector('.ui-modal-footer');
+				const elModalHead = that.querySelector('.ui-dialog-header');
+				const elModalBody = that.querySelector('.ui-dialog-body');
+				const elModalFoot = that.querySelector('.ui-dialog-footer');
 				const h_win = window.innerHeight;
 				const h_head = !!elModalHead ? elModalHead.outerHeight : 0;
 				const h_foot = !!elModalFoot ? elModalFoot.outerHeight : 0;
@@ -6023,13 +6023,13 @@
 			const elModal = document.querySelector('#' + id);
 			const el_body = document.querySelector('body');
 			const elHtml = document.querySelector('html');
-			const elModals = document.querySelectorAll('.ui-modal');
+			const elModals = document.querySelectorAll('.ui-dialog');
 
 			elModal.classList.add('close');
 			elModal.classList.remove('open')
 			elModal.classList.remove('fix-header');
 
-			const elOpen = document.querySelectorAll('.ui-modal.open');
+			const elOpen = document.querySelectorAll('.ui-dialog.open');
 			const len = (elOpen.length > 0) ? elOpen.length : false;
 
 			let timer;
@@ -6044,7 +6044,7 @@
 			}
 
 			if (!!len) {
-				elModalPrev = document.querySelector('.ui-modal.open.n' + (len - 1));
+				elModalPrev = document.querySelector('.ui-dialog.open.n' + (len - 1));
 				!!elModalPrev && elModalPrev.classList.add('current');
 			}
 
@@ -6056,7 +6056,7 @@
 
 				//단일
 				if (!len) {
-					elHtml.classList.remove('is-modal');
+					elHtml.classList.remove('is-dialog');
 				}
 			}
 
@@ -6065,8 +6065,8 @@
 			});
 
 			const closeEnd = () => {
-				const elWrap = elModal.querySelector('.ui-modal-wrap');
-				const elOpen = document.querySelectorAll('.ui-modal.open');
+				const elWrap = elModal.querySelector('.ui-dialog-wrap');
+				const elOpen = document.querySelectorAll('.ui-dialog.open');
 				const len = !!elOpen ? elOpen.length : false;
 
 				elWrap.removeAttribute('style');
@@ -6091,8 +6091,8 @@
 
 			// clearTimeout(timer);
 			// timer = setTimeout(function(){
-			// 	const elWrap = elModal.querySelector('.ui-modal-wrap');
-			// 	const elOpen = document.querySelectorAll('.ui-modal.open');
+			// 	const elWrap = elModal.querySelector('.ui-dialog-wrap');
+			// 	const elOpen = document.querySelectorAll('.ui-dialog.open');
 			// 	const len = !!elOpen ? elOpen.length : false;
 
 			// 	elWrap.removeAttribute('style');
@@ -6108,7 +6108,7 @@
 			// 	!!callback && callback(id);
 			// 	!!endfocus && endfocus.focus();
 
-			// 	const sid = elModal.querySelector('.ui-modal-body').dataset.scrollId;
+			// 	const sid = elModal.querySelector('.ui-dialog-body').dataset.scrollId;
 			// 	!!sid && Global.scrollBar.destroy(sid);
 			// },210);
 		},

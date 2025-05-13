@@ -575,19 +575,42 @@ codebox code {
   height: 100dvh;
   overflow-y: hidden;
   overflow-x: hidden;
+  z-index: 0;
 }
 
-.area-modal {
+.area-dialog {
   position: absolute;
   top: 0;
   left: 0;
+  z-index: 100;
+}
+
+.area-select {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 200;
+}
+
+.area-system {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 300;
+}
+
+.area-toast {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 400;
 }
 
 button:focus {
   outline: 1px solid red;
 }
 
-.project-modal {
+[data-dialog] {
   display: none;
   position: fixed;
   top: 0;
@@ -599,40 +622,171 @@ button:focus {
   justify-content: center;
   align-items: center;
 }
-.project-modal:focus .project-modal--item {
+[data-dialog] [data-dialog-item=wrap]:focus {
   box-shadow: 0 0 1rem rgba(0, 0, 0, 0.5);
 }
-.project-modal[data-zindex="1"] {
+[data-dialog][data-zindex="1"] {
   z-index: 1;
 }
-.project-modal[data-zindex="2"] {
+[data-dialog][data-zindex="2"] {
   z-index: 2;
 }
-.project-modal[data-zindex="3"] {
+[data-dialog][data-zindex="3"] {
   z-index: 3;
 }
-.project-modal[data-zindex="4"] {
+[data-dialog][data-zindex="4"] {
   z-index: 4;
 }
-.project-modal[data-zindex="5"] {
+[data-dialog][data-zindex="5"] {
   z-index: 5;
 }
-.project-modal[data-zindex="6"] {
+[data-dialog][data-zindex="6"] {
   z-index: 6;
 }
-.project-modal[data-zindex="7"] {
+[data-dialog][data-zindex="7"] {
   z-index: 7;
 }
-.project-modal[data-zindex="8"] {
+[data-dialog][data-zindex="8"] {
   z-index: 8;
 }
-.project-modal[data-zindex="9"] {
+[data-dialog][data-zindex="9"] {
   z-index: 9;
 }
-.project-modal[data-zindex="10"] {
+[data-dialog][data-zindex="10"] {
   z-index: 10;
 }
-.project-modal .dim {
+[data-dialog][data-state=hide] {
+  animation-name: modal-hide;
+  animation-duration: 0.2s;
+  animation-iteration-count: 1;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+}
+[data-dialog][data-state=hide] .dim {
+  opacity: 0;
+}
+[data-dialog][aria-hidden=false] {
+  display: flex;
+}
+[data-dialog][aria-hidden=false][data-state=show][data-current=true] .dim {
+  opacity: 1;
+}
+[data-dialog][data-ps=center] {
+  justify-content: center;
+  align-items: center;
+}
+[data-dialog][data-ps=center][aria-hidden=true] .project-dialog--item {
+  animation-name: scale-Out;
+  animation-duration: 0.2s;
+  animation-iteration-count: 1;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+}
+[data-dialog][data-ps=center][aria-hidden=false] .project-dialog--item {
+  animation-name: scale-In;
+  animation-duration: 0.2s;
+  animation-iteration-count: 1;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+}
+[data-dialog][data-ps=bottom] {
+  justify-content: center;
+  align-items: flex-end;
+}
+[data-dialog][data-ps=bottom][aria-hidden=true] .project-dialog--item {
+  animation-name: bottom-Out;
+  animation-duration: 0.2s;
+  animation-iteration-count: 1;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+}
+[data-dialog][data-ps=bottom][aria-hidden=false] .project-dialog--item {
+  animation-name: bottom-In;
+  animation-duration: 0.2s;
+  animation-iteration-count: 1;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+}
+[data-dialog][data-ps=top] {
+  justify-content: center;
+  align-items: flex-start;
+}
+[data-dialog][data-ps=top][aria-hidden=true] .project-dialog--item {
+  animation-name: top-Out;
+  animation-duration: 0.2s;
+  animation-iteration-count: 1;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+}
+[data-dialog][data-ps=top][aria-hidden=false] .project-dialog--item {
+  animation-name: top-In;
+  animation-duration: 0.2s;
+  animation-iteration-count: 1;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+}
+[data-dialog][data-ps=left] {
+  justify-content: flex-start;
+  align-items: center;
+}
+[data-dialog][data-ps=left][aria-hidden=true] .project-dialog--item {
+  animation-name: left-Out;
+  animation-duration: 0.2s;
+  animation-iteration-count: 1;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+}
+[data-dialog][data-ps=left][aria-hidden=false] .project-dialog--item {
+  animation-name: left-In;
+  animation-duration: 0.2s;
+  animation-iteration-count: 1;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+}
+[data-dialog][data-ps=right] {
+  justify-content: flex-end;
+  align-items: center;
+}
+[data-dialog][data-ps=right][aria-hidden=true] .project-dialog--item {
+  animation-name: right-Out;
+  animation-duration: 0.2s;
+  animation-iteration-count: 1;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+}
+[data-dialog][data-ps=right][aria-hidden=false] .project-dialog--item {
+  animation-name: right-In;
+  animation-duration: 0.2s;
+  animation-iteration-count: 1;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+}
+
+.ui-dialog--wrap {
+  position: relative;
+  z-index: 1;
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  padding: 2.4rem;
+  border-radius: 0.8rem;
+  border: 0.1rem solid #ccc;
+}
+.ui-dialog--header {
+  display: flex;
+  justify-content: space-between;
+  flex-shrink: 0;
+}
+.ui-dialog--footer {
+  display: flex;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.ui-dialog--main {
+  display: flex;
+  flex: 1;
+}
+.ui-dialog .dim {
   display: block;
   position: absolute;
   width: 100%;
@@ -641,146 +795,4 @@ button:focus {
   opacity: 0;
   z-index: 0;
   transition: opacity 0.2s ease;
-}
-.project-modal .btn-hidden {
-  display: block;
-  position: absolute;
-  bottom: -100dvh;
-  width: 4rem;
-  height: 4rem;
-  border-radius: 50%;
-  background-color: #000;
-  pointer-events: none;
-}
-.project-modal .btn-hidden:focus {
-  pointer-events: visible;
-  bottom: 0;
-}
-.project-modal[data-state=hide] {
-  animation-name: modal-hide;
-  animation-duration: 0.2s;
-  animation-iteration-count: 1;
-  animation-timing-function: linear;
-  animation-fill-mode: forwards;
-}
-.project-modal[data-state=hide] .dim {
-  opacity: 0;
-}
-.project-modal[aria-hidden=false] {
-  display: flex;
-}
-.project-modal[aria-hidden=false][data-state=show][data-current=true] .dim {
-  opacity: 1;
-}
-.project-modal[data-ps=center] {
-  justify-content: center;
-  align-items: center;
-}
-.project-modal[data-ps=center][aria-hidden=true] .project-modal--item {
-  animation-name: scale-Out;
-  animation-duration: 0.2s;
-  animation-iteration-count: 1;
-  animation-timing-function: linear;
-  animation-fill-mode: forwards;
-}
-.project-modal[data-ps=center][aria-hidden=false] .project-modal--item {
-  animation-name: scale-In;
-  animation-duration: 0.2s;
-  animation-iteration-count: 1;
-  animation-timing-function: linear;
-  animation-fill-mode: forwards;
-}
-.project-modal[data-ps=bottom] {
-  justify-content: center;
-  align-items: flex-end;
-}
-.project-modal[data-ps=bottom][aria-hidden=true] .project-modal--item {
-  animation-name: bottom-Out;
-  animation-duration: 0.2s;
-  animation-iteration-count: 1;
-  animation-timing-function: linear;
-  animation-fill-mode: forwards;
-}
-.project-modal[data-ps=bottom][aria-hidden=false] .project-modal--item {
-  animation-name: bottom-In;
-  animation-duration: 0.2s;
-  animation-iteration-count: 1;
-  animation-timing-function: linear;
-  animation-fill-mode: forwards;
-}
-.project-modal[data-ps=top] {
-  justify-content: center;
-  align-items: flex-start;
-}
-.project-modal[data-ps=top][aria-hidden=true] .project-modal--item {
-  animation-name: top-Out;
-  animation-duration: 0.2s;
-  animation-iteration-count: 1;
-  animation-timing-function: linear;
-  animation-fill-mode: forwards;
-}
-.project-modal[data-ps=top][aria-hidden=false] .project-modal--item {
-  animation-name: top-In;
-  animation-duration: 0.2s;
-  animation-iteration-count: 1;
-  animation-timing-function: linear;
-  animation-fill-mode: forwards;
-}
-.project-modal[data-ps=left] {
-  justify-content: flex-start;
-  align-items: center;
-}
-.project-modal[data-ps=left][aria-hidden=true] .project-modal--item {
-  animation-name: left-Out;
-  animation-duration: 0.2s;
-  animation-iteration-count: 1;
-  animation-timing-function: linear;
-  animation-fill-mode: forwards;
-}
-.project-modal[data-ps=left][aria-hidden=false] .project-modal--item {
-  animation-name: left-In;
-  animation-duration: 0.2s;
-  animation-iteration-count: 1;
-  animation-timing-function: linear;
-  animation-fill-mode: forwards;
-}
-.project-modal[data-ps=right] {
-  justify-content: flex-end;
-  align-items: center;
-}
-.project-modal[data-ps=right][aria-hidden=true] .project-modal--item {
-  animation-name: right-Out;
-  animation-duration: 0.2s;
-  animation-iteration-count: 1;
-  animation-timing-function: linear;
-  animation-fill-mode: forwards;
-}
-.project-modal[data-ps=right][aria-hidden=false] .project-modal--item {
-  animation-name: right-In;
-  animation-duration: 0.2s;
-  animation-iteration-count: 1;
-  animation-timing-function: linear;
-  animation-fill-mode: forwards;
-}
-.project-modal--item {
-  position: relative;
-  z-index: 1;
-  background-color: #fff;
-  display: flex;
-  flex-direction: column;
-  border: 0.1rem solid #ccc;
-}
-.project-modal--header {
-  display: flex;
-  justify-content: space-between;
-  flex-shrink: 0;
-}
-.project-modal--footer {
-  display: flex;
-  justify-content: center;
-  flex-shrink: 0;
-}
-.project-modal--body {
-  display: flex;
-  flex: 1;
 }/*# sourceMappingURL=app.css.map */

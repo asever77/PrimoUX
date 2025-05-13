@@ -6,7 +6,7 @@
 	const Global = window[global];
 
 	Global.exe = {};
-	Global.modal = {};
+	Global.dialog = {};
 	Global.callback = {};
 
 	Global.utils = {
