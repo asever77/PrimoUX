@@ -779,13 +779,28 @@ button:focus {
   position: absolute;
   width: 100%;
   height: 2rem;
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: rgba(0, 0, 0, 0.1);
   top: 0;
   left: 0;
   cursor: grab;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+[data-dialog] [data-dialog-item=extend]::after {
+  content: "";
+  display: block;
+  width: 50%;
+  height: 0.4rem;
+  border-radius: 0.3rem;
+  background-color: rgba(0, 0, 0, 0.3);
+  transition: width 200ms ease;
 }
 [data-dialog] [data-dialog-item=extend]:active {
   cursor: grabbing;
+}
+[data-dialog] [data-dialog-item=extend]:active::after {
+  width: 30%;
 }
 
 .ui-dialog--wrap {
