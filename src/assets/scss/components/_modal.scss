@@ -61,16 +61,31 @@ button:focus{outline: 1px solid red;}
 	// ready -> open
 	&[data-state="hide"] {
 		animation-name: modal-hide;
-		animation-duration: 0.2s;
+		animation-duration: 0.3s;
 		animation-iteration-count: 1;
 		animation-timing-function: linear;
 		animation-fill-mode: forwards;
 
 		.dim {opacity: 0;}
+		&[data-ps="center"] [data-dialog-item="wrap"] {
+			animation-name: fadeOut;
+			animation-duration: 0.2s;
+			animation-iteration-count: 1;
+			animation-timing-function: linear;
+			animation-fill-mode: forwards;
+		}
 	}
 	&[aria-hidden="false"] {
 		display: flex;
-		&[data-state="show"][data-current="true"] .dim {opacity: 1;}
+
+		&[data-current="true"] .dim {opacity: 1;}
+		&[data-ps="center"] [data-dialog-item="wrap"] {
+			animation-name: fadeIn;
+			animation-duration: 0.2s;
+			animation-iteration-count: 1;
+			animation-timing-function: linear;
+			animation-fill-mode: forwards;
+		}
 	}
 
 	// 위치
@@ -188,6 +203,19 @@ button:focus{outline: 1px solid red;}
 				animation-fill-mode:forwards;
 			}
 		}
+	}
+
+	[data-dialog-item="extend"] {
+		position: absolute;
+		width: 100%;
+		height: 2rem;
+		background-color: rgba(0, 0, 0, 0.2);
+		top:0; 
+		left:0;
+		cursor:grab;
+	}
+	[data-dialog-item="extend"]:active {
+		cursor:grabbing;
 	}
 }
 

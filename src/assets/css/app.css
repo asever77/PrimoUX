@@ -657,7 +657,7 @@ button:focus {
 }
 [data-dialog][data-state=hide] {
   animation-name: modal-hide;
-  animation-duration: 0.2s;
+  animation-duration: 0.3s;
   animation-iteration-count: 1;
   animation-timing-function: linear;
   animation-fill-mode: forwards;
@@ -665,11 +665,25 @@ button:focus {
 [data-dialog][data-state=hide] .dim {
   opacity: 0;
 }
+[data-dialog][data-state=hide][data-ps=center] [data-dialog-item=wrap] {
+  animation-name: fadeOut;
+  animation-duration: 0.2s;
+  animation-iteration-count: 1;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+}
 [data-dialog][aria-hidden=false] {
   display: flex;
 }
-[data-dialog][aria-hidden=false][data-state=show][data-current=true] .dim {
+[data-dialog][aria-hidden=false][data-current=true] .dim {
   opacity: 1;
+}
+[data-dialog][aria-hidden=false][data-ps=center] [data-dialog-item=wrap] {
+  animation-name: fadeIn;
+  animation-duration: 0.2s;
+  animation-iteration-count: 1;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
 }
 [data-dialog][data-ps=center] {
   justify-content: center;
@@ -760,6 +774,18 @@ button:focus {
   animation-iteration-count: 1;
   animation-timing-function: linear;
   animation-fill-mode: forwards;
+}
+[data-dialog] [data-dialog-item=extend] {
+  position: absolute;
+  width: 100%;
+  height: 2rem;
+  background-color: rgba(0, 0, 0, 0.2);
+  top: 0;
+  left: 0;
+  cursor: grab;
+}
+[data-dialog] [data-dialog-item=extend]:active {
+  cursor: grabbing;
 }
 
 .ui-dialog--wrap {

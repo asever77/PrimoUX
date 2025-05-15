@@ -101,23 +101,28 @@
 
 	<!-- modal -->
 	<div class="area-dialog">
-		<section class="project-dialog" data-dialog="modal-2" aria-hidden="true" role="modal">
+		<section class="ui-dialog" data-dialog="modal-2" data-modal="true" 
+		role="dialog" 
+		aria-hidden="true" 
+		aria-labelledby="modal_1-label"
+		aria-describedby="modal_1-decs">
 			<!-- modal item -->
-			<div class="project-dialog--item" data-dialog-item>
+			<div class="ui-dialog--wrap" role="document" tabindex="-1" data-dialog-item="wrap">
 				<!-- modal header -->
-				<div class="project-dialog--header">
+				<div class="ui-dialog--header">
 					<h1>Title</h1>
-					<button type="button" aria-label="창닫기" data-dialog-btn="hide">닫기</button>
+					<button type="button" aria-label="창닫기" data-dialog-button="close">닫기</button>
 				</div>
 				<!-- modal body -->
-				<div class="project-dialog--main" data-dialog-scroll>
-					빌드인.....<br>
+				<div class="ui-dialog--main" data-dialog-item="main">
+					eeee빌드인.....<br>
 					.........<br>
 					.........
 				</div>
 				<!-- modal footer -->
-				<div class="project-dialog--footer">
-					<button type="button" data-dialog-btn="hide">취소</button><button type="button">확인</button>
+				<div class="ui-dialog--footer">
+					<button type="button" data-dialog-button="close">취소</button>
+					<button type="button">확인</button>
 				</div>
 			</div>
 		</section>
@@ -133,23 +138,21 @@
 	<script type="module" src="../assets/js/ui.global.js"></script>
 	<script type="module">
 		import Dialog from '../assets/js/component/dialog.js';
- 		PrimoUX.dialog.modal1 = new Dialog({
+ 		
+		PrimoUX.dialog.modal1 = new Dialog({
 			id: 'modal_1',
 			ps: 'center',
 			src: './dialog/modal.html',
 			loadCallback: () => {
-				PrimoUX.dialog.modal1.show();
+				// PrimoUX.dialog.modal1.show();
 			}
 		});			
 
-		// PrimoUX.dialog.modal2 = new Dialog({
-		// 	id: 'modal-2',
-		// 	ps: 'bottom',
-		// 	drag: true,
-		// 	hide: () => {
-		// 		PrimoUX.dialog.modal2.hide();
-		// 	},
-		// });
+		PrimoUX.dialog.modal2 = new Dialog({
+			id: 'modal-2',
+			ps: 'bottom',
+			extend: true, 
+		});
 		// PrimoUX.dialog.modal2.show();
 
 		// PrimoUX.dialog.modal3 = new Dialog({

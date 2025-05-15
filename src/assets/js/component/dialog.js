@@ -2,12 +2,17 @@ export default class Dialog {
   constructor(opt) {
 		const defaults = {
 			type: 'modal', //'modal', 'system'
-			classname: '',
 			ps: 'center', // 'center', 'top', 'bottom', 'left', 'right'
+      src: null,
+      classname: '',
 			area: document.querySelector('.area-dialog'),
+
+      move: true,
 			dim: true,
+      extend: false,
+      loadCallback: null,
 			focus_back: null,
-      drag: false,
+      
       message: '',
       confirmText: '',
       cancelText: '',
@@ -17,7 +22,10 @@ export default class Dialog {
 
 		this.option = { ...defaults, ...opt };
 		this.dialog = null;
+    this.extend = this.option.extend;
 		this.area = this.option.area;
+		this.move = this.option.ps !== 'center' ? false : this.option.move;
+    this.isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
 
     this.initialize();
 	}
@@ -59,7 +67,9 @@ export default class Dialog {
 				area: this.area,
 				src: this.option.src,
 				insert: true,
-				callback: () => {},
+				callback: () => {
+          console.log('callback');
+        },
 			})
 			.then(() => this.buildDialog())
 			.catch(err => console.error('Error loading modal content:', err));
@@ -77,11 +87,13 @@ export default class Dialog {
     
     this.dialog.dataset.ps = this.option.ps;
     this.dialog.dataset.drag = this.option.drag;
-    this.dialogItem = this.dialog.querySelector('[data-dialog-item="wrap"]');
-    this.dialogBody = this.dialog.querySelector('[data-dialog-item="main"]');
+    this.dialogWrap = this.dialog.querySelector('[data-dialog-item="wrap"]');
+    this.dialogMain = this.dialog.querySelector('[data-dialog-item="main"]');
 
     //dim
     (this.option.dim) && this.dialog.insertAdjacentHTML('beforeend', '<div class="dim"></div>');
+    //extend
+    (this.extend) && this.dialogWrap.insertAdjacentHTML('afterbegin', '<div data-dialog-item="extend"></div>');
 
     this.setFocusableElements();
     this.addEventListeners();
@@ -107,7 +119,7 @@ export default class Dialog {
       const el_this = e.currentTarget;
       const y = isTouch ? e.targetTouches[0].clientY : e.clientY;
       const x = isTouch ? e.targetTouches[0].clientX : e.clientX;
-      const rect = this.dialogItem.getBoundingClientRect();
+      const rect = this.dialogWrap.getBoundingClientRect();
       const h = rect.height;
       let isMove = false;
       let y_m;
@@ -117,7 +129,7 @@ export default class Dialog {
           x_m = isTouch ? e.targetTouches[0].clientX : e.clientX;
         if (isDragState) {
           if (Math.abs(y - y_m) > 10 && Math.abs(x - x_m) < Math.abs(y - y_m) && (y - y_m) < 0) {
-            this.dialogItem.setAttribute(
+            this.dialogWrap.setAttribute(
               'style',
               `max-height: ${(h + (y - y_m)) / 10}rem !important; height: ${(h + (y - y_m)) / 10}rem !important;`
             );
@@ -127,13 +139,13 @@ export default class Dialog {
           }
         } else {
           if (Math.abs(y - y_m) > 10 && Math.abs(x - x_m) < Math.abs(y - y_m) && (y - y_m) > 0) {
-            this.dialogItem.setAttribute(
+            this.dialogWrap.setAttribute(
               'style',
               `max-height: ${(h + (y - y_m)) / 10}rem !important; height: ${(h + (y - y_m)) / 10}rem !important;`
             );
             isMove = true;
           } else {
-            this.dialogItem.setAttribute(
+            this.dialogWrap.setAttribute(
               'style',
               `max-height: ${(h + (y - y_m)) / 10}rem !important; height: ${(h + (y - y_m)) / 10}rem !important;`
             );
@@ -148,7 +160,7 @@ export default class Dialog {
         const reDrag = (e) => {
           const _y = isTouch ? e.targetTouches[0].clientY : e.clientY;
           const _x = isTouch ? e.targetTouches[0].clientX : e.clientX;
-          const _t = this.dialogBody.scrollTop;
+          const _t = this.dialogMain.scrollTop;
           let _y_m;
           let _x_m;
           const reDragMove = (e) => {
@@ -160,10 +172,10 @@ export default class Dialog {
             document.removeEventListener('touchend', reDragEnd);
 
             if (_t < 1 && (_y - _y_m) < 0 && Math.abs(_x - _x_m) < Math.abs(_y - _y_m)) {
-              this.dialogItem.removeEventListener('touchstart', reDrag);
-              this.dialogItem.addEventListener('touchstart', dragStart);
+              this.dialogWrap.removeEventListener('touchstart', reDrag);
+              this.dialogWrap.addEventListener('touchstart', dragStart);
             } else {
-              this.dialogItem.addEventListener('touchstart', reDrag);
+              this.dialogWrap.addEventListener('touchstart', reDrag);
             }
           }
           document.addEventListener('touchmove', reDragMove, { passive: false });
@@ -171,37 +183,37 @@ export default class Dialog {
         }
         const restoration = () => {
           this.dialog.dataset.state = '';
-          this.dialogItem.setAttribute(
+          this.dialogWrap.setAttribute(
             'style',
             `max-height: 32rem !important; overflow-y: hidden !important;`
           );
-          this.dialogItem.addEventListener('touchstart', dragStart);
+          this.dialogWrap.addEventListener('touchstart', dragStart);
           isDragState = false;
         }
         const reDragClose = (e) => {
           restoration();
-          this.dialogItem.removeEventListener('touchstart', reDrag);
+          this.dialogWrap.removeEventListener('touchstart', reDrag);
         }
         //성공 확장
         if (y - 30 > y_m && isMove) {
           this.dialog.dataset.state = 'drag-full';
-          this.dialogItem.classList.add('motion');
+          this.dialogWrap.classList.add('motion');
           const dragCloseBtn = this.dialog.querySelector('[data-dialog-drag="close"]');
           isDragState = true;
           dragCloseBtn && dragCloseBtn.addEventListener('click', reDragClose);
-          this.dialogItem.setAttribute(
+          this.dialogWrap.setAttribute(
             'style', 'max-height:100dvh !important; overflow-y: hidden !important; height: 100dvh !important;'
           );
-          this.dialogItem.addEventListener('transitionend', () => {
-            this.dialogItem.classList.remove('motion');
-            let _list = this.dialogBody.querySelector('.search-result-list');
+          this.dialogWrap.addEventListener('transitionend', () => {
+            this.dialogWrap.classList.remove('motion');
+            let _list = this.dialogMain.querySelector('.search-result-list');
             !_list ? _list = this.dialog.querySelector('[data-dialog-scroll]') : '';
 
             const hasScroll = _list.scrollHeight > _list.clientHeight;
 
             if (hasScroll) {
-              this.dialogItem.removeEventListener('touchstart', dragStart);
-              this.dialogItem.addEventListener('touchstart', reDrag);
+              this.dialogWrap.removeEventListener('touchstart', dragStart);
+              this.dialogWrap.addEventListener('touchstart', reDrag);
             }
           });
         } 
@@ -211,17 +223,17 @@ export default class Dialog {
             if (y_m - y < (h / 3) * 2) {
               restoration();
             } else {
-              this.dialogItem.removeEventListener('touchstart', dragStart);
+              this.dialogWrap.removeEventListener('touchstart', dragStart);
               this.option.hide();
             }
           } else {
-            this.dialogItem.removeEventListener('touchstart', dragStart);
+            this.dialogWrap.removeEventListener('touchstart', dragStart);
             this.option.hide();
           }
         } 
         //취소 풀원복
         else if (isDragState) {
-          this.dialogItem.setAttribute(
+          this.dialogWrap.setAttribute(
             'style', 'max-height:100dvh !important; overflow-y: hidden !important; height: 100dvh !important;'
           );
         } 
@@ -234,8 +246,8 @@ export default class Dialog {
       document.addEventListener('touchend', dragEnd);
     }
     console.log('dragEvent?')
-    this.dialogItem.removeEventListener('touchstart', dragStart);
-    this.dialogItem.addEventListener('touchstart', dragStart);
+    this.dialogWrap.removeEventListener('touchstart', dragStart);
+    this.dialogWrap.addEventListener('touchstart', dragStart);
   }
 
   addEventListeners() {
@@ -283,11 +295,43 @@ export default class Dialog {
     this.dialog.focus();
   }
 
+  moveStart(e) {
+		const el_this = e.currentTarget;
+    const isTouchEvent = e.type.startsWith('touch');
+    const eventMove = isTouchEvent ? 'touchmove' : 'mousemove';
+    const eventEnd = isTouchEvent ? 'touchend' : 'mouseup';
+    const y = isTouchEvent ? e.targetTouches[0].clientY : e.clientY;
+    const x = isTouchEvent ? e.targetTouches[0].clientX : e.clientX;
+    let y_m;
+    let x_m;
+    let style = el_this.style.margin;
+    style = style ? style : '0 0 0 0';
+
+    const marginValues = style.split(" ");
+    let marginTop = parseFloat(marginValues[0]);
+    let marginLeft = parseFloat(marginValues[3]);
+
+    const dragMove = (e) => {
+      y_m = isTouchEvent ? e.targetTouches[0].clientY : e.clientY;
+      x_m = isTouchEvent ? e.targetTouches[0].clientX : e.clientX;
+      el_this.style.margin = `${marginTop + ((y - y_m) / 5 * -1)}rem 0 0 ${marginLeft + ((x - x_m) / 5 * -1)}rem`;
+    }
+    const dragEnd = () => {
+      document.removeEventListener(eventMove, dragMove);
+      document.removeEventListener(eventEnd, dragEnd);
+    }
+   
+    document.addEventListener(eventMove, dragMove, { passive: false });
+    document.addEventListener(eventEnd, dragEnd);
+	}
 	show() {
 		this.option.focus_back = document.activeElement;
 		this.dialog.setAttribute('aria-hidden', 'false');
-		this.dialogItem.focus();
+    // this.dialogWrap.removeAttribute('style');
+		this.dialogWrap.focus();
 		this.dialog.dataset.state = "show";
+
+    console.log('this.extend', this.extend)
     
     const openModals = document.querySelectorAll('[data-dialog][aria-hidden="false"]');
     const zIndex = openModals.length;
@@ -295,12 +339,17 @@ export default class Dialog {
     if (currentModal) currentModal.dataset.current = "false";
     this.dialog.dataset.zindex = zIndex;
     this.dialog.dataset.current = 'true';
-
-    (this.option.drag) && this.dragEvent();
+    // (this.option.drag) && this.dragEvent();
     
     //loop focus
 		this.btn_first.addEventListener('keydown', this.keyStart.bind(this));	
 		this.btn_last.addEventListener('keydown', this.keyEnd.bind(this));
+    if (this.move) {
+      this.dialogWrap.removeEventListener('touchstart', this.moveStart);
+      this.dialogWrap.removeEventListener('mousedown', this.moveStart);
+      this.dialogWrap.addEventListener('touchstart', this.moveStart);
+      this.dialogWrap.addEventListener('mousedown', this.moveStart);
+    }
 	}
 	hide(opt) {
     //loop focus 중복방지 이벤트 취소
@@ -319,6 +368,9 @@ export default class Dialog {
     //열린 모달 재설정
     const openModals = document.querySelectorAll('[data-dialog][aria-hidden="false"]');
     const zIndex = openModals.length;
+
+    console.log(openModals)
+
     for (let i = n; i <= zIndex; i++) {
       const item = document.querySelector(`[data-dialog][aria-hidden="false"][data-zindex="${i + 1}"]`);
       if (item) {
