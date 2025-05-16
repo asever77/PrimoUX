@@ -9,7 +9,6 @@
     ],
     "liveSassCompile.settings.includeItems": [
         "/src/assets/scss/app.scss",
-        "/quiz/assets/scss/app.scss"
     ],
 
     "liveServer.settings.donotVerifyTags": true,

@@ -1,20 +1,21 @@
-<section class="project-dialog" data-dialog="modal-5" aria-hidden="true" role="dialog">
-	<!-- modal item -->
-	<div class="project-dialog--item" data-dialog-item>
-		<!-- modal header -->
-		<div class="project-dialog--header">
-			<h1>Title555</h1>
-			<button type="button" aria-label="창닫기" data-dialog-btn="hide">닫기</button>
+<div class="ui-dialog" role="dialog" aria-hidden="true" 
+data-dialog="modalname5" 
+aria-labelledby="modalname5-label"
+aria-describedby="modalname5-decs"> 
+	<div class="ui-dialog--wrap" role="document" tabindex="-1" data-dialog-item="wrap">
+		<div class="ui-dialog--header">
+			<h1 id="modalname5-label">제목5</h1>
+			<p id="modalname5-decs">간략한 소개 및 기능에 대한 설명</p>
+			<button type="button" aria-label="창닫기" data-dialog-button="close">닫기</button>
 		</div>
-		<!-- modal body -->
-		<div class="project-dialog--main" data-dialog-scroll>
+		<div class="ui-dialog--main" data-dialog-item="main">
 			.........<br>
 			.........<br>
 			.........
 		</div>
-		<!-- modal footer -->
-		<div class="project-dialog--footer">
-			<button type="button" data-dialog-btn="hide">취소</button><button type="button">확인</button>
+		<div class="ui-dialog--footer">
+			<button type="button" data-dialog-button="close">취소</button>
+			<button type="button">확인</button>
 		</div>
 	</div>
-</section>
+</div>

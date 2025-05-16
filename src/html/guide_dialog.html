@@ -30,40 +30,6 @@
 					<stit>코드</stit>
 					<codebox>
 						<code><pre>
-//스크립트 반영 전
-&lt;section class="project-dialog" data-dialog="modal-1" aria-hidden="true" role="dialog"&gt;
-	&lt;div class="project-dialog--item" data-dialog-item&gt;
-		&lt;div class="project-dialog--header"&gt;
-			&lt;h1&gt;Title&lt;/h1&gt;
-			&lt;button type="button" aria-label="창닫기" data-dialog-btn="hide"&gt;닫기&lt;/button&gt;
-		&lt;/div&gt;
-		&lt;div class="project-dialog--main" data-dialog-scroll&gt;
-
-		&lt;/div&gt;
-		&lt;div class="project-dialog--footer"&gt;
-			&lt;button type="button" data-dialog-btn="hide"&gt;취소&lt;/button&gt;
-			&lt;button type="button"&gt;확인&lt;/button&gt;
-		&lt;/div&gt;
-	&lt;/div&gt;
-&lt;/section&gt;
-
-//스크립트 반영 후
-&lt;section class="project-dialog" data-dialog="modal-1" aria-hidden="true" role="dialog" tabindex="0" data-ps="centen" data-state="show" data-zindex="1" data-current="true"&gt;
-	&lt;div class="project-dialog--item" data-dialog-item&gt;
-		&lt;div class="project-dialog--header"&gt;
-			&lt;h1&gt;Title&lt;/h1&gt;
-			&lt;button type="button" aria-label="창닫기" data-dialog-btn="hide"&gt;닫기&lt;/button&gt;
-		&lt;/div&gt;
-		&lt;div class="project-dialog--main" data-dialog-scroll&gt;
-
-		&lt;/div&gt;
-		&lt;div class="project-dialog--footer"&gt;
-			&lt;button type="button" data-dialog-btn="hide"&gt;취소&lt;/button&gt;
-			&lt;button type="button"&gt;확인&lt;/button&gt;
-		&lt;/div&gt;
-	&lt;/div&gt;
-&lt;/section&gt;
-
 
 &lt;script type="module"&gt;
 	//Dialog component 불러오기
@@ -101,31 +67,27 @@
 
 	<!-- modal -->
 	<div class="area-dialog">
-		<section class="ui-dialog" data-dialog="modal-2" data-modal="true" 
-		role="dialog" 
-		aria-hidden="true" 
-		aria-labelledby="modal_1-label"
-		aria-describedby="modal_1-decs">
-			<!-- modal item -->
+		<div class="ui-dialog" role="dialog" aria-hidden="true" 
+		data-dialog="modalname2" 
+		aria-labelledby="modalname2-label"
+		aria-describedby="modalname2-decs"> 
 			<div class="ui-dialog--wrap" role="document" tabindex="-1" data-dialog-item="wrap">
-				<!-- modal header -->
 				<div class="ui-dialog--header">
-					<h1>Title</h1>
+					<h1 id="modalname5-label">제목2</h1>
+					<p id="modalname5-decs">간략한 소개 및 기능에 대한 설명</p>
 					<button type="button" aria-label="창닫기" data-dialog-button="close">닫기</button>
 				</div>
-				<!-- modal body -->
 				<div class="ui-dialog--main" data-dialog-item="main">
-					eeee빌드인.....<br>
+					.........<br>
 					.........<br>
 					.........
 				</div>
-				<!-- modal footer -->
 				<div class="ui-dialog--footer">
 					<button type="button" data-dialog-button="close">취소</button>
 					<button type="button">확인</button>
 				</div>
 			</div>
-		</section>
+		</div>
 	</div>
 	<!-- system box -->
 	<div class="area-system"></div>
@@ -140,65 +102,76 @@
 		import Dialog from '../assets/js/component/dialog.js';
  		
 		PrimoUX.dialog.modal1 = new Dialog({
-			id: 'modal_1',
+			id: 'modalname1',
 			ps: 'center',
 			src: './dialog/modal.html',
+			extend: false,
 			loadCallback: () => {
+				console.log('loadCallback')
 				// PrimoUX.dialog.modal1.show();
 			}
 		});			
 
 		PrimoUX.dialog.modal2 = new Dialog({
-			id: 'modal-2',
+			id: 'modalname2',
 			ps: 'bottom',
+			src: null,
 			extend: true, 
+			loadCallback: () => {
+				console.log('loadCallback')
+				// PrimoUX.dialog.modal1.show();
+			}
 		});
 		// PrimoUX.dialog.modal2.show();
 
-		// PrimoUX.dialog.modal3 = new Dialog({
-		// 	id: 'modal-3',
-		// 	ps: 'top',
-		// 	src: './dialog/modal3.html',
-		// 	loadCallback: () => { 
-		// 		PrimoUX.dialog.modal3.show();
-		// 	}
-		// });
+		PrimoUX.dialog.modal3 = new Dialog({
+			id: 'modalname3',
+			ps: 'top',
+			src: './dialog/modal3.html',
+			extend: false,
+			loadCallback: () => { 
+				// PrimoUX.dialog.modal3.show();
+			}
+		});
 
-		// PrimoUX.dialog.modal4 = new Dialog({
-		// 	id: 'modal-4',
-		// 	ps: 'left',
-		// 	src: './dialog/modal4.html',
-		// 	loadCallback: () => { 
-		// 		PrimoUX.dialog.modal4.show();
-		// 	}
-		// });
+		PrimoUX.dialog.modal4 = new Dialog({
+			id: 'modalname4',
+			ps: 'left',
+			src: './dialog/modal4.html',
+			extend: false,
+			loadCallback: () => { 
+				// PrimoUX.dialog.modal4.show();
+			}
+		});
 
-		// PrimoUX.dialog.modal5 = new Dialog({
-		// 	id: 'modal-5',
-		// 	ps: 'right',
-		// 	src: './dialog/modal5.html',
-		// 	loadCallback: () => { 
-		// 		PrimoUX.dialog.modal5.show();
-		// 	}
-		// });
+		PrimoUX.dialog.modal5 = new Dialog({
+			id: 'modalname5',
+			ps: 'right',
+			src: './dialog/modal5.html',
+			extend: false,
+			loadCallback: () => { 
+				// PrimoUX.dialog.modal5.show();
+			}
+		});
 
-		// PrimoUX.dialog.alert1 = new Dialog({
-		// 	id: 'alert1',
-		// 	type: 'system',
-		// 	message: `<strong>공지</strong>입니다.`,
-		// 	confirmText: '확인',
-		// 	confirmCallback: () => {
-		// 		console.log('확인 콜백');
-		// 	},
-		// 	cancelText: '취소',
-		// 	cancelCallback: ()=> {
-		// 		console.log('취소 콜백');
-		// 		PrimoUX.dialog.alert1.hide()
-		// 	},
-		// });
-		// setTimeout(() => {
-		// 	PrimoUX.dialog.alert1.show();
-		// }, 2000);
+		PrimoUX.dialog.alert1 = new Dialog({
+			id: 'alert1',
+			type: 'system',
+			title: `제목영역입니다.`,
+			message: `<strong>공지</strong>입니다.`,
+			confirmText: '확인',
+			confirmCallback: () => {
+				console.log('확인 콜백');
+			},
+			cancelText: '취소',
+			cancelCallback: ()=> {
+				console.log('취소 콜백');
+				PrimoUX.dialog.alert1.hide()
+			},
+		});
+		setTimeout(() => {
+			PrimoUX.dialog.alert1.show();
+		}, 2000);
 
 			
 	</script>

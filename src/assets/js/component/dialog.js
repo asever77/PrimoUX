@@ -12,7 +12,7 @@ export default class Dialog {
       extend: false,
       loadCallback: null,
 			focus_back: null,
-      
+      title: null,
       message: '',
       confirmText: '',
       cancelText: '',
@@ -31,6 +31,7 @@ export default class Dialog {
 	}
 
   initialize() {
+    //dialog type : modal, system
     switch(this.option.type) {
       case 'modal': 
         this.initDialog(); 
@@ -45,14 +46,19 @@ export default class Dialog {
 
   initSystem() {
     let htmlSystem = `
-    <div class="ui-dialog" data-dialog="${this.option.id}" role="alertdialog" aria-dialog="true" aria-live="polite" tabindex="0">
-      <div class="ui-dialog--item">
-        <div class="ui-dialog--main">
+    <div class="ui-dialog" 
+    data-dialog="${this.option.id}" 
+    aria-labelledby="${this.option.id}-label"
+    role="alertdialog" 
+    aria-live="polite">
+      <div class="ui-dialog--wrap" role="document" tabindex="-1" data-dialog-item="wrap">
+        ${this.option.title ? '<div class="ui-dialog--header"><h2 id="' + this.option.id + '-label">' + this.option.title + '</h2></div>' : ''}
+        <div class="ui-dialog--main" data-dialog-item="main">
           ${this.option.message}
         </div>
         <div class="ui-dialog--footer">
-          ${this.option.cancelText ? '<button type="button" data-dialog-btn="cancel">'+ this.option.cancelText +'</button>' : ''}
-          ${this.option.confirmText ? '<button type="button" data-dialog-btn="confirm">'+ this.option.confirmText +'</button>' : ''}
+          ${this.option.cancelText ? '<button type="button" data-dialog-button="cancel">'+ this.option.cancelText +'</button>' : ''}
+          ${this.option.confirmText ? '<button type="button" data-dialog-button="confirm">'+ this.option.confirmText +'</button>' : ''}
         </div>
       </div>
     </div>`;
@@ -79,6 +85,7 @@ export default class Dialog {
 	}
 
   buildDialog() {
+    console.log('buildDialog:', this.option.id);
     this.dialog = document.querySelector(`[data-dialog="${this.option.id}"]`);
     if (!this.dialog) {
       console.error('Modal element not found');
@@ -331,8 +338,6 @@ export default class Dialog {
 		this.dialogWrap.focus();
 		this.dialog.dataset.state = "show";
 
-    console.log('this.extend', this.extend)
-    
     const openModals = document.querySelectorAll('[data-dialog][aria-hidden="false"]');
     const zIndex = openModals.length;
     const currentModal = document.querySelector('[data-dialog][aria-hidden="false"][data-current="true"]');
@@ -345,7 +350,7 @@ export default class Dialog {
 		this.btn_first.addEventListener('keydown', this.keyStart.bind(this));	
 		this.btn_last.addEventListener('keydown', this.keyEnd.bind(this));
     if (this.move) {
-      this.dialogWrap.removeEventListener('touchstart', this.moveStart);
+      this.dialogWrap.removeEventListener('touchstart', this.moveStart, {passive:true});
       this.dialogWrap.removeEventListener('mousedown', this.moveStart);
       this.dialogWrap.addEventListener('touchstart', this.moveStart);
       this.dialogWrap.addEventListener('mousedown', this.moveStart);
@@ -368,8 +373,6 @@ export default class Dialog {
     //열린 모달 재설정
     const openModals = document.querySelectorAll('[data-dialog][aria-hidden="false"]');
     const zIndex = openModals.length;
-
-    console.log(openModals)
 
     for (let i = n; i <= zIndex; i++) {
       const item = document.querySelector(`[data-dialog][aria-hidden="false"][data-zindex="${i + 1}"]`);
