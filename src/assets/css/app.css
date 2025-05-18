@@ -905,4 +905,54 @@ button:focus {
   opacity: 0;
   z-index: 0;
   transition: opacity 0.2s ease;
+}
+
+[data-drag] {
+  display: flex;
+  gap: 5rem;
+  align-items: center;
+}
+
+[data-drag-target=area] {
+  width: 40rem;
+  height: 40rem;
+  position: relative;
+  border: 0.1rem solid #ccc;
+  background-color: transparent;
+  background-image: linear-gradient(0deg, transparent 24%, #e4e9f3 25%, #e4e9f3 26%, transparent 27%, transparent 74%, #e4e9f3 75%, #e4e9f3 76%, transparent 77%, transparent), linear-gradient(90deg, transparent 24%, #e4e9f3 25%, #e4e9f3 26%, transparent 27%, transparent 74%, #e4e9f3 75%, #e4e9f3 76%, transparent 77%, transparent);
+  background-size: 4rem 4rem;
+  background-position: 0 0;
+}
+
+[data-drag-object=item] {
+  position: relative;
+}
+
+[data-drag-contral=move] {
+  position: absolute;
+  width: 4rem;
+  height: 4rem;
+  top: calc(50% - 2rem);
+  left: calc(50% - 2rem);
+  z-index: 2;
+  border-radius: 50%;
+  outline: 1px solid red;
+  cursor: grab;
+}
+[data-drag-contral=move]:active {
+  cursor: grabbing;
+}
+
+[data-drag-contral=group] {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  z-index: 1;
+  display: flex;
+  transform: translate(-50%, -2.4rem);
+}
+[data-drag-contral=group] [data-drag-contral] {
+  width: 2rem;
+  height: 2rem;
+  border: 1px solid blue;
 }/*# sourceMappingURL=app.css.map */
