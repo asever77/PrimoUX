@@ -908,14 +908,15 @@ button:focus {
 }
 
 [data-drag] {
+  position: relative;
   display: flex;
   gap: 5rem;
   align-items: center;
 }
 
-[data-drag-target=area] {
-  width: 40rem;
-  height: 40rem;
+[data-drag-target=item] {
+  width: 30rem;
+  height: 20rem;
   position: relative;
   border: 0.1rem solid #ccc;
   background-color: transparent;
@@ -924,8 +925,21 @@ button:focus {
   background-position: 1rem 1rem;
 }
 
+[data-drag-object=img] {
+  pointer-events: none;
+}
+
+[data-drag-object=wrap] {
+  position: relative;
+}
+
 [data-drag-object=item] {
   position: relative;
+}
+[data-drag-object=item][data-this=clone] {
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 
 [data-drag-contral=move] {
@@ -943,16 +957,55 @@ button:focus {
   cursor: grabbing;
 }
 
+[data-control-view=off] [data-drag-contral=group] {
+  display: flex;
+  animation-name: controlOff;
+  animation-duration: 200ms;
+  animation-delay: 2000ms;
+  animation-fill-mode: forwards;
+  animation-iteration-count: 1;
+}
+
+[data-control-view=on] [data-drag-contral=group] {
+  display: flex;
+}
+
 [data-drag-contral=group] {
   position: absolute;
   top: 0;
   left: 50%;
   z-index: 1;
-  display: flex;
+  display: none;
   transform: translate(-50%, -2.4rem);
 }
 [data-drag-contral=group] [data-drag-contral] {
   width: 2rem;
   height: 2rem;
   border: 1px solid blue;
+}
+
+@keyframes controlOff {
+  0% {
+    opacity: 1;
+  }
+  99% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+    display: none;
+  }
+}
+.sample-target {
+  display: flex;
+  gap: 1rem;
+}
+
+[data-drag=drag1] {
+  left: 4rem;
+  top: 4rem;
+}
+
+[data-drag-contral=move]:focus {
+  outline: 1px solid black;
 }/*# sourceMappingURL=app.css.map */

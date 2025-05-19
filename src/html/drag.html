@@ -8,24 +8,34 @@
 </head>
 <body>
   <div data-drag="drag1">
-    <div class="sample-area" data-drag-target="area"></div>
-    <div class="sample-object--wrap" data-drag-object="wrap">
-      <div class="sample-object--item" data-drag-object="item" data-drag-clone="true" data-value="1">
-        <button type="button" data-drag-contral="move" aria-label="이동"></button>
-        <div data-drag-contral="group">
-          <button type="button" data-drag-contral="delete" aria-label="삭제"></button>
-          <button type="button" data-drag-contral="roration" aria-label="회전"></button>
-          <button type="button" data-drag-contral="reversal" aria-label="좌우반전"></button>
-          <button type="button" data-drag-contral="reversal-v" aria-label="상하반전"></button>
-        </div>
+    <div class="sample-target">
+      <div class="sample-target--item" data-drag-target="item" data-value="1"></div>
+      <div class="sample-target--item" data-drag-target="item" data-value="2"></div>
+    </div>
+    <div class="sample-object" data-drag-object="area">
 
-        <div class="sample-object--img" data-drag-object="img">
-          <svg width="60" height="60" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title1">
-            <title id="title1">알파벳 T를 닮은 펜토미노 조각입니다.</title>
-            <path fill-rule="evenodd" clip-rule="evenodd" d="M20 0H0V20H20L20 60H40L40 20H60V0H40H20Z" fill="#E85635"></path>
-          </svg>
+      <div class="sample-object--wrap" data-drag-object="wrap">
+        <div class="sample-object--item" 
+        data-drag-object="item" 
+        data-this="original"
+        data-clone="1" 
+        data-value="1">
+          <button type="button" data-drag-contral="move" aria-label="이동"></button>
+          <div data-drag-contral="group">
+            <button type="button" data-drag-contral="delete" aria-label="삭제"></button>
+            <button type="button" data-drag-contral="roration" aria-label="회전"></button>
+            <button type="button" data-drag-contral="reversal" aria-label="좌우반전"></button>
+            <button type="button" data-drag-contral="reversal-v" aria-label="상하반전"></button>
+          </div>
+  
+          <div class="sample-object--img" data-drag-object="img" role="img" aria-label="이미지설명">
+            <svg width="60" height="60" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true">
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M20 0H0V20H20L20 60H40L40 20H60V0H40H20Z" fill="#E85635"></path>
+            </svg>
+          </div>
         </div>
       </div>
+
     </div>
   </div>
   
@@ -37,6 +47,7 @@
 
     PrimoUX.Drag1 = new Drag({
 			id: 'drag1',
+      unit: 20,
 		});			
 
 
