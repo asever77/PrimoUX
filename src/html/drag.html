@@ -5,30 +5,36 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
   <link rel="stylesheet" href="../assets/css/app.css">
+ 
 </head>
 <body>
-  <div data-drag="drag1">
+  <div data-dragdrop="drag1">
     <div class="sample-target">
-      <div class="sample-target--item" data-drag-target="item" data-value="1"></div>
-      <div class="sample-target--item" data-drag-target="item" data-value="2"></div>
+      <div class="sample-target--item" data-dragdrop-target="item" data-value="1"></div>
+      <div class="sample-target--item" data-dragdrop-target="item" data-value="2"></div>
     </div>
-    <div class="sample-object" data-drag-object="area">
+    <div class="sample-object" data-dragdrop-object="area">
 
-      <div class="sample-object--wrap" data-drag-object="wrap">
+      <div class="sample-object--wrap" data-dragdrop-object="wrap">
         <div class="sample-object--item" 
-        data-drag-object="item" 
+        data-dragdrop-object="item" 
         data-this="original"
+        data-mode="move" 
         data-clone="1" 
         data-value="1">
-          <button type="button" data-drag-contral="move" aria-label="이동"></button>
-          <div data-drag-contral="group">
-            <button type="button" data-drag-contral="delete" aria-label="삭제"></button>
-            <button type="button" data-drag-contral="roration" aria-label="회전"></button>
-            <button type="button" data-drag-contral="reversal" aria-label="좌우반전"></button>
-            <button type="button" data-drag-contral="reversal-v" aria-label="상하반전"></button>
+          <button type="button" data-dragdrop-object="event" aria-label="이동"></button>
+
+          <div data-dragdrop-contral="group" role="tablist">
+            <button type="button" role="tab" aria-selected="true" data-dragdrop-contral="move" aria-label="이동"></button>
+            <button type="button" role="tab" aria-selected="false" data-dragdrop-contral="roration" aria-label="회전"></button>
+
+            <button type="button" role="tab" aria-selected="false" data-dragdrop-contral="reversal" aria-label="좌우반전"></button>
+            <button type="button" role="tab" aria-selected="false" data-dragdrop-contral="reversal-v" aria-label="상하반전"></button>
+
+            <button type="button" role="tab" aria-selected="false" data-dragdrop-contral="delete" aria-label="삭제"></button>
           </div>
   
-          <div class="sample-object--img" data-drag-object="img" role="img" aria-label="이미지설명">
+          <div class="sample-object--img" data-dragdrop-object="img" role="img" aria-label="이미지설명">
             <svg width="60" height="60" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true">
               <path fill-rule="evenodd" clip-rule="evenodd" d="M20 0H0V20H20L20 60H40L40 20H60V0H40H20Z" fill="#E85635"></path>
             </svg>

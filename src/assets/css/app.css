@@ -907,15 +907,15 @@ button:focus {
   transition: opacity 0.2s ease;
 }
 
-[data-drag] {
+[data-dragdrop] {
   position: relative;
   display: flex;
   gap: 5rem;
   align-items: center;
 }
 
-[data-drag-target=item] {
-  width: 30rem;
+[data-dragdrop-target=item] {
+  width: 20rem;
   height: 20rem;
   position: relative;
   border: 0.1rem solid #ccc;
@@ -925,39 +925,50 @@ button:focus {
   background-position: 1rem 1rem;
 }
 
-[data-drag-object=img] {
+[data-dragdrop-object=wrap] {
+  position: relative;
+}
+
+[data-dragdrop-object=item] {
+  position: relative;
   pointer-events: none;
 }
-
-[data-drag-object=wrap] {
-  position: relative;
-}
-
-[data-drag-object=item] {
-  position: relative;
-}
-[data-drag-object=item][data-this=clone] {
+[data-dragdrop-object=item][data-this=clone] {
   position: absolute;
   top: 0;
   left: 0;
 }
 
-[data-drag-contral=move] {
+[data-dragdrop-object=event] {
   position: absolute;
-  width: 4rem;
-  height: 4rem;
-  top: calc(50% - 2rem);
-  left: calc(50% - 2rem);
+  width: 3rem;
+  height: 3rem;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   z-index: 2;
   border-radius: 50%;
   outline: 1px solid red;
+  pointer-events: visible;
   cursor: grab;
 }
-[data-drag-contral=move]:active {
+[data-dragdrop-object=event]:active {
   cursor: grabbing;
 }
+[data-dragdrop-object=event]:focus {
+  outline: 1px solid #000;
+  box-shadow: 0 0 1rem rgba(0, 0, 0, 0.5);
+}
 
-[data-control-view=off] [data-drag-contral=group] {
+[data-dragdrop-object=img] {
+  position: relative;
+  pointer-events: none;
+}
+[data-dragdrop-object=img] * {
+  display: block;
+}
+
+[data-control-view=off] [data-dragdrop-contral=group] {
   display: flex;
   animation-name: controlOff;
   animation-duration: 200ms;
@@ -966,22 +977,41 @@ button:focus {
   animation-iteration-count: 1;
 }
 
-[data-control-view=on] [data-drag-contral=group] {
+[data-control-view=on] [data-dragdrop-contral=group] {
   display: flex;
 }
 
-[data-drag-contral=group] {
+[data-dragdrop-contral=group] {
   position: absolute;
   top: 0;
   left: 50%;
   z-index: 1;
   display: none;
   transform: translate(-50%, -2.4rem);
+  background-color: rgba(255, 255, 255, 0.2);
 }
-[data-drag-contral=group] [data-drag-contral] {
+[data-dragdrop-contral=group] [data-dragdrop-contral] {
+  position: relative;
   width: 2rem;
   height: 2rem;
-  border: 1px solid blue;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  pointer-events: visible;
+}
+[data-dragdrop-contral=group] [data-dragdrop-contral][aria-selected=true]::after {
+  content: "";
+  display: block;
+  width: 0.2rem;
+  height: 1rem;
+  position: absolute;
+  bottom: -0.5rem;
+  left: calc(50% - 0.1rem);
+  background-color: black;
+}
+[data-dragdrop-contral=group] [data-dragdrop-contral=delete] {
+  margin-left: 0.4rem;
+}
+[data-dragdrop-contral=group] [data-dragdrop-contral=roration] {
+  margin-right: 0.4rem;
 }
 
 @keyframes controlOff {
@@ -1001,11 +1031,11 @@ button:focus {
   gap: 1rem;
 }
 
-[data-drag=drag1] {
+[data-dragdrop=drag1] {
   left: 4rem;
   top: 4rem;
 }
 
-[data-drag-contral=move]:focus {
+[data-dragdrop-contral=move]:focus {
   outline: 1px solid black;
 }/*# sourceMappingURL=app.css.map */
