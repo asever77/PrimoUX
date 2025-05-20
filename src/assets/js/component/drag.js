@@ -118,6 +118,7 @@ export default class Drag {
       this.areaPsData.forEach(area => {
         area.target.dataset.answer = '';
 
+        //영역 in 
         if (area.x[0] - this.unit <= end_ps.x[0] && area.x[1] + this.unit >= end_ps.x[1] && area.y[0] - this.unit <= end_ps.y[0] && area.y[1] + this.unit >= end_ps.y[1]) {          
           inSuccess = true;
           area.target.appendChild(this_item);
@@ -127,8 +128,10 @@ export default class Drag {
         } 
 
         if (!inSuccess) {
+          //영역 out
           this_item.remove();
         } else {
+          //영역 in
           this_event.addEventListener('keydown', this.boundKeyMove);
           this_event.addEventListener(eventStart, this.boundMoveStart);
           this_event.focus()
