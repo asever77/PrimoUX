@@ -25,13 +25,18 @@
           <button type="button" data-dragdrop-object="event" aria-label="이동"></button>
 
           <div data-dragdrop-contral="group" role="tablist">
-            <button type="button" role="tab" aria-selected="true" data-dragdrop-contral="move" aria-label="이동"></button>
-            <button type="button" role="tab" aria-selected="false" data-dragdrop-contral="roration" aria-label="회전"></button>
+            <!-- <button type="button" role="tab" aria-selected="true" data-dragdrop-contral="move" aria-label="이동"></button> -->
+            <button type="button" role="tab" aria-selected="false" data-dragdrop-contral="rotate" aria-label="회전"></button>
 
-            <button type="button" role="tab" aria-selected="false" data-dragdrop-contral="reversal" aria-label="좌우반전"></button>
-            <button type="button" role="tab" aria-selected="false" data-dragdrop-contral="reversal-v" aria-label="상하반전"></button>
+            <!-- <div>
+              <button type="button" role="tab" aria-selected="false" data-dragdrop-contral="reversal" aria-label="좌우반전"></button>
+              <button type="button" role="tab" aria-selected="false" data-dragdrop-contral="reversal-v" aria-label="상하반전"></button>
+            </div> -->
 
             <button type="button" role="tab" aria-selected="false" data-dragdrop-contral="delete" aria-label="삭제"></button>
+
+
+            <!-- <button type="button" data-dragdrop-contral="delete" aria-label="닫기"></button> -->
           </div>
   
           <div class="sample-object--img" data-dragdrop-object="img" role="img" aria-label="이미지설명">
@@ -54,6 +59,7 @@
     PrimoUX.Drag1 = new Drag({
 			id: 'drag1',
       unit: 20,
+      angle: 45,
 		});			
 
 

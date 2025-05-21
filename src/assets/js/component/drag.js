@@ -9,19 +9,25 @@ export default class Drag {
     this.option = { ...defaults, ...opt };
     this.id =  this.option.id;
     this.unit = this.option.unit;
+    this.angle = this.option.angle;
 
     this.drag = document.querySelector(`[data-dragdrop="${this.id}"]`);
     this.areas = this.drag.querySelectorAll('[data-dragdrop-target="item"]');
     this.items = this.drag.querySelectorAll('[data-dragdrop-object="item"]');
     this.areaPsData = [];
 
-    this.boundMoveStart = this.moveStart.bind(this);
+    this.boundEventStart = this.actEventStart.bind(this);
     this.boundKeyStart = this.keyStart.bind(this);
     this.boundKeyMove = this.keyMove.bind(this);
 
     this.isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
     this.eventStart = this.isTouchDevice ? 'touchstart' : 'mousedown';
     this.timerControl = null;
+
+    this.shiftPressed = false;
+    this.lastArrowKey = null;
+    this.repeatTimer = null;
+
     this.init();
   }
 
@@ -39,30 +45,31 @@ export default class Drag {
     this.items.forEach(item => {
       const evt = item.querySelector('[data-dragdrop-object="event"]');
       
-      evt.addEventListener(this.eventStart, this.boundMoveStart);
+      evt.addEventListener(this.eventStart, this.boundEventStart);
       evt.addEventListener('keydown', this.boundKeyStart);
     });
   }
-  contralTab(target) {
+  contralTab(target, v) {
     const wrap = target;
     const tabs = wrap.querySelectorAll('button');
     const select_tab = wrap.querySelector('[aria-selected="true"]');
 
     const actTab = e => {
-      console.log(111111)
       const _this = e.currentTarget;
       const mode = _this.dataset.dragdropContral;
       tabs.forEach(tab => {
         tab.setAttribute('aria-selected', 'false');
       });
-      _this.closest('[data-dragdrop-object="item"]').dataset.mode = mode;
+      _this.closest('[data-dragdrop-object="item"]').dataset.mode = mode === undefined ? 'move' : mode;
       _this.setAttribute('aria-selected', 'true');
+
+      wrap.dataset.controlView = 'off';
     }
     tabs.forEach(tab => {
       tab.addEventListener('click', actTab);
     });
   }
-  moveStart(e) {
+  actEventStart(e) {
     const el_this = e.currentTarget;
     const el_item = el_this.closest('[data-dragdrop-object="item"]');
     const el_wrap = el_this.closest('[data-dragdrop-object="wrap"]');
@@ -87,7 +94,7 @@ export default class Drag {
     this_item.dataset.controlView = 'on';
     
     const btnDel = this_item.querySelector('[data-dragdrop-contral="delete"]');
-    const btnRotate = this_item.querySelector('[data-dragdrop-contral="roration"]');
+    const btnRotate = this_item.querySelector('[data-dragdrop-contral="rotate"]');
     const btnRever = this_item.querySelector('[data-dragdrop-contral="reversal"]');
     const btnReverV = this_item.querySelector('[data-dragdrop-contral="reversal-v"]');
     
@@ -98,10 +105,40 @@ export default class Drag {
     const y = isTouchEvent ? e.targetTouches[0].clientY : e.clientY;
     const x = isTouchEvent ? e.targetTouches[0].clientX : e.clientX;
 
-    //rotate
-     
+    const item_rect = e.currentTarget.getBoundingClientRect();
+    const centerX = item_rect.left + item_rect.width / 2;
+    const centerY = item_rect.top + item_rect.height / 2;
 
-    //move
+    let newRotate = 0;
+    let startAngle = Math.atan2(y - centerY, x - centerX) * (180 / Math.PI);
+    startAngle = Math.round(startAngle); // 정수 변환
+    let currentRotate = 0;
+    const transform = el_img.style.transform.match(/rotate\((-?\d+)deg\)/);
+    if (transform) {
+      currentRotate = parseInt(transform[1], 10);
+    }
+
+    //move ------------------------------
+    const actMove = e => {
+      e.preventDefault();
+      const y_m = isTouchEvent ? e.targetTouches[0].clientY : e.clientY;
+      const x_m = isTouchEvent ? e.targetTouches[0].clientX : e.clientX;
+
+      if (isClone) {
+        //original
+        const m_x = x_m - x;
+        const m_y = y_m - y;
+
+        this_item.style.transform = 'translate(' + m_x / 10 + 'rem, ' + m_y / 10 + 'rem)';
+      } else {
+        //clone
+        const target_rect = this_item.closest('[data-dragdrop-target="item"]').getBoundingClientRect();
+        const m_x = x_m - target_rect.left - (rect_item.width / 2);
+        const m_y = y_m - target_rect.top - (rect_item.height / 2);
+
+        this_item.style.transform = 'translate(' + m_x / 10 + 'rem, ' + m_y / 10 + 'rem)';
+      }
+    };
     const actMoveEnd = e => {
       e.preventDefault();
       document.removeEventListener(eventMove, actMove);
@@ -133,7 +170,7 @@ export default class Drag {
         } else {
           //영역 in
           this_event.addEventListener('keydown', this.boundKeyMove);
-          this_event.addEventListener(eventStart, this.boundMoveStart);
+          this_event.addEventListener(eventStart, this.boundEventStart);
           this_event.focus()
           this_item.dataset.controlView = 'off';
         }
@@ -149,33 +186,44 @@ export default class Drag {
         }
       }
     };
-    const actMove = e => {
-      e.preventDefault();
+
+    //rotate ----------------------------
+    const actRotateMove = e => {
       const y_m = isTouchEvent ? e.targetTouches[0].clientY : e.clientY;
       const x_m = isTouchEvent ? e.targetTouches[0].clientX : e.clientX;
 
-      if (isClone) {
-        //original
-        const m_x = x_m - x;
-        const m_y = y_m - y;
+      // 현재 마우스 위치의 각도 계산
+      let newAngle = Math.atan2(y_m - centerY, x_m - centerX) * (180 / Math.PI);
+      newAngle = Math.round(newAngle); // 정수 변환
 
-        this_item.style.transform = 'translate(' + m_x / 10 + 'rem, ' + m_y / 10 + 'rem)';
-      } else {
-        //clone
-        const target_rect = this_item.closest('[data-dragdrop-target="item"]').getBoundingClientRect();
-        const m_x = x_m - target_rect.left - (rect_item.width / 2);
-        const m_y = y_m - target_rect.top - (rect_item.height / 2);
+      // 각도 차이 계산
+      let angleDiff = newAngle - startAngle;
 
-        this_item.style.transform = 'translate(' + m_x / 10 + 'rem, ' + m_y / 10 + 'rem)';
-      }
+      // 각도 차이 보정 (180도 이상 차이 나면 반대 방향으로 보정)
+      if (angleDiff > 180) angleDiff -= 360;
+      if (angleDiff < -180) angleDiff += 360;
+
+      newRotate = currentRotate + angleDiff;
+
+      // 0~359도 범위 유지
+      newRotate = (newRotate + 360) % 360;
+      el_img.style.transform = `rotate(${newRotate}deg)`;
+
+      currentRotate = newRotate;
+      startAngle = newAngle;
+      el_this.dataset.rotate = newRotate;
     };
-
-    //rotate
-    const actRoateEnd = e => {
-      
-    };
-    const actRoate = e => {
-      e.preventDefault();
+    const actRotateEnd = () => {
+      if (this.angle) {          
+        let angle = Math.round(newRotate / this.angle) * this.angle;
+        el_img.style.transform = `rotate(${angle}deg)`;
+      } 
+      document.removeEventListener(eventMove, actRotateMove);
+      document.removeEventListener(eventEnd, actRotateEnd);
+      el_item.dataset.mode = 'move';
+      this.drag.querySelector('[data-dragdrop-contral="group"] [aria-selected="true"]').setAttribute('aria-selected', false);
+      // this.drag.querySelector('[data-dragdrop-contral="group"] [data-dragdrop-contral="move"]').setAttribute('aria-selected', true);
+      this_item.dataset.controlView = 'off';
     };
 
     //delete
@@ -190,8 +238,8 @@ export default class Drag {
       document.addEventListener(eventEnd, actMoveEnd);
     }
     if (isMode === 'rotate') {
-      document.addEventListener(eventMove, actRoate, { passive: false });
-      document.addEventListener(eventEnd, actRoateEnd);
+      document.addEventListener(eventMove, actRotateMove, { passive: false });
+      document.addEventListener(eventEnd, actRotateEnd);
     }
     
     btnDel.addEventListener('click', actDel);
@@ -199,11 +247,10 @@ export default class Drag {
   }
 
   keyStart(e) {
-    console.log(e);
-    e.preventDefault();
     switch(e.code) {
       case 'Space' :
       case 'Enter' :
+        e.preventDefault();
         const el_this = e.currentTarget;
         const el_item = el_this.closest('[data-dragdrop-object="item"]');
         const isMode = el_item.dataset.mode;
@@ -235,7 +282,7 @@ export default class Drag {
         this_item.dataset.controlView = 'on';
         
         // touch, mouse event
-        this_event.addEventListener(this.eventStart, this.boundMoveStart);
+        this_event.addEventListener(this.eventStart, this.boundEventStart);
         this_event.addEventListener('keydown', this.boundKeyMove);
         break;
 
@@ -245,9 +292,10 @@ export default class Drag {
   }
   keyMove(e) {
     console.log(e);
-    e.preventDefault();
+    
     const el_this = e.currentTarget;
     const el_item = el_this.closest('[data-dragdrop-object="item"]');
+    const el_img = el_item.querySelector('[data-dragdrop-object="img"]');
     const el_wrap = el_this.closest('[data-dragdrop-target="item"]');
     const wrap_rect = el_wrap.getBoundingClientRect();
     const item_rect = el_item.getBoundingClientRect();
@@ -258,35 +306,89 @@ export default class Drag {
     const unitText = match[1].replace(/[0-9.\-]/g, '');
     let mx = null;
     let my = null;
+    let currentRotate = 0;
 
+    const img_transform = el_img.style.transform.match(/rotate\((-?\d+)deg\)/);
+    if (img_transform) {
+      currentRotate = parseInt(img_transform[1], 10);
+    }
+    
+    if (e.key === 'Shift') {
+      this.shiftPressed = this.shiftPressed ? false : true;
+
+      if (this.shiftPressed) {
+        el_item.dataset.mode = 'rotate';
+      } else {
+        el_item.dataset.mode = 'move';
+      }
+    }
+    
     if (unitText === 'rem') {
       x = x * 10;
       y = y * 10;
     }
-
+    console.log(e);
     switch(e.code) {
       case 'ArrowLeft' :
-      mx = x - this.unit;
-      mx < 0 ? mx = 0 : mx >= wrap_rect.width - item_rect.width ?  mx = wrap_rect.width - item_rect.width : '';
-      el_item.style.transform = `translate(${mx / 10 + unitText}, ${y / 10 + unitText})`;
+      e.preventDefault();
+      if (this.shiftPressed) {
+        let newRotate = currentRotate - this.angle;
+
+        console.log(newRotate)
+        if (newRotate < 0) {
+          newRotate = 360 - Math.abs(newRotate);
+        }
+        el_img.style.transform = `rotate(${newRotate}deg)`;
+      } else {
+        mx = x - this.unit;
+        mx < 0 ? mx = 0 : mx >= wrap_rect.width - item_rect.width ?  mx = wrap_rect.width - item_rect.width : '';
+        el_item.style.transform = `translate(${mx / 10 + unitText}, ${y / 10 + unitText})`;
+      }
       break;
 
       case 'ArrowRight' :
-      mx = x + this.unit;
-      mx < 0 ? mx = 0 : mx >= wrap_rect.width - item_rect.width ? mx = wrap_rect.width - item_rect.width : '';
-      el_item.style.transform = `translate(${mx / 10 + unitText}, ${y / 10 + unitText})`;
+      e.preventDefault();
+      if (this.shiftPressed) {
+        let newRotate = currentRotate + this.angle;
+        if (newRotate > 360) {
+          newRotate = newRotate - 360;
+        }
+        el_img.style.transform = `rotate(${newRotate}deg)`;
+      } else {
+        mx = x + this.unit;
+        mx < 0 ? mx = 0 : mx >= wrap_rect.width - item_rect.width ? mx = wrap_rect.width - item_rect.width : '';
+        el_item.style.transform = `translate(${mx / 10 + unitText}, ${y / 10 + unitText})`;
+      }
       break;
  
       case 'ArrowUp' :
-      my = y - this.unit;
-      my < 0 ? my = 0 : my >= wrap_rect.height - item_rect.height ? my = wrap_rect.height - item_rect.height : '';
-      el_item.style.transform = `translate(${x / 10 + unitText}, ${my / 10 + unitText})`;
+      e.preventDefault();
+      if (this.shiftPressed) {
+        let newRotate = currentRotate - this.angle;
+        if (newRotate < 0) {
+          newRotate = 360 - Math.abs(newRotate);
+        }
+        el_img.style.transform = `rotate(${newRotate}deg)`;
+      } else {
+        my = y - this.unit;
+        my < 0 ? my = 0 : my >= wrap_rect.height - item_rect.height ? my = wrap_rect.height - item_rect.height : '';
+        el_item.style.transform = `translate(${x / 10 + unitText}, ${my / 10 + unitText})`;
+      }
       break;
 
       case 'ArrowDown' :
-      my = y + this.unit;
-      my < 0 ? my = 0 : my >= wrap_rect.height - item_rect.height ? my = wrap_rect.height - item_rect.height : '';
-      el_item.style.transform = `translate(${x / 10 + unitText}, ${my / 10 + unitText})`;
+      e.preventDefault();
+      if (this.shiftPressed) {
+        let newRotate = currentRotate + this.angle;
+        if (newRotate > 360) {
+          newRotate = newRotate - 360;
+        }
+        el_img.style.transform = `rotate(${newRotate}deg)`;
+      } else {
+        my = y + this.unit;
+        my < 0 ? my = 0 : my >= wrap_rect.height - item_rect.height ? my = wrap_rect.height - item_rect.height : '';
+        el_item.style.transform = `translate(${x / 10 + unitText}, ${my / 10 + unitText})`;
+      }
       break;
     }
   }
