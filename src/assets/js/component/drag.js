@@ -56,7 +56,12 @@ export default class Drag {
 
     const actTab = e => {
       const _this = e.currentTarget;
-      const mode = _this.dataset.dragdropContral;
+      let mode = _this.dataset.dragdropContral;
+
+      if (mode === 'reversal' || mode === 'delete') {
+        mode = 'move';
+      }
+ 
       tabs.forEach(tab => {
         tab.setAttribute('aria-selected', 'false');
       });
@@ -96,7 +101,6 @@ export default class Drag {
     const btnDel = this_item.querySelector('[data-dragdrop-contral="delete"]');
     const btnRotate = this_item.querySelector('[data-dragdrop-contral="rotate"]');
     const btnRever = this_item.querySelector('[data-dragdrop-contral="reversal"]');
-    const btnReverV = this_item.querySelector('[data-dragdrop-contral="reversal-v"]');
     
     //position
     const isTouchEvent = e.type.startsWith('touch');
@@ -232,6 +236,18 @@ export default class Drag {
       el_this.focus();
     };
 
+    const actRever = e => {
+      const el_this = e.currentTarget;
+      const el_item = el_this.closest('[data-dragdrop-object="item"]');
+      const el_img = el_item.querySelector('[data-dragdrop-object="img"]');
+      
+      if (el_img.dataset.rever === 'on') {
+        el_img.dataset.rever="off";
+      } else {
+        el_img.dataset.rever="on";
+      }
+    }
+
     //event
     if (isMode === 'move') {
       document.addEventListener(eventMove, actMove, { passive: false });
@@ -244,6 +260,7 @@ export default class Drag {
     
     btnDel.addEventListener('click', actDel);
     btnRotate.addEventListener('click', this.rotateStart);
+    btnRever.addEventListener('click', actRever);
   }
 
   keyStart(e) {

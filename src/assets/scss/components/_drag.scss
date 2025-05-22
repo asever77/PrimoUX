@@ -88,7 +88,10 @@
 [data-dragdrop-object="img"] {
   position: relative;
   pointer-events: none;
-
+  &[data-rever="on"] > * {
+    transform: scaleX(-1);
+  }
+  
   * {display: block;}
 }
 [data-control-view="off"] [data-dragdrop-contral="group"] {

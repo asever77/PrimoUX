@@ -969,6 +969,9 @@ codebox code {
   position: relative;
   pointer-events: none;
 }
+[data-dragdrop-object=img][data-rever=on] > * {
+  transform: scaleX(-1);
+}
 [data-dragdrop-object=img] * {
   display: block;
 }
