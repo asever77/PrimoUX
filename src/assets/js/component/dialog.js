@@ -1,3 +1,5 @@
+import { loadContent } from '../utils/loadContent.js';
+
 export default class Dialog {
   constructor(opt) {
 		const defaults = {
@@ -77,7 +79,7 @@ export default class Dialog {
 
 	initDialog() {
 		if (this.option.src && !this.dialog) {
-			PrimoUX.utils.loadContent({
+			loadContent({
 				area: this.area,
 				src: this.option.src,
 				insert: true,
