@@ -75,6 +75,7 @@ export default class Drag {
     });
   }
   actEventStart(e) {
+    console.log(e);
     const el_this = e.currentTarget;
     const el_item = el_this.closest('[data-dragdrop-object="item"]');
     const el_wrap = el_this.closest('[data-dragdrop-object="wrap"]');

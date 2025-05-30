@@ -17,12 +17,12 @@
 				<wrap>
 					<tit>Dialog</tit>
 					<box>
-						<button type="button" data-test-id="modal1">center</button>|
-						<button type="button" data-test-id="modal2">bottom</button>|
-						<button type="button" data-test-id="modal3">top</button>|
-						<button type="button" data-test-id="modal4">left</button>|
-						<button type="button" data-test-id="modal5">right</button>|
-						<button type="button" data-test-id="alert1">alert</button>
+						<button type="button" data-test-id="modal1" onclick="UI.exe.modal1.show()">center</button>|
+						<button type="button" data-test-id="modal2" onclick="UI.exe.modal2.show()">bottom</button>|
+						<button type="button" data-test-id="modal3" onclick="UI.exe.modal3.show()">top</button>|
+						<button type="button" data-test-id="modal4" onclick="UI.exe.modal4.show()">left</button>|
+						<button type="button" data-test-id="modal5" onclick="UI.exe.modal5.show()">right</button>|
+						<button type="button" data-test-id="alert1" onclick="UI.exe.alert1.show()">alert</button>
 					</box>
 
 					<stit>코드</stit>
@@ -96,16 +96,9 @@
 	<!-- script -->
 	<script type="module">
 		import { PrimoUX } from '../assets/js/ui.global.js';
-
-		document.querySelectorAll('button[data-test-id]').forEach(btn => {
-			btn.addEventListener('click', e => {
-				const _this = e.currentTarget;
-				const id = _this.dataset.testId;
-				PrimoUX.exe[id].show();
-			})
-		})
-
-		PrimoUX.exe.modal1 = new PrimoUX.Dialog({
+		PrimoUX.init();
+		
+		UI.exe.modal1 = new PrimoUX.Dialog({
 			id: 'modalname1',
 			ps: 'center',
 			src: './dialog/modal.html',
@@ -116,49 +109,49 @@
 			}
 		});			
 
-		PrimoUX.exe.modal2 = new PrimoUX.Dialog({
+		UI.exe.modal2 = new PrimoUX.Dialog({
 			id: 'modalname2',
 			ps: 'bottom',
 			src: null,
 			extend: true, 
 			loadCallback: () => {
 				console.log('loadCallback')
-				// PrimoUX.exe.modal1.show();
+				// UI.exe.modal1.show();
 			}
 		});
-		// PrimoUX.exe.modal2.show();
+		// UI.exe.modal2.show();
 
-		PrimoUX.exe.modal3 = new PrimoUX.Dialog({
+		UI.exe.modal3 = new PrimoUX.Dialog({
 			id: 'modalname3',
 			ps: 'top',
 			src: './dialog/modal3.html',
 			extend: false,
 			loadCallback: () => { 
-				// PrimoUX.exe.modal3.show();
+				// UI.exe.modal3.show();
 			}
 		});
 
-		PrimoUX.exe.modal4 = new PrimoUX.Dialog({
+		UI.exe.modal4 = new PrimoUX.Dialog({
 			id: 'modalname4',
 			ps: 'left',
 			src: './dialog/modal4.html',
 			extend: false,
 			loadCallback: () => { 
-				// PrimoUX.exe.modal4.show();
+				// UI.exe.modal4.show();
 			}
 		});
 
-		PrimoUX.exe.modal5 = new PrimoUX.Dialog({
+		UI.exe.modal5 = new PrimoUX.Dialog({
 			id: 'modalname5',
 			ps: 'right',
 			src: './dialog/modal5.html',
 			extend: false,
 			loadCallback: () => { 
-				// PrimoUX.exe.modal5.show();
+				// UI.exe.modal5.show();
 			}
 		});
 
-		PrimoUX.exe.alert1 = new PrimoUX.Dialog({
+		UI.exe.alert1 = new PrimoUX.Dialog({
 			id: 'alert1',
 			type: 'system',
 			title: `제목영역입니다.`,
@@ -170,11 +163,11 @@
 			cancelText: '취소',
 			cancelCallback: ()=> {
 				console.log('취소 콜백');
-				PrimoUX.exe.alert1.hide()
+				UI.exe.alert1.hide()
 			},
 		});
 		// setTimeout(() => {
-		// 	PrimoUX.exe.alert1.show();
+		// 	UI.exe.alert1.show();
 		// }, 2000);
 
 			
