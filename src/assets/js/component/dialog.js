@@ -30,6 +30,7 @@ export default class Dialog {
 		this.area = this.option.area;
 		this.move = this.option.ps !== 'center' ? false : this.option.move;
     this.isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+    this.id = this.option.id ? this.option.id : Date.now().toString(36) + Math.random().toString(36).substring(2);
 
     this.boundExtendStart = this.extendStart.bind(this);
     this.boundKeyStart = this.keyStart.bind(this)
@@ -57,12 +58,12 @@ export default class Dialog {
   initSystem() {
     let htmlSystem = `
     <div class="ui-dialog" 
-    data-dialog="${this.option.id}" 
-    aria-labelledby="${this.option.id}-label"
+    data-dialog="${this.id}" 
+    aria-labelledby="${this.id}-label"
     role="alertdialog" 
     aria-live="polite">
       <div class="ui-dialog--wrap" role="document" tabindex="-1" data-dialog-item="wrap">
-        ${this.option.title ? '<div class="ui-dialog--header"><h2 id="' + this.option.id + '-label">' + this.option.title + '</h2></div>' : ''}
+        ${this.option.title ? '<div class="ui-dialog--header"><h2 id="' + this.id + '-label">' + this.option.title + '</h2></div>' : ''}
         <div class="ui-dialog--main" data-dialog-item="main">
           ${this.option.message}
         </div>
@@ -95,7 +96,7 @@ export default class Dialog {
 	}
 
   buildDialog() {
-    this.dialog = document.querySelector(`[data-dialog="${this.option.id}"]`);
+    this.dialog = document.querySelector(`[data-dialog="${this.id}"]`);
     if (!this.dialog) {
       console.error('Modal element not found');
       return;
