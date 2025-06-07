@@ -1,5 +1,7 @@
 import Dialog from './component/dialog.js';
 import Drag from './component/drag.js';
+import Tab from './component/tab.js';
+
 import Nav from './component/nav.js';
 import Roulette from './game/roulette.js';
 import { loadContent } from './utils/loadContent.js';
@@ -7,6 +9,8 @@ import { loadContent } from './utils/loadContent.js';
 export const PrimoUX = {
 	Dialog,
 	Drag,
+	Tab,
+	
 	Roulette,
 	
 	init: () => {

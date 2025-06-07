@@ -1,0 +1,9 @@
+[data-tab-id] {
+  display: flex;
+  gap:0;
+  width: 100%;
+
+  [role="tab"]{
+    padding:1.2rem;
+  }
+}
