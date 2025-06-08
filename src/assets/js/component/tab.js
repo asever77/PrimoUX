@@ -32,25 +32,33 @@ export default class Tab {
       if (item.selected) {
         panel_data.push(`${this.id}-panel-${index}`, `${this.id}-id-${index}`, item.src)
       }
+
+      console.log(item, index)
     });
 
-    if (this.renderMode === 'dynamic') {
-      //탭 선택 시마다 동적으로 로딩
-      this.el_tab.innerHTML = tablist_html;
+    console.log(this.renderMode, this.el_panel)
+    //탭 선택 시마다 동적으로 로딩
+    this.el_tab.innerHTML = tablist_html;
+    
+
+    loadContent({
+      area: this.el_wrap,
+      src: panel_data[2],
+      insert: true,
+      callback: () => {
+        console.log('callback');
+      },
+    })
+    .then(() => {
+      console.log(this.el_wrap, this.el_panel)
       this.el_panel.setAttribute('aria-expanded', true);
       this.el_panel.setAttribute('aria-labelledby', panel_data[1]);
       this.el_panel.setAttribute('id', panel_data[0]);
-
-      loadContent({
-        area: this.el_panel,
-        src: panel_data[2],
-        insert: true,
-        callback: () => {
-          console.log('callback');
-        },
-      })
-      .then(() => this.buildDialog())
-      .catch(err => console.error('Error loading tab content:', err));
+    })
+    .catch(err => console.error('Error loading tab content:', err));
+    
+    if (this.renderMode === 'dynamic') {
+      
     } else {
       //모든 탭 콘텐츠를 미리 렌더
       this.tablist.forEach((item, index) => {
