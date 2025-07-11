@@ -1,5 +1,6 @@
 import Dialog from './component/dialog.js';
 import Drag from './component/drag.js';
+import Dropdown from './component/dropdown.js';
 import Tab from './component/tab.js';
 
 import Nav from './component/nav.js';
@@ -10,6 +11,7 @@ export const PrimoUX = {
 	Dialog,
 	Drag,
 	Tab,
+	Dropdown,
 	
 	Roulette,
 	

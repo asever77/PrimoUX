@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Dropdown | Guide </title>
+	<link rel="stylesheet" href="../assets/css/app.css">
+</head>
+
+<body>
+	<div class="area-base">
+		<header class="base-header"></header>
+		<div class="base-body">
+			<aside class="base-side"></aside>
+			<main class="base-content">
+				<wrap>
+					<tit>Dropdown</tit>
+					<box>
+            <div data-dropdown="dropdown1" style="width: 100%;">
+              <button type="button" data-dropdown-button>
+                <span data-dropdown-text>서울시</span>
+              </button>
+              <div data-dropdown-panel>
+                <div role="radiogroup" aria-label="지역 선택">
+                  <button type="button" role="radio" aria-checked="true">서울시</button>
+                  <button type="button" role="radio" aria-checked="false">강남구</button>
+                  <button type="button" role="radio" aria-checked="false">강동구</button>
+                  <button type="button" role="radio" aria-checked="false">강북구</button>
+                  <button type="button" role="radio" aria-checked="false">강서구</button>
+                  <button type="button" role="radio" aria-checked="false">관악구</button>
+                </div>
+              </div>
+            </div>
+					</box>
+
+					<stit>코드</stit>
+					<codebox>
+						<code><pre>
+&lt;script type="module"&gt;
+
+ 
+&lt;/script&gt;
+						</pre></code>
+					</codebox>
+				</wrap>
+				<div class="area-dialog" data-area="main"></div>
+			</main>
+		</div>
+		<footer class="base-footer"></footer>
+	</div>
+
+	<!-- modal -->
+	<div class="area-dialog" data-area="body"></div>
+	<!-- system box -->
+	<div class="area-system"></div>
+	<!-- select combo box -->
+	<div class="area-select"></div>
+	<!-- toast -->
+	<div class="area-toast"></div>
+
+	<!-- script -->
+	<script type="module">
+		import { PrimoUX } from '../assets/js/ui.global.js';
+		PrimoUX.init();
+	 
+    UI.exe.dropdown1 = new PrimoUX.Dropdown({
+      id: 'dropdown1',
+    });
+
+	</script>
+</body>
+
+</html>
