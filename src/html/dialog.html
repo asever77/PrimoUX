@@ -56,14 +56,14 @@
 						</pre></code>
 					</codebox>
 				</wrap>
-				
+				<div class="area-dialog" data-area="main"></div>
 			</main>
 		</div>
 		<footer class="base-footer"></footer>
 	</div>
 
 	<!-- modal -->
-	<div class="area-dialog">
+	<div class="area-dialog" data-area="body">
 		<div class="ui-dialog" role="dialog" aria-hidden="true" 
 		data-dialog="modalname2" 
 		aria-labelledby="modalname2-label"
@@ -99,6 +99,7 @@
 		PrimoUX.init();
 		
 		UI.exe.modal1 = new PrimoUX.Dialog({
+			area: document.querySelector('.area-dialog[data-area="body"]'),
 			id: 'modalname1',
 			ps: 'center',
 			src: './dialog/modal.html',
@@ -122,6 +123,7 @@
 		// UI.exe.modal2.show();
 
 		UI.exe.modal3 = new PrimoUX.Dialog({
+			area: document.querySelector('.area-dialog[data-area="main"]'),
 			id: 'modalname3',
 			ps: 'top',
 			src: './dialog/modal3.html',

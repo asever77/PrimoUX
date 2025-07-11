@@ -2,36 +2,38 @@ import { loadContent } from '../utils/loadContent.js';
 
 export default class Dialog {
   constructor(opt) {
-		const defaults = {
-			type: 'modal', //'modal', 'system'
-			ps: 'center', // 'center', 'top', 'bottom', 'left', 'right'
+    const defaults = {
+      type: 'modal', //'modal', 'system'
+      ps: 'center', // 'center', 'top', 'bottom', 'left', 'right', 'full'
       src: null,
       classname: '',
-			area: document.querySelector('.area-dialog'),
+      area: document.querySelector('.area-dialog'),
       hide: () => {
         console.log('hide')
       },
+      dimClick: true,
       move: true,
-			dim: true,
+      dim: true,
       extend: false,
       loadCallback: null,
-			focus_back: null,
+      focus_back: null,
       title: null,
       message: '',
       confirmText: '',
       cancelText: '',
       confirmCallback: null,
-      cancelCallback: null, 
-		};
+      cancelCallback: null,
+    };
 
-		this.option = { ...defaults, ...opt };
-		this.dialog = null;
+    this.option = { ...defaults, ...opt };
+    this.dialog = null;
     this.extend = this.option.extend;
-		this.area = this.option.area;
-		this.move = this.option.ps !== 'center' ? false : this.option.move;
+    this.area = this.option.area;
+    this.move = this.option.ps !== 'center' ? false : this.option.move;
     this.isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
     this.id = this.option.id ? this.option.id : Date.now().toString(36) + Math.random().toString(36).substring(2);
-
+    this.dimClick = this.option.dimClick;;
+    this.el_dim = null;
     this.boundExtendStart = this.extendStart.bind(this);
     this.boundKeyStart = this.keyStart.bind(this)
     this.boundKeyEnd = this.keyEnd.bind(this)
@@ -39,16 +41,16 @@ export default class Dialog {
     this.rem_base = 10;
 
     this.initialize();
-	}
+  }
 
   initialize() {
     //dialog type : modal, system
     switch(this.option.type) {
-      case 'modal': 
-        this.initDialog(); 
+      case 'modal':
+        this.initDialog();
         break;
-      case 'system': 
-        this.initSystem(); 
+      case 'system':
+        this.initSystem();
         break;
       default:
         console.warn('Unknown modal type:', this.option.type);
@@ -78,9 +80,9 @@ export default class Dialog {
     this.buildDialog();
   }
 
-	initDialog() {
-		if (this.option.src && !this.dialog) {
-			loadContent({
+  initDialog() {
+    if (this.option.src && !this.dialog) {
+      loadContent({
 				area: this.area,
 				src: this.option.src,
 				insert: true,
@@ -93,7 +95,7 @@ export default class Dialog {
 		} else {
       this.buildDialog();
     }
-	}
+  }
 
   buildDialog() {
     this.dialog = document.querySelector(`[data-dialog="${this.id}"]`);
@@ -108,15 +110,26 @@ export default class Dialog {
     this.dialogMain = this.dialog.querySelector('[data-dialog-item="main"]');
 
     //dim
-    (this.option.dim) && this.dialog.insertAdjacentHTML('beforeend', '<div class="dim"></div>');
+    if (this.option.dim) {
+      this.dialog.insertAdjacentHTML('beforeend', '<div class="dim"></div>');
+      this.el_dim = this.dialog.querySelector('.dim');
+      this.dimClick && this.el_dim.addEventListener('click', this.handleDimClick.bind(this));
+    } 
+
     //extend
     (this.extend) && this.dialogWrap.insertAdjacentHTML('afterbegin', '<div data-dialog-item="extend"></div>');
-    
+
     this.setFocusableElements();
     this.addEventListeners();
 
     //load callback
     this.option.loadCallback && this.option.loadCallback();
+  }
+
+  handleDimClick (e) {
+    const _this = e.currentTarget;
+    this.modal = _this.closest('[data-dialog]');
+    this.hide();
   }
 
   setFocusableElements() {
@@ -128,7 +141,7 @@ export default class Dialog {
   }
 
   addEventListeners() {
-    //event 
+    //event
     this.dialog_btns = this.dialog.querySelectorAll('[data-dialog-button]');
     if (this.dialog_btns) {
       this.dialog_btns.forEach(btn => {
@@ -139,15 +152,14 @@ export default class Dialog {
 
   handleModalButtonClick = (e) => {
     const action = e.target.dataset.dialogButton;
-    console.log(action)
     switch(action) {
-      case 'close': 
-        this.hide(); 
+      case 'close':
+        this.hide();
         break;
-      case 'confirm': 
-        this.option.confirmCallback && this.option.confirmCallback(); 
+      case 'confirm':
+        this.option.confirmCallback && this.option.confirmCallback();
         break;
-      case 'cancel': 
+      case 'cancel':
         this.option.cancelCallback && this.option.cancelCallback();
         break;
     }
@@ -173,7 +185,7 @@ export default class Dialog {
   }
 
   moveStart(e) {
-		const el_this = e.currentTarget;
+    const el_this = e.currentTarget;
     const isTouchEvent = e.type.startsWith('touch');
     const eventMove = isTouchEvent ? 'touchmove' : 'mousemove';
     const eventEnd = isTouchEvent ? 'touchend' : 'mouseup';
@@ -197,13 +209,11 @@ export default class Dialog {
       document.removeEventListener(eventMove, dragMove);
       document.removeEventListener(eventEnd, dragEnd);
     }
-   
+
     document.addEventListener(eventMove, dragMove, { passive: false });
     document.addEventListener(eventEnd, dragEnd);
-	}
+  }
   extendStart(e) {
-    console.log(e);
-    console.log('dragEvent', this);
     let isDragState = false;
     const el_this = e.currentTarget;
     const isTouchEvent = e.type.startsWith('touch');
@@ -223,7 +233,7 @@ export default class Dialog {
 
       const deltaY = y - y_m;
       const newHeight = (h + (deltaY)) / this.rem_base;
-      
+
       const setDialogHeight = (v) => {
         this.dialogWrap.setAttribute(
           'style',
@@ -238,7 +248,7 @@ export default class Dialog {
         } else {
           isMove = false;
         }
-      } 
+      }
       else {
         if (Math.abs(deltaY) > 10 && Math.abs(x - x_m) < Math.abs(deltaY) && (deltaY) > 0) {
           setDialogHeight(newHeight);
@@ -312,7 +322,7 @@ export default class Dialog {
             this.dialogWrap.addEventListener('touchstart', reDrag);
           }
         });
-      } 
+      }
       //성공 원복
       else if(y_m - y > 30) {
         if (this.dialog.dataset.state === 'drag-full') {
@@ -326,13 +336,13 @@ export default class Dialog {
           this.dialogWrap.removeEventListener('touchstart', this.boundExtendStart);
           this.option.hide();
         }
-      } 
+      }
       //취소 풀원복
       else if (isDragState) {
         this.dialogWrap.setAttribute(
           'style', 'max-height:100dvh !important; overflow-y: hidden !important; height: 100dvh !important;'
         );
-      } 
+      }
       //취소 원복
       else {
         restoration();
@@ -375,8 +385,8 @@ export default class Dialog {
 	}
 	hide(opt) {
     //loop focus 중복방지 이벤트 취소
-		this.btn_first.removeEventListener('keydown', this.keyStart);	
-		this.btn_last.removeEventListener('keydown', this.keyEnd);	
+    this.btn_first && this.btn_first.removeEventListener('keydown', this.keyStart);
+    this.btn_last && this.btn_last.removeEventListener('keydown', this.keyEnd);
 
     const n = Number(this.dialog.dataset.zindex);
     //닫히는 현재 모달 초기화
@@ -400,9 +410,9 @@ export default class Dialog {
     }
     //다음선택 모달 설정
     const currentModal = document.querySelector(`[data-dialog][aria-hidden="false"][data-zindex="${zIndex}"]`);
-    if(currentModal) { 
+    if(currentModal) {
       currentModal.dataset.current = 'true';
-      currentModal.focus();     
+      currentModal.focus();
     }
 	}
 
