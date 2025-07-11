@@ -325,6 +325,11 @@ html {
   font-size: 2.6667vw;
 }
 
+@media screen and (min-width: 900px) {
+  html {
+    font-size: 10px;
+  }
+}
 html,
 body {
   padding: 0;
@@ -1079,6 +1084,15 @@ codebox code {
 .sample-target {
   display: flex;
   gap: 1rem;
+}
+
+[data-tab-id] {
+  display: flex;
+  gap: 0;
+  width: 100%;
+}
+[data-tab-id] [role=tab] {
+  padding: 1.2rem;
 }
 
 [data-nav=Depth-1] {

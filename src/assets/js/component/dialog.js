@@ -40,10 +40,10 @@ export default class Dialog {
 
     this.rem_base = 10;
 
-    this.initialize();
-  }
+    this.init();
+	}
 
-  initialize() {
+  init() {
     //dialog type : modal, system
     switch(this.option.type) {
       case 'modal':
