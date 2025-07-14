@@ -46,10 +46,6 @@
 	align-items: center;
 	pointer-events: visible;
 
-	[data-dialog-item="wrap"]:focus{
-		box-shadow: 0 0 1rem rgba(0, 0, 0, 0.5);
-	}
-
 	//zindex
 	&[data-zindex="1"] {z-index:1;}
 	&[data-zindex="2"] {z-index:2;}
@@ -265,6 +261,11 @@
 		}
 	}
 
+	
+	[data-dialog-item="wrap"]:focus{
+		box-shadow: 0 0 1rem rgba(0, 0, 0, 0.5);
+	}
+	
 	// 확장 드래그
 	[data-dialog-item="extend"] {
 		position: absolute;

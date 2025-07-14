@@ -1,6 +1,11 @@
 import { loadContent } from '../utils/loadContent.js';
 
 export default class Dialog {
+  //private
+  #boundKeyStart;
+  #boundKeyEnd;
+  #rem_base = 10;
+
   constructor(opt) {
     const defaults = {
       type: 'modal', //'modal', 'system'
@@ -37,7 +42,6 @@ export default class Dialog {
     this.boundExtendStart = this.extendStart.bind(this);
     this.boundKeyStart = this.keyStart.bind(this)
     this.boundKeyEnd = this.keyEnd.bind(this)
-
     this.rem_base = 10;
 
     this.init();
@@ -193,17 +197,20 @@ export default class Dialog {
     const x = isTouchEvent ? e.targetTouches[0].clientX : e.clientX;
     let y_m;
     let x_m;
-    let style = el_this.style.margin;
-    style = style ? style : '0 0 0 0';
 
-    const marginValues = style.split(" ");
-    let marginTop = parseFloat(marginValues[0]);
-    let marginLeft = parseFloat(marginValues[3]);
+    const initalX = el_this.dataset.translateX ? Number(el_this.dataset.translateX) : 0;
+    const initalY = el_this.dataset.translateY ? Number(el_this.dataset.translateY) : 0;
 
     const dragMove = (e) => {
       y_m = isTouchEvent ? e.targetTouches[0].clientY : e.clientY;
       x_m = isTouchEvent ? e.targetTouches[0].clientX : e.clientX;
-      el_this.style.margin = `${marginTop + ((y - y_m) / 5 * -1)}rem 0 0 ${marginLeft + ((x - x_m) / 5 * -1)}rem`;
+
+      const deltaX = x_m - x;
+      const deltaY = y_m - y;
+
+      el_this.style.transform = `translate(${initalX + deltaX}px, ${initalY + deltaY}px)`;
+      el_this.dataset.translateX = initalX + deltaX;
+      el_this.dataset.translateY = initalY + deltaY;
     }
     const dragEnd = () => {
       document.removeEventListener(eventMove, dragMove);
