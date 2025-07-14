@@ -58,15 +58,12 @@
   }
 }
 
-
 .picker-highlight {
   position: absolute;
   top: 50%;
   transform: translate(0, -50%);
   width: 100%;
   background-color: #fff;
-  border-top: .1rem solid #333;
-  border-bottom: .1rem solid #333;
   font-size: 2.4rem;
   overflow: hidden;
 }
@@ -76,7 +73,6 @@
   position: absolute;
   width: 100%;
 }
-
 
 /* date */
 .picker {
@@ -96,5 +92,30 @@
 
   .highlight {
     font-size: 2rem;
+  }
+}
+.picker-area {
+  display: flex;
+  width: 30rem;
+  position: relative;
+}
+.picker-a11y{
+  position: absolute;
+  pointer-events: none;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  select {
+    flex:1;
+    border: 0;
+    opacity: 0.01;
+    text-align: center;
+    appearance: none;
+    font-size: 2.4rem;
+    background-color: transparent;
+  }
+  select:focus {
+    opacity: 1;
   }
 }

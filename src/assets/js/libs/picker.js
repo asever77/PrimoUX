@@ -189,17 +189,24 @@ export default class Picker {
 
 		// 반지름 HTML
 		let circleListHTML = '';
+		let selectOptionHTML = ``;
 		for (let i = 0; i < source.length; i++) {
+
+			console.log(this.value, this.source[i].value)
+			selectOptionHTML += `<option value="${source[i].value}" ${this.value, this.source[i].value ? 'selected' : '' }>${source[i].text}</option>`;
+
 			circleListHTML += `<li class="picker-option"
-                      style="
-                        top: ${this.itemHeight * -0.5}px;
-                        height: ${this.itemHeight}px;
-                        line-height: ${this.itemHeight}px;
-                        transform: rotateX(${-this.itemAngle * i}deg) translate3d(0, 0, ${this.radius}px);
-                      "
-                      data-index="${i}"
-                      >${source[i].text}</li>`
+				style="
+					top: ${this.itemHeight * -0.5}px;
+					height: ${this.itemHeight}px;
+					line-height: ${this.itemHeight}px;
+					transform: rotateX(${-this.itemAngle * i}deg) translate3d(0, 0, ${this.radius}px);
+				"
+				data-index="${i}"
+				>${source[i].text}</li>`
 		}
+
+		document.querySelector(this.el + '_a11y').innerHTML = selectOptionHTML;
 
 		// 중간에 강조 표시 HTML
 		let highListHTML = '';

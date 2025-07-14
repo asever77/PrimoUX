@@ -20,9 +20,24 @@
 					<tit>Dialog</tit>
 					
           <box style="display: flex; flex-direction: row;">
-            <div class="picker" id="iosPicker_year"></div>
-						<div class="picker" id="iosPicker_month"></div>
-						<div class="picker" id="iosPicker_day"></div>
+            <div class="picker-area">
+              <div class="picker" id="iosPicker_year"></div>
+              <div class="picker" id="iosPicker_month"></div>
+              <div class="picker" id="iosPicker_day"></div>
+              <div class="picker-a11y">
+                <select id="iosPicker_year_a11y" style="pointer-events: none;">
+                  <option>2000</option>
+                </select>
+                <select id="iosPicker_month_a11y">
+                  <option>12</option>
+                </select>
+                <select id="iosPicker_day_a11y">
+                  <option>30</option>
+                </select>
+              </div>
+            </div>
+            
+           
           </box>
 
         </wrap>
@@ -54,7 +69,11 @@
         ],
         value:2023,
         onChange: (selected) => {
-            console.log(selected);
+          const selectA11y = document.querySelector('#iosPicker_year_a11y');
+          selectA11y.value = selected.value;
+          selectA11y.addEventListener('change', (e) => {
+            UI.exe.iosPickerYear.select(Number(e.currentTarget.value));
+          });
         }
     });
     UI.exe.iosPickerMonth = new Picker({
@@ -76,7 +95,11 @@
         ],
         value:5,
         onChange: (selected) => {
-            console.log(selected);
+          const selectA11y = document.querySelector('#iosPicker_month_a11y');
+          selectA11y.value = selected.value;
+          selectA11y.addEventListener('change', (e) => {
+            UI.exe.iosPickerYear.select(Number(e.currentTarget.value));
+          });
         }
     });
     UI.exe.iosPickerDay = new Picker({
@@ -116,7 +139,11 @@
         ],
         value:1,
         onChange: (selected) => {
-            console.log(selected);
+          const selectA11y = document.querySelector('#iosPicker_day_a11y');
+          selectA11y.value = selected.value;
+          selectA11y.addEventListener('change', (e) => {
+            UI.exe.iosPickerYear.select(Number(e.currentTarget.value));
+          });
         }
     });
 	</script>

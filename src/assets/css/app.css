@@ -1789,8 +1789,6 @@ codebox code {
   transform: translate(0, -50%);
   width: 100%;
   background-color: #fff;
-  border-top: 0.1rem solid #333;
-  border-bottom: 0.1rem solid #333;
   font-size: 2.4rem;
   overflow: hidden;
 }
@@ -1817,6 +1815,35 @@ codebox code {
 }
 .picker .highlight {
   font-size: 2rem;
+}
+
+.picker-area {
+  display: flex;
+  width: 30rem;
+  position: relative;
+}
+
+.picker-a11y {
+  position: absolute;
+  pointer-events: none;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+.picker-a11y select {
+  flex: 1;
+  border: 0;
+  opacity: 0.01;
+  text-align: center;
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+  font-size: 2.4rem;
+  background-color: transparent;
+}
+.picker-a11y select:focus {
+  opacity: 1;
 }
 
 .lucky-roulette {

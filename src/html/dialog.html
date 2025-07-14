@@ -30,6 +30,9 @@
 						<button type="button" data-test-id="toast1" onclick="UI.exe.toast1.show()">toast1</button>|
         		<button type="button" data-test-id="toast2" onclick="UI.exe.toast2.show()">toast2</button>
 					</box>
+					<box>
+						<button type="button" data-test-id="snackbar1" onclick="UI.exe.snackbar1.show()">snack bar1</button>|
+					</box>
 
 					<stit>코드</stit>
 					<codebox>
@@ -187,6 +190,13 @@
 			message: `<strong>2222 토스트 메세지</strong>입니다.`,
 		});
 
+		UI.exe.snackbar1 = new UX.Dialog({
+			area: document.querySelector('.area-toast'),
+			id: 'snackbar1',
+			ps: 'bottom',
+			type: 'snack',
+			message: `<strong>토스트 메세지</strong>입니다.`,
+		});
 			
 	</script>
 </body>

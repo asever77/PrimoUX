@@ -8,7 +8,7 @@ export default class Dialog {
 
   constructor(opt) {
     const defaults = {
-      type: 'modal', //'modal', 'system', 'toast
+      type: 'modal', // 'modal', 'system', 'toast', 'snackbar'
       ps: 'center', // 'center', 'top', 'bottom', 'left', 'right', 'full'
       src: null,
       classname: '',
