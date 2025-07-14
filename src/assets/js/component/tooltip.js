@@ -56,10 +56,10 @@ export default class Tooltip {
 		const rect = target.getBoundingClientRect();
 		const scrollTop = document.documentElement.scrollTop;
 
-		tooltip.style.left = `${rect.x / 10}rem`;
-		tooltip.style.top = `${(rect.y + scrollTop) / 10}rem`;
-		tooltip.style.height = `${rect.height / 10}rem`;
-		tooltip.style.width = `${rect.width / 10}rem`;
+		tooltip.style.left = `${rect.x}px`;
+		tooltip.style.top = `${(rect.y + scrollTop)}px`;
+		tooltip.style.height = `${rect.height}px`;
+		tooltip.style.width = `${rect.width}px`;
 		tooltip.setAttribute('aria-hidden', 'false');
 		tooltip.setAttribute('tabindex', '-1');
 		tooltip.focus();

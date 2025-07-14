@@ -169,21 +169,20 @@
     left: -0.8rem;
     transform: rotate(90deg);
   }
+}
 
-  [role="tooltip"] {
-    position: absolute;
-    pointer-events: none;
+[role="tooltip"] {
+  position: absolute;
+  pointer-events: none;
 
-    &[aria-hidden="true"] {
-      display: none;
-    }
-  }
-
-  [data-tooltip-close] {
-    position: absolute;
-    right: .2rem;
-    top: .2rem;
-    pointer-events: visible;
+  &[aria-hidden="true"] {
+    display: none;
   }
 }
 
+[data-tooltip-close] {
+  position: absolute;
+  right: .2rem;
+  top: .2rem;
+  pointer-events: visible;
+}

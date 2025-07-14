@@ -1421,14 +1421,16 @@ codebox code {
   left: -0.8rem;
   transform: rotate(90deg);
 }
-.offscreen [role=tooltip] {
+
+[role=tooltip] {
   position: absolute;
   pointer-events: none;
 }
-.offscreen [role=tooltip][aria-hidden=true] {
+[role=tooltip][aria-hidden=true] {
   display: none;
 }
-.offscreen [data-tooltip-close] {
+
+[data-tooltip-close] {
   position: absolute;
   right: 0.2rem;
   top: 0.2rem;

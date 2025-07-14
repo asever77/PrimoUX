@@ -28,6 +28,7 @@ export default class Tab {
       tablist_html += `<button type="button" role="tab" aria-selected="${item.selected}" aria-controls="${this.id}-panel-${n}" tabindex="${item.selected ? 0 : '-1'}" id="${this.id}-id-${n}">${item.tab}</li>`;
       tabpanel_html += `<div role="tabpanel" aria-labelledby="${this.id}-id-${n}" id="${this.id}-panel-${n}" aria-expanded="${item.selected}" tabindex="${item.selected ? 0 : '-1'}"></div>`;
     });
+    console.log( this.data, tablist_html)
     this.el_tab.innerHTML = tablist_html;
     this.el_wrap.innerHTML = tabpanel_html;
     this.el_tabBtns = this.el_tab.querySelectorAll('[role="tab"]');

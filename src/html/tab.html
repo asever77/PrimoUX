@@ -17,22 +17,10 @@
 				<wrap>
 					<tit>Tab</tit>
 					<box>
-            <div>
-              <ul role="tablist" data-tab-id="tab1"></ul>
-              <div data-tab-wrap="tab1"></div>
-            </div>
-						
-            
+						<div role="tablist" data-tab="tab1"></div>
+						<div data-tab-wrap="tab1"></div>
 					</box>
-
-					<stit>코드</stit>
-					<codebox>
-						<code><pre>
- 
-						</pre></code>
-					</codebox>
 				</wrap>
-				
 			</main>
 		</div>
 		<footer class="base-footer"></footer>
@@ -53,7 +41,7 @@
 		UI.exe.tab1 = new UX.Tab({
       rederMode: 'static',
       id: 'tab1',
-      tablist: [
+      data: [
         {tab: `<span>tab 1</span>`, src: './tab/tab1.html', selected:true},
         {tab: `<span>tab 2</span>`, src: './tab/tab2.html', selected:false},
       ],
