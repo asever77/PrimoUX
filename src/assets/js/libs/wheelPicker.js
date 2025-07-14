@@ -1,4 +1,4 @@
-export default class Picker {
+export default class WheelPicker {
 	constructor(options) {
 		let defaults = {
 			el: '', // dom 
@@ -40,7 +40,7 @@ export default class Picker {
 			touchend: null
 		};
 
-		this.itemHeight = this.elems.el.offsetHeight * 3 / this.options.count; 
+		this.itemHeight = this.elems.el.offsetHeight * 3 / this.options.count;
 		// 각 항목의 높이
 		console.log(this.elems.el)
 
@@ -136,16 +136,11 @@ export default class Picker {
 			let startY = touchData.yArr[touchData.yArr.length - 2][0];
 			let endY = touchData.yArr[touchData.yArr.length - 1][0];
 
-
-			console.log(startTime, endTime, startY, endY)
-
 			// 계산 속도
 			v = ((startY - endY) / this.itemHeight) * 1000 / (endTime - startTime);
 			let sign = v > 0 ? 1 : -1;
 
 			v = Math.abs(v) > 30 ? 30 * sign : v;
-
-			console.log(v);
 		}
 
 		this.scroll = touchData.touchScroll;
@@ -156,20 +151,19 @@ export default class Picker {
 
 	_create(source) {
 
-		console.log()
 		if (!source.length) {
 			return;
 		}
 
 		let template = `
-        <div class="picker-wrap">
-          <ul class="picker-options" style="transform: translate3d(0, 0, ${-this.radius}px) rotateX(0deg);">
+        <div class="wheel-picker-wrap">
+          <ul class="wheel-picker-options" style="transform: translate3d(0, 0, ${-this.radius}px) rotateX(0deg);">
             {{circleListHTML}}
-            <!-- <li class="picker-option">a0</li> -->
+            <!-- <li class="wheel-picker-option">a0</li> -->
           </ul>
-          <div class="picker-highlight">
-            <ul class="picker-highlight-list">
-              <!-- <li class="picker-highlight-item"></li> -->
+          <div class="wheel-picker-highlight">
+            <ul class="wheel-picker-highlight-list">
+              <!-- <li class="wheel-picker-highlight-item"></li> -->
               {{highListHTML}}
             </ul>
           </div>
@@ -193,9 +187,9 @@ export default class Picker {
 		for (let i = 0; i < source.length; i++) {
 
 			console.log(this.value, this.source[i].value)
-			selectOptionHTML += `<option value="${source[i].value}" ${this.value, this.source[i].value ? 'selected' : '' }>${source[i].text}</option>`;
+			selectOptionHTML += `<option value="${source[i].value}" ${this.value, this.source[i].value ? 'selected' : ''}>${source[i].text}</option>`;
 
-			circleListHTML += `<li class="picker-option"
+			circleListHTML += `<li class="wheel-picker-option" aria-hidden="true" 
 				style="
 					top: ${this.itemHeight * -0.5}px;
 					height: ${this.itemHeight}px;
@@ -211,55 +205,52 @@ export default class Picker {
 		// 중간에 강조 표시 HTML
 		let highListHTML = '';
 		for (let i = 0; i < source.length; i++) {
-			highListHTML += `<li class="picker-highlight-item" style="height: ${this.itemHeight}px;">
-                          ${source[i].text}
-                        </li>`
+			highListHTML += `<li class="wheel-picker-highlight-item" style="height: ${this.itemHeight}px;">${source[i].text}</li>`;
 		}
 
-
 		if (this.options.type === 'infinite') {
-
 			// 링 머리와 꼬리
 			for (let i = 0; i < this.quarterCount; i++) {
 				// 머리
-				circleListHTML = `<li class="picker-option"
-                        style="
-                          top: ${this.itemHeight * -0.5}px;
-                          height: ${this.itemHeight}px;
-                          line-height: ${this.itemHeight}px;
-                          transform: rotateX(${this.itemAngle * (i + 1)}deg) translate3d(0, 0, ${this.radius}px);
-                        "
-                        data-index="${-i - 1}"
-                        >${source[sourceLength - i - 1].text}</li>` + circleListHTML;
+				circleListHTML = `
+				<li class="wheel-picker-option"
+				style="
+					top: ${this.itemHeight * -0.5}px;
+					height: ${this.itemHeight}px;
+					line-height: ${this.itemHeight}px;
+					transform: rotateX(${this.itemAngle * (i + 1)}deg) translate3d(0, 0, ${this.radius}px);
+				"
+				data-index="${-i - 1}"
+				>${source[sourceLength - i - 1].text}</li>` + circleListHTML;
+
 				// 꼬리
-				circleListHTML += `<li class="picker-option"
-                        style="
-                          top: ${this.itemHeight * -0.5}px;
-                          height: ${this.itemHeight}px;
-                          line-height: ${this.itemHeight}px;
-                          transform: rotateX(${-this.itemAngle * (i + sourceLength)}deg) translate3d(0, 0, ${this.radius}px);
-                        "
-                        data-index="${i + sourceLength}"
-                        >${source[i].text}</li>`;
+				circleListHTML += `
+				<li class="wheel-picker-option"
+				style="
+					top: ${this.itemHeight * -0.5}px;
+					height: ${this.itemHeight}px;
+					line-height: ${this.itemHeight}px;
+					transform: rotateX(${-this.itemAngle * (i + sourceLength)}deg) translate3d(0, 0, ${this.radius}px);
+				"
+				data-index="${i + sourceLength}"
+				>${source[i].text}</li>`;
 			}
 
 			// 머리와 꼬리 강조하기
-			highListHTML = `<li class="picker-highlight-item" style="height: ${this.itemHeight}px;">
-                            ${source[sourceLength - 1].text}
-                        </li>` + highListHTML;
-			highListHTML += `<li class="picker-highlight-item" style="height: ${this.itemHeight}px;">${source[0].text}</li>`
+			highListHTML = `<li class="wheel-picker-highlight-item" style="height: ${this.itemHeight}px;">${source[sourceLength - 1].text}</li>` + highListHTML;
+			highListHTML += `<li class="wheel-picker-highlight-item" style="height: ${this.itemHeight}px;">${source[0].text}</li>`
 		}
 
 		this.elems.el.innerHTML = template
 			.replace('{{circleListHTML}}', circleListHTML)
 			.replace('{{highListHTML}}', highListHTML);
-		this.elems.circleList = this.elems.el.querySelector('.picker-options');
-		this.elems.circleItems = this.elems.el.querySelectorAll('.picker-option');
+		this.elems.circleList = this.elems.el.querySelector('.wheel-picker-options');
+		this.elems.circleItems = this.elems.el.querySelectorAll('.wheel-picker-option');
 
 
-		this.elems.highlight = this.elems.el.querySelector('.picker-highlight');
-		this.elems.highlightList = this.elems.el.querySelector('.picker-highlight-list');
-		this.elems.highlightitems = this.elems.el.querySelectorAll('.picker-highlight-item');
+		this.elems.highlight = this.elems.el.querySelector('.wheel-picker-highlight');
+		this.elems.highlightList = this.elems.el.querySelector('.wheel-picker-highlight-list');
+		this.elems.highlightitems = this.elems.el.querySelectorAll('.wheel-picker-highlight-item');
 
 		if (this.type === 'infinite') {
 			this.elems.highlightList.style.top = -this.itemHeight + 'px';
@@ -452,14 +443,13 @@ export default class Picker {
 
 	destroy() {
 		this._stop();
-		// document 事件解绑
 		for (let eventName in this.events) {
 			this.elems.el.removeEventListener('eventName', this.events[eventName]);
 		}
 		document.removeEventListener('mousedown', this.events['touchstart']);
 		document.removeEventListener('mousemove', this.events['touchmove']);
 		document.removeEventListener('mouseup', this.events['touchend']);
-		// 元素移除
+		// 초기화
 		this.elems.el.innerHTML = '';
 		this.elems = null;
 	}

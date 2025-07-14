@@ -1,4 +1,4 @@
-.picker-wrap {
+.wheel-picker-wrap {
   position: relative;
   height: 100%;
   // perspective: 1200px;
@@ -27,7 +27,7 @@
     background-image: linear-gradient(to top, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0));
   }
 
-  .picker-options {
+  .wheel-picker-options {
     position: absolute;
     top: 50%;
     left: 0;
@@ -40,7 +40,7 @@
     -webkit-font-smoothing: subpixel-antialiased;
     color: #666;
 
-    .picker-option {
+    .wheel-picker-option {
       position: absolute;
       top: 0;
       left: 0;
@@ -58,7 +58,7 @@
   }
 }
 
-.picker-highlight {
+.wheel-picker-highlight {
   position: absolute;
   top: 50%;
   transform: translate(0, -50%);
@@ -68,14 +68,14 @@
   overflow: hidden;
 }
 
-.picker-highlight-list {
+.wheel-picker-highlight-list {
   // display: none;
   position: absolute;
   width: 100%;
 }
 
 /* date */
-.picker {
+.wheel-picker {
   position: relative;
   perspective: 0;
   display: flex;
@@ -85,7 +85,7 @@
   height: 20rem;
   flex:1;
 
-  .picker-wrap {
+  .wheel-picker-wrap {
     flex: 1;
     font-size: 1.8rem;
   }
@@ -94,12 +94,12 @@
     font-size: 2rem;
   }
 }
-.picker-area {
+.wheel-picker-area {
   display: flex;
-  width: 30rem;
+  width: 20rem;
   position: relative;
 }
-.picker-a11y{
+.wheel-picker-a11y{
   position: absolute;
   pointer-events: none;
   width: 100%;
@@ -118,4 +118,59 @@
   select:focus {
     opacity: 1;
   }
+}
+
+[data-set="YYYY-MM-DD"] {
+  display: flex;
+  [data-wheel-picker-set="YYYY"] {order:0;}
+  [data-wheel-picker-set="MM"] {order:1;}
+  [data-wheel-picker-set="DD"] {order:2;}
+
+  span[data-wheel-picker-set="DD"]::before {content: "-";}
+  span[data-wheel-picker-set="MM"]::before {content: "-";}
+
+  [data-set="YYYY"] {order:0;}
+  [data-set="MM"] {order:1;}
+  [data-set="DD"] {order:2;}
+
+}
+[data-set="MM-DD-YYYY"] {
+  display: flex;
+  [data-wheel-picker-set="MM"] {order:0;}
+  [data-wheel-picker-set="DD"] {order:1;}
+  [data-wheel-picker-set="YYYY"] {order:2;}
+
+  span[data-wheel-picker-set="DD"]::before {content: "-";}
+  span[data-wheel-picker-set="YYYY"]::before {content: "-";}
+
+  [data-set="YYYY"] {order:2;}
+  [data-set="MM"] {order:0;}
+  [data-set="DD"] {order:1;}
+}
+[data-set="DD-MM-YYYY"] {
+  display: flex;
+  [data-wheel-picker-set="DD"] {order:0;}
+  [data-wheel-picker-set="MM"] {order:1;}
+  [data-wheel-picker-set="YYYY"] {order:2;}
+
+  span[data-wheel-picker-set="MM"]::before {content: "-";}
+  span[data-wheel-picker-set="YYYY"]::before {content: "-";}
+
+  [data-set="YYYY"] {order:2;}
+  [data-set="MM"] {order:1;}
+  [data-set="DD"] {order:0;}
+}
+
+button[data-wheel-picker-button] {
+  gap:0.4rem;
+  padding: .4rem 1.6rem;
+  border: 1px solid #ccc;
+  border-radius: .3rem;
+  display: inline-flex;
+  justify-content: center;
+  width: auto;
+}
+button [data-wheel-picker-set]::before{
+  display: inline-block;
+  margin-right: .4rem;
 }
