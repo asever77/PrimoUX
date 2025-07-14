@@ -40,11 +40,11 @@
   </div>
 
   <script type="module">
-    import { PrimoUX } from '../assets/js/ui.global.js';
-		PrimoUX.init();
+    import { UX } from '../assets/js/ui.global.js';
+		UX.init();
 
 		document.addEventListener('DOMContentLoaded', () => {
-      UI.exe.luckyRouletteEvent = new PrimoUX.Roulette({
+      UI.exe.luckyRouletteEvent = new UX.Roulette({
         data: [1, 2, 3, 4, 5, 4, 3, 2],
         speed: 6000,
         turns: 5,

@@ -4,7 +4,7 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Tab | Guide </title>
+	<title>Form | Guide </title>
 	<link rel="stylesheet" href="../assets/css/app.css">
 </head>
 
@@ -17,8 +17,9 @@
 				<wrap>
 					<tit>Tab</tit>
 					<box>
-						<div role="tablist" data-tab="tab1"></div>
-						<div data-tab-wrap="tab1"></div>
+						<label for="a1">예약번호</label>
+            <input type="text" id="a1" aria-invalid="true" aria-describedby="error-msg">
+            <div id="erro-msg">올바르지 않습니다.</div>
 					</box>
 				</wrap>
 			</main>
@@ -38,14 +39,7 @@
 		import { UX } from '../assets/js/ui.global.js';
 		UX.init();
 		
-		UI.exe.tab1 = new UX.Tab({
-      rederMode: 'static',
-      id: 'tab1',
-      data: [
-        {tab: `<span>tab 1</span>`, src: './tab/tab1.html', selected:true},
-        {tab: `<span>tab 2</span>`, src: './tab/tab2.html', selected:false},
-      ],
-    })
+ 
 	</script>
 </body>
 

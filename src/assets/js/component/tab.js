@@ -1,73 +1,115 @@
-import { loadContent } from '../utils/loadContent.js';
+import { loadContent } from '../utils/utils.js';
 
 export default class Tab {
   constructor(opt) {
 		const defaults = {
-      /**
-       * renderMode: 'static' | 'dynamic'
-       * loadMode: 'eager' | 'lazy'
-       * tablist: null | opt.tablist
-       */
 			renderMode: 'static', 
-			tablist: null,
+			data: null, 
 		};
 
 		this.option = { ...defaults, ...opt };
     this.renderMode = this.option.renderMode;
-    this.tablist = this.option.tablist;
+    this.data = this.option.data;
     this.id = this.option.id;
 
-    this.el_tab = document.querySelector(`[data-tab-id="${this.id}"]`);
-    this.el_panel = document.querySelector(`[data-tab-panel="${this.id}"]`);
+    this.el_tab = document.querySelector(`[data-tab="${this.id}"]`);
     this.el_wrap = document.querySelector(`[data-tab-wrap="${this.id}"]`);
+    this.el_tabBtns = null;
+    this.el_tabPnls = null;
 
     this.init();
   }
+
   init() {
     let tablist_html = ``;
     let tabpanel_html = ``;
-    let panel_data = [];
-    this.tablist.forEach((item, index) => {
-      tablist_html += `<li role="tab" aria-selected="${item.selected}" aria-controls="${this.id}-panel-${index}" tabindex="${item.selected ? 0 : '-1'}" id="${this.id}-id-${index}">${item.tab}</li>`;
-      if (item.selected) {
-        panel_data.push(`${this.id}-panel-${index}`, `${this.id}-id-${index}`, item.src)
-      }
+    this.data.forEach((item, index) => {
+      const n = index + 1;
+      tablist_html += `<button type="button" role="tab" aria-selected="${item.selected}" aria-controls="${this.id}-panel-${n}" tabindex="${item.selected ? 0 : '-1'}" id="${this.id}-id-${n}">${item.tab}</li>`;
+      tabpanel_html += `<div role="tabpanel" aria-labelledby="${this.id}-id-${n}" id="${this.id}-panel-${n}" aria-expanded="${item.selected}" tabindex="${item.selected ? 0 : '-1'}"></div>`;
+    });
+    console.log( this.data, tablist_html)
+    this.el_tab.innerHTML = tablist_html;
+    this.el_wrap.innerHTML = tabpanel_html;
+    this.el_tabBtns = this.el_tab.querySelectorAll('[role="tab"]');
 
-      console.log(item, index)
+    this.data.forEach((item, index) => {
+      const n = index + 1;
+
+      loadContent({
+        area: this.el_wrap.querySelector(`#${this.id}-panel-${n}`),
+        src: item.src,
+        insert: true,
+      })
+      .then(() => {
+        (item.callback && item.selected) && item.callback();
+      })
+      .catch(err => console.error('Error loading tab content:', err));
     });
 
-    console.log(this.renderMode, this.el_panel)
-    //탭 선택 시마다 동적으로 로딩
-    this.el_tab.innerHTML = tablist_html;
-    
+    const tabArray = Array.from(this.el_tabBtns);
+    this.el_tabBtns = this.el_tab.querySelectorAll('[role="tab"]');
+    this.el_tabBtns.forEach((item, index) => {
+      const keyHandler = (e) => {
+        const key = e.key;
+        let dir = 0;
 
-    loadContent({
-      area: this.el_wrap,
-      src: panel_data[2],
-      insert: true,
-      callback: () => {
-        console.log('callback');
-      },
-    })
-    .then(() => {
-      console.log(this.el_wrap, this.el_panel)
-      this.el_panel.setAttribute('aria-expanded', true);
-      this.el_panel.setAttribute('aria-labelledby', panel_data[1]);
-      this.el_panel.setAttribute('id', panel_data[0]);
-    })
-    .catch(err => console.error('Error loading tab content:', err));
-    
-    if (this.renderMode === 'dynamic') {
+        if (key === 'ArrowRight' || key === 'ArrowDown') dir = 1;
+        else if (key === 'ArrowLeft' || key === 'ArrowUp') dir = -1;
+        else return;
+
+        e.preventDefault();
+
+        const currentIndex = tabArray.indexOf(item);
+        const nextIndex = (currentIndex + dir + this.el_tabBtns.length) % this.el_tabBtns.length;
+        const nextItem = this.el_tabBtns[nextIndex];
+
+        console.log(nextItem);
+        this.expanded(nextItem.id);
+      };
       
-    } else {
-      //모든 탭 콘텐츠를 미리 렌더
-      this.tablist.forEach((item, index) => {
-        tabpanel_html += `<div role="tabpanel" aria-selected="${item.selected}" aria-controls="${this.id}-panel-${index}" tabindex="${item.selected ? 0 : '-1'}" id="${this.id}-id-${index}">${item.tab}</li>`;
-        if (item.selected) {
-          panel_data.push(`${this.id}-panel-${index}`, `${this.id}-id-${index}`, item.src)
-        }
-      });
-    }
-    
+      item.addEventListener('click', this.handleToggle.bind(this));
+      item.addEventListener('keydown', keyHandler);
+    });
+  }
+
+  handleToggle (e) {
+    const _this = e.currentTarget;
+    const _wrap = _this.closest('[role="tablist"]');
+    const tabSelected = _wrap.querySelector('[role="tab"][aria-selected="true"]');
+    const tabID = _this.id;
+
+    tabSelected.setAttribute('aria-selected', false);
+    _this.setAttribute('aria-selected', true);
+
+    this.expanded(_this.id);
+  }
+
+  expanded (id) {
+    const tabID = id;
+    const _this = document.querySelector(`#${tabID}`);
+    const _wrap = _this.closest('[role="tablist"]');
+    const tabName = _wrap.dataset.tab;
+    const tabSelected = _wrap.querySelector('[role="tab"][aria-selected="true"]');
+    const panelWrap = document.querySelector(`[data-tab-wrap="${tabName}"]`);
+    const panelSelected = panelWrap.querySelector(`[role="tabpanel"][aria-expanded="true"]`);
+    const currentPanel = panelWrap.querySelector(`[role="tabpanel"][aria-labelledby="${tabID}"]`);
+
+    _this.focus();
+
+    const _tabs = _wrap.querySelectorAll('[role="tab"]');
+		_tabs.forEach(item => {
+			item.setAttribute('tabindex', '-1');
+		});
+
+    // tab button
+    tabSelected.setAttribute('aria-selected', false);
+    _this.setAttribute('aria-selected', true);
+    _this.setAttribute('tabindex', '0');
+    // tab panel
+    panelSelected.setAttribute('aria-expanded', false);
+    panelSelected.setAttribute('tabindex', '-1');
+    currentPanel.setAttribute('aria-expanded', true);
+    currentPanel.setAttribute('tabindex', '0');
   }
 }

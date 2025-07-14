@@ -1,38 +1,4 @@
-.area-base {
-	height: 100dvh;
-	overflow-y: hidden;
-	overflow-x: hidden;
-	z-index: 0;
-}
-.area-dialog {
-	position: absolute;
-	top: 0;
-	left: 0;
-	z-index: 100;
-	width: 100%;
-	height: 100%;
-	pointer-events: none;
-}
-.area-select {
-	position: absolute;
-	top: 0;
-	left: 0;
-	z-index: 200;
-}
-.area-system {
-	position: absolute;
-	top: 0;
-	left: 0;
-	z-index: 300;
-}
-.area-toast {
-	position: absolute;
-	top: 0;
-	left: 0;
-	z-index: 400;
-}
-
-// base motion
+/* dialog */
 [data-dialog] {
 	display: none;
 	position: absolute;
@@ -349,4 +315,26 @@
 		z-index: 0;
 		transition: opacity .2s ease;
 	}
+}
+
+/* toast */
+.ui-toast[data-type="toast"] {
+  position: relative;
+  background-color: rgba(0, 0, 0, 0.7);
+  color: #fff;
+  align-items: center;
+  justify-content: center;
+  padding: 1.2rem;
+  border-radius: .8rem;
+  top: auto;
+  left: auto;
+  max-width: calc(100% - 3.2rem);
+  height: auto;
+}
+.ui-toast[data-type="toast"][aria-hidden="false"][data-ps="bottom"] {
+  animation-name: bottom-In;
+  animation-duration: 0.2s;
+  animation-iteration-count: 1;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
 }
