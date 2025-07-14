@@ -1,20 +1,23 @@
+import Accordion from './component/accordion.js';
+import ButtonSelection from './component/buttonSelection.js';
 import Dialog from './component/dialog.js';
-import Drag from './component/drag.js';
 import Dropdown from './component/dropdown.js';
 import Tab from './component/tab.js';
+import Tooltip from './component/tooltip.js';
 
-import Nav from './component/nav.js';
-import Roulette from './game/roulette.js';
-import { loadContent } from './utils/loadContent.js';
+import Nav from './page/nav.js';
 
-export const PrimoUX = {
+
+import { loadContent } from './utils/utils.js';
+
+export const UX = {
+	Accordion,
+	ButtonSelection,
 	Dialog,
-	Drag,
-	Tab,
 	Dropdown,
-	
-	Roulette,
-	
+	Tab,
+	Tooltip,
+
 	init: () => {
 		const global = 'UI';
 		if (!window[global]) {
@@ -22,10 +25,11 @@ export const PrimoUX = {
 		}
 		const Global = window[global];
 
-		Global.exe = {}
-		Global.dev = {}
+		Global.exe = {}	//실행용
+		Global.dev = {} //개발용
+		Global.pub = {} //퍼블용
 
-		PrimoUX.header();
+		UX.header();
 	},
 	header: () => {
 		//header

@@ -21,8 +21,14 @@
 						<button type="button" data-test-id="modal2" onclick="UI.exe.modal2.show()">bottom</button>|
 						<button type="button" data-test-id="modal3" onclick="UI.exe.modal3.show()">top</button>|
 						<button type="button" data-test-id="modal4" onclick="UI.exe.modal4.show()">left</button>|
-						<button type="button" data-test-id="modal5" onclick="UI.exe.modal5.show()">right</button>|
+						<button type="button" data-test-id="modal5" onclick="UI.exe.modal5.show()">right</button>
+					</box>
+					<box>
 						<button type="button" data-test-id="alert1" onclick="UI.exe.alert1.show()">alert</button>
+					</box>
+					<box>
+						<button type="button" data-test-id="toast1" onclick="UI.exe.toast1.show()">toast1</button>|
+        		<button type="button" data-test-id="toast2" onclick="UI.exe.toast2.show()">toast2</button>
 					</box>
 
 					<stit>코드</stit>
@@ -33,7 +39,7 @@
 	import Dialog from '../assets/js/component/modal.js';
 	
 	//Dialog 생성
-	PrimoUX.dialog.modal1 = new Dialog({
+	UX.dialog.modal1 = new Dialog({
 		id: 'modal-1',
 		ps: 'center',
 		src: './dialog/modal.html',
@@ -43,15 +49,15 @@
 	});	
 
 	//Dialog Show
-	PrimoUX.dialog.modal1.show();
+	UX.dialog.modal1.show();
 
 	//Dialog Hide
-	PrimoUX.dialog.modal1.hide({ 
+	UX.dialog.modal1.hide({ 
 		focus_target: document.querySelector('[data-test-id="modal2"]'),
 	});
 
 	//Dialog 최상위로 올리기
-	PrimoUX.dialog.modal1.zIndexUp();
+	UX.dialog.modal1.zIndexUp();
 &lt;/script&gt;
 						</pre></code>
 					</codebox>
@@ -95,68 +101,64 @@
 
 	<!-- script -->
 	<script type="module">
-		import { PrimoUX } from '../assets/js/ui.global.js';
-		PrimoUX.init();
+		import { UX } from '../assets/js/ui.global.js';
+		UX.init();
 		
-		UI.exe.modal1 = new PrimoUX.Dialog({
+		// dialog
+		UI.exe.modal1 = new UX.Dialog({
 			area: document.querySelector('.area-dialog[data-area="body"]'),
 			id: 'modalname1',
 			ps: 'center',
 			src: './dialog/modal.html',
 			extend: false,
 			loadCallback: () => {
-				console.log('loadCallback')
-				// PrimoUX.exe.modal1.show();
-			}
+				console.log('modal1 loadCallback')
+			},
 		});			
-
-		UI.exe.modal2 = new PrimoUX.Dialog({
+		UI.exe.modal2 = new UX.Dialog({
 			id: 'modalname2',
 			ps: 'bottom',
 			src: null,
 			extend: true, 
 			loadCallback: () => {
-				console.log('loadCallback')
-				// UI.exe.modal1.show();
-			}
+				console.log('modal2 loadCallback')
+			},
 		});
-		// UI.exe.modal2.show();
-
-		UI.exe.modal3 = new PrimoUX.Dialog({
+		UI.exe.modal3 = new UX.Dialog({
 			area: document.querySelector('.area-dialog[data-area="main"]'),
 			id: 'modalname3',
 			ps: 'top',
 			src: './dialog/modal3.html',
 			extend: false,
-			loadCallback: () => { 
-				// UI.exe.modal3.show();
-			}
+			loadCallback: () => {
+				console.log('modal3 loadCallback')
+			},
 		});
-
-		UI.exe.modal4 = new PrimoUX.Dialog({
+		UI.exe.modal4 = new UX.Dialog({
+			area: document.querySelector('.area-dialog[data-area="body"]'),
 			id: 'modalname4',
 			ps: 'left',
 			src: './dialog/modal4.html',
 			extend: false,
-			loadCallback: () => { 
-				// UI.exe.modal4.show();
-			}
+			loadCallback: () => {
+				console.log('modal4 loadCallback')
+			},
 		});
-
-		UI.exe.modal5 = new PrimoUX.Dialog({
+		UI.exe.modal5 = new UX.Dialog({
+			area: document.querySelector('.area-dialog[data-area="body"]'),
 			id: 'modalname5',
 			ps: 'right',
 			src: './dialog/modal5.html',
 			extend: false,
-			loadCallback: () => { 
-				// UI.exe.modal5.show();
-			}
+			loadCallback: () => {
+				console.log('modal5 loadCallback')
+			},
 		});
-
-		UI.exe.alert1 = new PrimoUX.Dialog({
+		UI.exe.alert1 = new UX.Dialog({
+			area: document.querySelector('.area-dialog[data-area="body"]'),
 			id: 'alert1',
 			type: 'system',
-			title: `제목영역입니다.`,
+			title: `<b>제목</b>영역입니다.`,
 			message: `<strong>공지</strong>입니다.`,
 			confirmText: '확인',
 			confirmCallback: () => {
@@ -168,9 +170,22 @@
 				UI.exe.alert1.hide()
 			},
 		});
-		// setTimeout(() => {
-		// 	UI.exe.alert1.show();
-		// }, 2000);
+
+		UI.exe.toast1 = new UX.Dialog({
+			area: document.querySelector('.area-toast'),
+			id: 'toast1',
+			ps: 'bottom',
+			type: 'toast',
+			message: `<strong>토스트 메세지</strong>입니다.`,
+		});
+
+		UI.exe.toast2 = new UX.Dialog({
+			area: document.querySelector('.area-toast'),
+			id: 'toast2',
+			ps: 'bottom',
+			type: 'toast',
+			message: `<strong>2222 토스트 메세지</strong>입니다.`,
+		});
 
 			
 	</script>

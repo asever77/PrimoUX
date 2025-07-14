@@ -1,9 +1,14 @@
-import { loadContent } from '../utils/loadContent.js';
+import { loadContent } from '../utils/utils.js';
 
 export default class Dialog {
+  //private
+  #boundKeyStart;
+  #boundKeyEnd;
+  #rem_base = 10;
+
   constructor(opt) {
     const defaults = {
-      type: 'modal', //'modal', 'system'
+      type: 'modal', //'modal', 'system', 'toast
       ps: 'center', // 'center', 'top', 'bottom', 'left', 'right', 'full'
       src: null,
       classname: '',
@@ -18,17 +23,23 @@ export default class Dialog {
       loadCallback: null,
       focus_back: null,
       title: null,
-      message: '',
       confirmText: '',
       cancelText: '',
       confirmCallback: null,
       cancelCallback: null,
+
+      delay: 'short', // short[2s] | long[3.5s]
+      live: 'polite', 
+      //assertive[중요도 높은 경우] | polite[중요도가 낮은 경우] | off[default]
+			message: '',
     };
 
     this.option = { ...defaults, ...opt };
     this.dialog = null;
     this.extend = this.option.extend;
     this.area = this.option.area;
+    this.ps = this.option.ps;
+    this.dim = this.option.dim;
     this.move = this.option.ps !== 'center' ? false : this.option.move;
     this.isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
     this.id = this.option.id ? this.option.id : Date.now().toString(36) + Math.random().toString(36).substring(2);
@@ -37,23 +48,53 @@ export default class Dialog {
     this.boundExtendStart = this.extendStart.bind(this);
     this.boundKeyStart = this.keyStart.bind(this)
     this.boundKeyEnd = this.keyEnd.bind(this)
-
     this.rem_base = 10;
-
+    this.delay = this.option.delay;
+    this.status = this.option.status;
+    this.message = this.option.message;
+    this.type = this.option.type;
+    this.toastTimer = null;
+    this.elToast = null;
+    this.boundToastAnimationend = this.toastAnimationend.bind(this);
     this.init();
 	}
 
   init() {
     //dialog type : modal, system
-    switch(this.option.type) {
+    switch(this.type) {
       case 'modal':
         this.initDialog();
         break;
       case 'system':
         this.initSystem();
         break;
+      case 'toast':
+        this.dim = false;
+        this.move = false;
+        this.initToast();
+        break;
       default:
-        console.warn('Unknown modal type:', this.option.type);
+        console.warn('Unknown modal type:', this.type);
+    }
+  }
+
+  initToast(v) {
+    let htmlToast = `
+    <div class="ui-toast" 
+    data-dialog="${this.id}" 
+    data-type="toast" 
+    role="status" 
+    aria-hidden="true" 
+    aria-atomic="true" 	
+    aria-live="polite">
+       ${this.message}
+    </div>`;
+    this.area.dataset.ps = this.ps;
+    this.area.insertAdjacentHTML('afterbegin', htmlToast);
+    this.elToast = document.querySelector(`[data-dialog="${this.id}"]`);
+
+    if (v === 'show') {
+      this.show();
     }
   }
 
@@ -67,7 +108,7 @@ export default class Dialog {
       <div class="ui-dialog--wrap" role="document" tabindex="-1" data-dialog-item="wrap">
         ${this.option.title ? '<div class="ui-dialog--header"><h2 id="' + this.id + '-label">' + this.option.title + '</h2></div>' : ''}
         <div class="ui-dialog--main" data-dialog-item="main">
-          ${this.option.message}
+          ${this.message}
         </div>
         <div class="ui-dialog--footer">
           ${this.option.cancelText ? '<button type="button" data-dialog-button="cancel">'+ this.option.cancelText +'</button>' : ''}
@@ -110,7 +151,7 @@ export default class Dialog {
     this.dialogMain = this.dialog.querySelector('[data-dialog-item="main"]');
 
     //dim
-    if (this.option.dim) {
+    if (this.dim) {
       this.dialog.insertAdjacentHTML('beforeend', '<div class="dim"></div>');
       this.el_dim = this.dialog.querySelector('.dim');
       this.dimClick && this.el_dim.addEventListener('click', this.handleDimClick.bind(this));
@@ -193,17 +234,20 @@ export default class Dialog {
     const x = isTouchEvent ? e.targetTouches[0].clientX : e.clientX;
     let y_m;
     let x_m;
-    let style = el_this.style.margin;
-    style = style ? style : '0 0 0 0';
 
-    const marginValues = style.split(" ");
-    let marginTop = parseFloat(marginValues[0]);
-    let marginLeft = parseFloat(marginValues[3]);
+    const initalX = el_this.dataset.translateX ? Number(el_this.dataset.translateX) : 0;
+    const initalY = el_this.dataset.translateY ? Number(el_this.dataset.translateY) : 0;
 
     const dragMove = (e) => {
       y_m = isTouchEvent ? e.targetTouches[0].clientY : e.clientY;
       x_m = isTouchEvent ? e.targetTouches[0].clientX : e.clientX;
-      el_this.style.margin = `${marginTop + ((y - y_m) / 5 * -1)}rem 0 0 ${marginLeft + ((x - x_m) / 5 * -1)}rem`;
+
+      const deltaX = x_m - x;
+      const deltaY = y_m - y;
+
+      el_this.style.transform = `translate(${initalX + deltaX}px, ${initalY + deltaY}px)`;
+      el_this.dataset.translateX = initalX + deltaX;
+      el_this.dataset.translateY = initalY + deltaY;
     }
     const dragEnd = () => {
       document.removeEventListener(eventMove, dragMove);
@@ -353,36 +397,66 @@ export default class Dialog {
   }
 
 	show() {
-		this.option.focus_back = document.activeElement;
-		this.dialog.setAttribute('aria-hidden', 'false');
-    // this.dialogWrap.removeAttribute('style');
-		this.dialogWrap.focus();
-		this.dialog.dataset.state = "show";
+    if (this.type === 'toast') {
+      if (document.querySelector(`[data-dialog=${this.elToast.dataset.dialog}]`)) {
+        if (this.elToast.getAttribute('aria-hidden') === "true") {
+          this.elToast.setAttribute('aria-hidden', 'false');
+          this.elToast.dataset.ps = this.ps;
+          const delay = this.delay === 'short' ? '2000' : '3000';
+          this.toastTimer = setTimeout(()=> {
+            this.toastHide();
+          }, delay);
+        }
+      } else {
+        this.initToast('show');
+      }
+    } 
+    else {
+      this.option.focus_back = document.activeElement;
+      this.dialog.setAttribute('aria-hidden', 'false');
+      
+      this.dialogWrap && this.dialogWrap.focus();
+      this.dialog.dataset.state = "show";
 
-    const openModals = document.querySelectorAll('[data-dialog][aria-hidden="false"]');
-    const zIndex = openModals.length;
-    const currentModal = document.querySelector('[data-dialog][aria-hidden="false"][data-current="true"]');
-    if (currentModal) currentModal.dataset.current = "false";
-    this.dialog.dataset.zindex = zIndex;
-    this.dialog.dataset.current = 'true';
-    // (this.option.drag) && this.dragEvent();
-    
-    //loop focus
-		this.btn_first.addEventListener('keydown', this.boundKeyStart);	
-		this.btn_last.addEventListener('keydown', this.boundKeyEnd);
+      const openModals = document.querySelectorAll('[data-dialog][aria-hidden="false"]');
+      const zIndex = openModals.length;
+      const currentModal = document.querySelector('[data-dialog][aria-hidden="false"][data-current="true"]');
+      if (currentModal) currentModal.dataset.current = "false";
+      this.dialog.dataset.zindex = zIndex;
+      this.dialog.dataset.current = 'true';
+      // (this.option.drag) && this.dragEvent();
+      
+      //loop focus
+      this.btn_first && this.btn_first.addEventListener('keydown', this.boundKeyStart);	
+      this.btn_last && this.btn_last.addEventListener('keydown', this.boundKeyEnd);
 
-    if (this.extend) {
-      const el_extend = this.dialog.querySelector('[data-dialog-item="extend"]');
-      el_extend.addEventListener('touchstart', this.boundExtendStart, {passive:true});
-      el_extend.addEventListener('mousedown', this.boundExtendStart, {passive:true});
-    }
-    if (this.move) {
-      this.dialogWrap.removeEventListener('touchstart', this.moveStart);
-      this.dialogWrap.removeEventListener('mousedown', this.moveStart);
-      this.dialogWrap.addEventListener('touchstart', this.moveStart, {passive:true});
-      this.dialogWrap.addEventListener('mousedown', this.moveStart, {passive:true});
+      if (this.extend) {
+        const el_extend = this.dialog.querySelector('[data-dialog-item="extend"]');
+        el_extend.addEventListener('touchstart', this.boundExtendStart, {passive:true});
+        el_extend.addEventListener('mousedown', this.boundExtendStart, {passive:true});
+      }
+      if (this.move) {
+        this.dialogWrap.removeEventListener('touchstart', this.moveStart);
+        this.dialogWrap.removeEventListener('mousedown', this.moveStart);
+        this.dialogWrap.addEventListener('touchstart', this.moveStart, {passive:true});
+        this.dialogWrap.addEventListener('mousedown', this.moveStart, {passive:true});
+      }
     }
 	}
+
+  toastAnimationend() {
+    this.elToast.removeEventListener('transitionend', this.boundToastAnimationend);
+    this.elToast.remove();
+  }
+
+  toastHide(){ 
+    const rect = this.elToast.getBoundingClientRect();
+    const gap = 8;
+    this.elToast.style.transition = 'margin 300ms ease';
+    this.elToast.style.marginBottom = (rect.height + gap) / 10 * -1 + 'rem';
+    this.elToast.addEventListener('transitionend', this.boundToastAnimationend);
+  }
+
 	hide(opt) {
     //loop focus 중복방지 이벤트 취소
     this.btn_first && this.btn_first.removeEventListener('keydown', this.keyStart);
@@ -394,7 +468,7 @@ export default class Dialog {
 		this.dialog.dataset.state = "hide";
     this.dialog.dataset.current = "false";
     this.dialog.dataset.zindex = "";
-		this.option.focus_back.focus();
+		this.option.focus_back && this.option.focus_back.focus();
 		this.dialog.setAttribute('aria-hidden', 'true');
 
     //열린 모달 재설정
@@ -422,6 +496,7 @@ export default class Dialog {
 			this.btn_last.focus();
 		}
 	}
+
 	keyEnd = (e) => {
 		if (!e.shiftKey && e.key === 'Tab') {
 			e.preventDefault();
