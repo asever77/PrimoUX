@@ -25,16 +25,3 @@
   }
 }
 
-.base-header {
-  &--wrap {
-    display: flex;
-    justify-content:space-between;
-    padding:1.8rem 2.4rem;
-    align-items: center;
-  }
-
-  &--title {
-    font-size: 3rem;
-    font-weight: 700;
-  }
-}

@@ -98,3 +98,68 @@ export const slideToggle = (element, duration = 300) => {
   const isHidden = getComputedStyle(element).display === 'none' || element.clientHeight === 0;
   return isHidden ? slideDown(element, duration) : slideUp(element, duration);
 };
+
+export class FocusTrap {
+  constructor(container) {
+    if (!container || !(container instanceof HTMLElement)) {
+      throw new Error('FocusTrap requires a valid DOM element.');
+    }
+
+    this.container = container;
+    this.focusableElements = this.getFocusableElements();
+    this.firstElement = this.focusableElements[0];
+    this.lastElement = this.focusableElements[this.focusableElements.length - 1];
+
+    this.handleKeyDown = this.handleKeyDown.bind(this);
+    this.activate();
+  }
+
+  getFocusableElements() {
+    const selectors = [
+      'a[href]',
+      'area[href]',
+      'input:not([disabled])',
+      'select:not([disabled])',
+      'textarea:not([disabled])',
+      'button:not([disabled])',
+      'iframe',
+      'object',
+      'embed',
+      '[contenteditable]',
+      '[tabindex]:not([tabindex="-1"])'
+    ];
+    return Array.from(this.container.querySelectorAll(selectors.join(','))).filter(el => el.offsetParent !== null);
+  }
+
+  handleKeyDown(e) {
+    if (e.key !== 'Tab') return;
+
+    this.focusableElements = this.getFocusableElements(); // update in case of dynamic changes
+    this.firstElement = this.focusableElements[0];
+    this.lastElement = this.focusableElements[this.focusableElements.length - 1];
+
+    if (this.focusableElements.length === 0) return;
+
+    if (e.shiftKey) {
+      // Shift + Tab
+      if (document.activeElement === this.firstElement) {
+        e.preventDefault();
+        this.lastElement.focus();
+      }
+    } else {
+      // Tab
+      if (document.activeElement === this.lastElement) {
+        e.preventDefault();
+        this.firstElement.focus();
+      }
+    }
+  }
+
+  activate() {
+    this.container.addEventListener('keydown', this.handleKeyDown);
+  }
+
+  deactivate() {
+    this.container.removeEventListener('keydown', this.handleKeyDown);
+  }
+}

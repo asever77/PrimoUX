@@ -64,7 +64,6 @@ export default class Tab {
         const nextIndex = (currentIndex + dir + this.el_tabBtns.length) % this.el_tabBtns.length;
         const nextItem = this.el_tabBtns[nextIndex];
 
-        console.log(nextItem);
         this.expanded(nextItem.id);
       };
       

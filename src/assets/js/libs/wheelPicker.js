@@ -190,14 +190,11 @@ export default class WheelPicker {
 			selectOptionHTML += `<option value="${source[i].value}" ${this.value, this.source[i].value ? 'selected' : ''}>${source[i].text}</option>`;
 
 			circleListHTML += `<li class="wheel-picker-option" aria-hidden="true" 
-				style="
-					top: ${this.itemHeight * -0.5}px;
-					height: ${this.itemHeight}px;
-					line-height: ${this.itemHeight}px;
-					transform: rotateX(${-this.itemAngle * i}deg) translate3d(0, 0, ${this.radius}px);
-				"
-				data-index="${i}"
-				>${source[i].text}</li>`
+			style="
+				top: ${this.itemHeight * -0.5}px;
+				height: ${this.itemHeight}px;
+				line-height: ${this.itemHeight}px;
+				transform: rotateX(${-this.itemAngle * i}deg) translate3d(0, 0, ${this.radius}px);" data-index="${i}">${source[i].text}</li>`
 		}
 
 		document.querySelector(this.el + '_a11y').innerHTML = selectOptionHTML;

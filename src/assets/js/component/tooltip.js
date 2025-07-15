@@ -1,3 +1,4 @@
+import { FocusTrap } from '../utils/utils.js';
 export default class Tooltip {
 	constructor(selector) {
 		this.tooltips = document.querySelectorAll(selector);
@@ -72,5 +73,7 @@ export default class Tooltip {
 
 		this.html.removeEventListener('click', this.boundOutsideClick);
 		this.html.addEventListener('click', this.boundOutsideClick);
+
+		const trap = new FocusTrap(tooltip);
 	}
 }

@@ -109,6 +109,9 @@
   100% {transform:translateY(0);margin-bottom:-5.2rem;opacity:0;}
 }
 
+.scroll-not {
+  overflow: hidden !important;
+}
 /* 기본 영역 z-index */
 .area-dropdown {
   position: absolute;
@@ -133,6 +136,10 @@
   height: 100%;
   overflow: hidden;
   pointer-events: none;
+
+  &[data-area="body"] {
+     position: fixed;
+  }
 }
 
 .area-toast {
