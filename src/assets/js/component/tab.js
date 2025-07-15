@@ -46,6 +46,9 @@ export default class Tab {
       .catch(err => console.error('Error loading tab content:', err));
     });
 
+    this.el_tabBtns.forEach((item, index) => {
+      item.addEventListener('click', this.handleToggle.bind(this));     
+    });
 
     const keyNavigator = new ArrowNavigator({
       container: this.el_tab,
@@ -63,6 +66,8 @@ export default class Tab {
 
     tabSelected.setAttribute('aria-selected', false);
     _this.setAttribute('aria-selected', true);
+    
+    console.log(1111111)    
 
     this.expanded(_this.id);
   }
