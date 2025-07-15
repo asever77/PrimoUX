@@ -1,3 +1,5 @@
+import { ArrowNavigator } from '../utils/utils.js';
+
 export default class ButtonSelection {
    constructor(opt) {
     const defaults = {
@@ -31,30 +33,18 @@ export default class ButtonSelection {
     }
 
     this.item = this.selection.querySelectorAll('[data-selection-item]');
-    const radiosArray = Array.from(this.item);
-
     this.item.forEach(item => {
-			const keyHandler = (e) => {
-				const key = e.key;
-				let dir = 0;
-
-				if (key === 'ArrowRight' || key === 'ArrowDown') dir = 1;
-				else if (key === 'ArrowLeft' || key === 'ArrowUp') dir = -1;
-				else return;
-
-				e.preventDefault();
-
-				// 현재 인덱스 → 다음 인덱스 계산 (순환)
-				const currentIndex = radiosArray.indexOf(item);
-				const nextIndex = (currentIndex + dir + this.item.length) % this.item.length;
-				const nextRadio = this.item[nextIndex];
-				
-				this.moveKey(nextRadio);
-			};
-
       item.addEventListener('click', this.updateSelection.bind(this));
-			item.addEventListener('keydown', keyHandler);
 			item.setAttribute('tabindex', (item.getAttribute('aria-checked') === 'true' || this.type === 'checkbox') ? '0' : '-1');
+    });
+
+    const keyNavigator = new ArrowNavigator({
+      container: this.selection,
+      foucsabledSelector: '[data-selection-item]',
+      callback: (el, index) => {
+        console.log(el, index)
+        this.moveKey(el);
+      }
     });
   } 
 

@@ -163,3 +163,64 @@ export class FocusTrap {
     this.container.removeEventListener('keydown', this.handleKeyDown);
   }
 }
+
+export class ArrowNavigator {
+  constructor(opt) {
+    const container = opt.container;
+    const foucsabledSelector = opt.foucsabledSelector;
+    const callback = opt.callback;
+
+    if (!container || !(container instanceof HTMLElement)) {
+      throw new Error('ArrowNavigator: 유효한 DOM 요소를 전달해야 합니다.');
+    }
+
+    this.container = container;
+    this.callback = typeof callback === 'function' ? callback : () => {};
+    this.focusableSelectors = !foucsabledSelector ? [
+      '[role="tab"]',
+      '[role="button"]',
+      'button:not([disabled])',
+      'a[href]',
+      'input:not([disabled])',
+      'select:not([disabled])',
+      'textarea:not([disabled])',
+      '[tabindex]:not([tabindex="-1"])'
+    ] : [foucsabledSelector];
+    this.handleKeyDown = this.handleKeyDown.bind(this);
+
+    this.container.addEventListener('keydown', this.handleKeyDown);
+  }
+
+  getFocusableElements() {
+    return Array.from(this.container.querySelectorAll(this.focusableSelectors.join(',')))
+      .filter(el => el.offsetParent !== null);
+  }
+
+  handleKeyDown(e) {
+    const keys = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'];
+    if (!keys.includes(e.key)) return;
+
+    const elements = this.getFocusableElements();
+    const currentIndex = elements.indexOf(document.activeElement);
+
+    if (currentIndex === -1) return;
+
+    let nextIndex;
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+      nextIndex = (currentIndex + 1) % elements.length;
+    } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+      nextIndex = (currentIndex - 1 + elements.length) % elements.length;
+    }
+
+    const nextEl = elements[nextIndex];
+    if (nextEl) {
+      e.preventDefault();
+      nextEl.focus();
+      this.callback(nextEl, nextIndex);
+    }
+  }
+
+  destroy() {
+    this.container.removeEventListener('keydown', this.handleKeyDown);
+  }
+}

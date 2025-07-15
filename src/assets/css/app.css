@@ -338,6 +338,17 @@ codebox code {
   font-size: 3rem;
   font-weight: 700;
   letter-spacing: 1rem;
+  display: flex;
+  align-items: center;
+}
+.base-header--title sup {
+  font-size: 1rem;
+  border-radius: 0.4rem;
+  background: linear-gradient(20deg, #111 50%, #444 55%);
+  color: #fff;
+  padding: 0.2rem 0.6rem;
+  display: flex;
+  letter-spacing: 0;
 }
 
 .base-content {
@@ -1847,6 +1858,7 @@ codebox code {
 }
 .wheel-picker-a11y select:focus {
   opacity: 1;
+  background-color: #fff;
 }
 
 [data-set=YYYY-MM-DD] {

@@ -1,4 +1,4 @@
-import { loadContent } from '../utils/utils.js';
+import { loadContent, ArrowNavigator } from '../utils/utils.js';
 
 export default class Tab {
   constructor(opt) {
@@ -28,7 +28,6 @@ export default class Tab {
       tablist_html += `<button type="button" role="tab" aria-selected="${item.selected}" aria-controls="${this.id}-panel-${n}" tabindex="${item.selected ? 0 : '-1'}" id="${this.id}-id-${n}">${item.tab}</li>`;
       tabpanel_html += `<div role="tabpanel" aria-labelledby="${this.id}-id-${n}" id="${this.id}-panel-${n}" aria-expanded="${item.selected}" tabindex="${item.selected ? 0 : '-1'}"></div>`;
     });
-    console.log( this.data, tablist_html)
     this.el_tab.innerHTML = tablist_html;
     this.el_wrap.innerHTML = tabpanel_html;
     this.el_tabBtns = this.el_tab.querySelectorAll('[role="tab"]');
@@ -47,28 +46,12 @@ export default class Tab {
       .catch(err => console.error('Error loading tab content:', err));
     });
 
-    const tabArray = Array.from(this.el_tabBtns);
-    this.el_tabBtns = this.el_tab.querySelectorAll('[role="tab"]');
-    this.el_tabBtns.forEach((item, index) => {
-      const keyHandler = (e) => {
-        const key = e.key;
-        let dir = 0;
 
-        if (key === 'ArrowRight' || key === 'ArrowDown') dir = 1;
-        else if (key === 'ArrowLeft' || key === 'ArrowUp') dir = -1;
-        else return;
-
-        e.preventDefault();
-
-        const currentIndex = tabArray.indexOf(item);
-        const nextIndex = (currentIndex + dir + this.el_tabBtns.length) % this.el_tabBtns.length;
-        const nextItem = this.el_tabBtns[nextIndex];
-
-        this.expanded(nextItem.id);
-      };
-      
-      item.addEventListener('click', this.handleToggle.bind(this));
-      item.addEventListener('keydown', keyHandler);
+    const keyNavigator = new ArrowNavigator({
+      container: this.el_tab,
+      callback: (el, index) => {
+        this.expanded(el.id);
+      }
     });
   }
 

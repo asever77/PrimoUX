@@ -1,4 +1,4 @@
-import { slideUp, slideDown } from '../utils/utils.js';
+import { slideUp, slideDown, ArrowNavigator } from '../utils/utils.js';
 
 export default class Accordion {
   constructor(opt) {
@@ -42,6 +42,14 @@ export default class Accordion {
       }
 
       accoBtn.addEventListener('click', this.boundHandleToggle);
+    });
+
+    const keyNavigator = new ArrowNavigator({
+      container: this.acco,
+      foucsabledSelector: '[data-accordion-button="acco1"]',
+      callback: (el, index) => {
+        console.log(el, index)
+      }
     });
   }
 

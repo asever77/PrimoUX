@@ -13,7 +13,7 @@
 		<header class="base-header">
       <div class="base-header--wrap">
         <div class="base-header--title">
-          <h1>UIUXU</h1>
+          <h1>UIUXU<sup>A11y</sup></h1>
         </div>
       </div>
     </header>
@@ -123,7 +123,7 @@
           </group>
 
           <group>
-            <tit>Wheel Picker</tit>
+            <tit>Wheel Picker (libray)</tit>
             <fieldset id="selectType" style="font-size: 1.2rem;">
               <legend>날짜 타입 선택</legend>
               <label>
@@ -442,7 +442,7 @@
         const selectA11y = document.querySelector('#iosPicker_month_a11y');
         selectA11y.value = selected.value;
         selectA11y.addEventListener('change', (e) => {
-          UI.exe.wheelPickerYear.select(Number(e.currentTarget.value));
+          UI.exe.wheelPickerMonth.select(Number(e.currentTarget.value));
         });
 
         document.querySelector('[data-wheel-picker-button="aa1"] [data-wheel-picker-set="MM"]').textContent = selected.text;
@@ -488,7 +488,8 @@
         const selectA11y = document.querySelector('#iosPicker_day_a11y');
         selectA11y.value = selected.value;
         selectA11y.addEventListener('change', (e) => {
-          UI.exe.wheelPickerYear.select(Number(e.currentTarget.value));
+          console.log(Number(e.currentTarget.value))
+          UI.exe.wheelPickerDay.select(Number(e.currentTarget.value));
         });
 
         document.querySelector('[data-wheel-picker-button="aa1"] [data-wheel-picker-set="DD"]').textContent = selected.text;
